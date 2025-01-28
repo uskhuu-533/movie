@@ -1,22 +1,20 @@
 "use client"
-type elements = {
-    movies : string[],
-    isLoading : boolean,
-    options : object,
-    poster_path: string,
-    el : object,
-    result : object,
-    popularResult :object,
-    topRatedResult :object
 
-}
-
+import { Star } from "lucide-react";
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation";
+
+
+type data = {
+  poster_path: string;
+  vote_average: string;
+  title: string,
+  id:number
+}
 const Lists = ({ title }: { title: string }) => {
-    const [movies, setMovies] = useState([])
-    const [image, setImage] = useState({})
-    const account_id = 21777990
-    const options = {
+  const router = useRouter();
+    const [movies, setMovies] = useState<data[]>([])
+    const options : object= {
         method: 'GET',
         headers: {
           accept: 'application/json',
@@ -31,8 +29,8 @@ const Lists = ({ title }: { title: string }) => {
       const topRated = await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options);
       const popular = await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options);
       const popularResult = await popular.json()
-      const result = await response.json()
-      const topRatedResult = await topRated.json()
+      const result  = await response.json()
+      const topRatedResult  = await topRated.json()
       setMovies(result.results)
       if (title === "Upcoming"){
         setMovies(result.results)
@@ -51,25 +49,28 @@ const Lists = ({ title }: { title: string }) => {
     }
   };
 movies.length = 10
-  console.log(movies)
+  // console.log(movies)
   useEffect(()=>{
     getMovie();
    
   },[])
+  const handleMoviePopularClick = (movieID:number) => {
+    router.push(`/movies/${movieID}`);
+};
     return(
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 ">
             <div className="w-full justify-between flex h-9">
-                <p className="text-foreground text-2xl font-semibold">{title}</p>
+                <p className="text-foreground text-2xl text-white font-semibold">{title}</p>
                 <p>see more</p>
             </div>
         <div className="w-full h-[912px] grid grid-flow-col grid-rows-2 gap-8">
-          {movies.map((el, index)=>(
-            <div key={index} className="rounded-lg overflow-hidden ">
+          {movies.map((el:data, index)=>(
+            <div key={index} className="rounded-lg overflow-hidden " onClick={()=>handleMoviePopularClick(el.id) }>
             <img src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`} className="w-full h-[77%] hover:bg-primary/30" />
             <div className="w-full h-[33%] p-2 bg-[#27272A]">
                 <div>
                     <div className="flex">
-                        <img src="star.svg"/>
+                        <Star />
                         <p>{el.vote_average}/10</p>
                     </div>
                     <p>{el.title}</p>
