@@ -11,41 +11,47 @@ import MovieDetails from "@/components/MovieDetails";
 export default function movieDetalles() {
   const { movieID } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [genreId, setId] = useState("")
-  
+  const [actorsDetails, setActorsDetails] = useState(null);
+  const [trailer, setTrailer] = useState(null)
 
   useEffect(() => {
     if (movieID) {
       const fetchMovieDetails = async () => {
         const options = {
-            method: 'GET',
-            headers: {
-              accept: 'application/json',
-              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ'
-            }
-          };
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
+          },
+        };
 
         const response = await fetch(
           `https://api.themoviedb.org/3/movie/${movieID}?language=en-US`,
           options
         );
+        const response2 = await fetch(
+          `https://api.themoviedb.org/3/movie/${movieID}/credits?language=en-US`,
+          options
+        );
+        const video =await fetch(`https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`, options)
         const data = await response.json();
+        const dataActors = await response2.json();
+        const resultVideo = await video.json()
         setMovieDetails(data);
+        setActorsDetails(dataActors);
+        setTrailer(resultVideo)
       };
 
-
-
       fetchMovieDetails();
-    
     }
   }, [movieID]);
 
   return (
-    <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
-    <Header setId={setId}/>
-    <MovieDetails movieDetails={movieDetails} />
-    <Footer />
-   
-   </div>
+    <div className="flex text-white items-center flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
+      <Header />
+      <MovieDetails movieDetails={movieDetails} actorsDetails={actorsDetails} trailer={trailer}/>
+      <Footer />
+    </div>
   );
 }

@@ -1,28 +1,22 @@
-"use client"
-
+'use client'
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useParams } from "next/navigation";
 import Header from "@/components/Header";
-import { log } from "console";
-import Upcoming from "@/components/Upcoming";
-import AllLists from "@/components/All-LIsts";
-import Footer from "@/components/Footer";
-import FilterList from "@/components/Filter-List";
 import GenrePage from "@/components/GenrePage";
-import exp from "constants";
+import Footer from "@/components/Footer";
+import { parseAsInteger, useQueryState } from "nuqs";
+export default function Genre() {
+  const {id} = useParams();
+  const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
 
-const Genre= ()=> {
-const [genreId, setId] = useState("")
-
-
-  return (
-   <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
-    <Header setId={setId}/>
-  
-    <GenrePage genreId={genreId} setId={setId}/>
-    <Footer />
-   
-   </div>
-  );
-}
-export default Genre
+    
+      return (
+       <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
+        <Header setGenreID={setGenreID} />
+      
+      <GenrePage genreID={genreID} setGenreID={setGenreID}/>
+        <Footer />
+       
+       </div>
+      );
+    }

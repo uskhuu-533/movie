@@ -7,19 +7,17 @@ import { log } from "console";
 import Upcoming from "@/components/Upcoming";
 import AllLists from "@/components/All-LIsts";
 import Footer from "@/components/Footer";
-import FilterList from "@/components/Filter-List";
-import GenrePage from "@/components/GenrePage";
+import { useQueryState, parseAsInteger } from 'nuqs'
 
 export default function Home() {
-const [genreId, setId] = useState("")
 
+  const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
 
   return (
    <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
-    <Header setId={setId}/>
-    {genreId == "" ? <Upcoming />:null}
-    {genreId == "" ? <AllLists />:null}
-    {genreId !== "" ? <GenrePage genreId={genreId} setId={setId}/>:null}
+    <Header setGenreID={setGenreID}/>
+   <Upcoming />
+ <AllLists />
     <Footer />
    
    </div>

@@ -3,30 +3,30 @@ import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 import { Dispatch, useEffect, useState } from "react"
-import Header from "./Header";
-import Footer from "./Footer";
-import FilterList from "./Filter-List";
 import Right from "./icon/Right";
-import exp from "constants";
+import GenreList from "./Genre-List";
+import { useRouter } from "next/navigation";
+import { parseAsInteger, useQueryState } from "nuqs";
 ;
 type data = {
     id: number,
     name: string,
   
   };
-  type id = {
-    genreId : number,
-    setId : Function
+type Props = {
+  genreID : number,
+  setGenreID : Function
 }
-const GenrePage = ({genreId, setId}:id) => {
+const GenrePage = ({genreID, setGenreID}:Props) => {
+  const router = useRouter();
       const [genre, setGenre] = useState<data[]>([]);
-      
+      // const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
      
       const options: object = {
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization:
+          Authorization: 
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
         },
       };
@@ -47,12 +47,9 @@ const GenrePage = ({genreId, setId}:id) => {
         getGenres();
       });
       const filterMovie =(id:number) => {
-        if(genreId == id ){
-            setId("")
-        }else{
-            setId(id)
-        }
-        console.log(genreId)
+        router.push(`/genres`)
+        setGenreID(id)
+        console.log(genreID)
       } 
     return (
         <div className="w-full flex justify-center pb-10 text-white">
@@ -67,8 +64,8 @@ const GenrePage = ({genreId, setId}:id) => {
                 onClick={()=>filterMovie(el.id)}
                   key={index}
                   className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center"
-                  style={{background:el.id == genreId ? "while" : "none",
-                    color: el.id == genreId ? "black" : "white"
+                  style={{background:el.id == genreID ? "while" : "none",
+                    color: el.id == genreID ? "black" : "white"
                   }}
                 >
                   <p
@@ -82,7 +79,7 @@ const GenrePage = ({genreId, setId}:id) => {
                 </div>
             </div>
             <div className="h-full border border-[#27272A]"></div>
-          <FilterList genreId={genreId}/></div>
+          <GenreList genreID={genreID}/></div>
      
         </div>
        );
