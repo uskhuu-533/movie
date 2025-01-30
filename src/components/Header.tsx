@@ -6,6 +6,7 @@ import Bottom from "./icon/Bottom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "./icon/Logo";
+import SearchResult from "./SearchResult";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,21 +14,19 @@ type Data = {
   id: number;
   name: string;
 };
-type Props = {
-  setGenreID : Function
-}
 
-const Header = ({setGenreID}:Props) => {
+const Header = () => {
   const router = useRouter();
   const [genre, setGenre] = useState<Data[]>([]);
   const [display, setDisplay] = useState(false);
+  const [searchValue, setSearchValue] = useState("")
  
  
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",`,
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
     },
   };
 
@@ -48,10 +47,18 @@ const Header = ({setGenreID}:Props) => {
   }, []);
 
   const filterMovie = (id: number) => {
-    router.push(`/genres`);
-    setGenreID(id)
+    console.log("ajillaa");
+    
+    router.push(`/genres?genresid=${id}&page=1`);
     setDisplay(false)
   };
+  const handleSearchValue =(e)=>{
+    const value = e.target.value
+    setSearchValue(value)
+    console.log(searchValue);
+    
+  }
+  
 
   return (
     <div className="w-full z-40 h-[60px] flex justify-center items-center fixed bg-[#09090B]">
@@ -67,8 +74,13 @@ const Header = ({setGenreID}:Props) => {
               <Bottom />
               <p>Genre</p>
             </button>
-            <div className="flex">
-              <input className="w-[380px] h-9 bg-[#09090B] border rounded-md border-[#27272A] flex items-center justify-center" />
+            <div className="flex flex-col items-center">
+              <div>
+              <input onChange={(e)=>handleSearchValue(e)} value={searchValue} className="w-[380px] h-9 bg-[#09090B] border rounded-md border-[#27272A] flex items-center justify-center" />
+              </div>
+             {searchValue !== "" ?(<div className="w-[577px] absolute top-10">
+                <SearchResult searchValue={searchValue}/>
+              </div>):null}
             </div>
           </div>
 

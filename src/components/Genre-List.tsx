@@ -1,20 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch } from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 type data = {
   poster_path: string;
   id: number;
+  results :string
 };
 type id = {
   genreID: number;
 };
+type page = {
+  total_pages:number
+
+}
 
 const GenreList = ({ genreID }: id) => {
   const router = useRouter();
   const [movie, setMovie] = useState<data[]>([]);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<page>({});
   const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [isLoading, setIsLoading] = useState(false)
 // console.log(genreId);
@@ -47,7 +52,7 @@ const GenreList = ({ genreID }: id) => {
   };
   const page = data.total_pages;
   const pages = [];
-  const movies = movie.results
+
   for (let i = 1; i <= page; i++) {
     pages.push(i);
   }
@@ -59,7 +64,8 @@ const GenreList = ({ genreID }: id) => {
     getMovie();
   },[currentPage, genreID]);
   const handleChangePage = (page: number) => {
-    setCurrentPage(page);
+    // router.push(`/genres/?genresid${genreID}?page=${page}`)
+    setCurrentPage(page); 
   };
   const handleMovieDetail = (movieID: number) => {
     router.push(`/movies/${movieID}`);
@@ -84,7 +90,7 @@ const GenreList = ({ genreID }: id) => {
         ))}
       </div>
       <div className="flex gap-4">
-        {pages1.map((page, index) => (
+        {pages1.map((page) => (
           <button
             key={page}
             className="text-white"

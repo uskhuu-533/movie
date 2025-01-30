@@ -1,32 +1,41 @@
-'use client'
-
+"use client";
 
 import { AppIsrManifestAction } from "next/dist/server/dev/hot-reloader-types";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-type detail = {
-    movieDetails:object
+type data = {
+  id: number;
+  name: string;
+};
+type movie = {
+  genre: string;
+};
 
-  }
-  type data = {
-    id: number;
-    name: string;
-  };
-  type movie ={
-    genre: string
-  
-  }
-
-const MovieDetails = ({ movieDetails, actorsDetails, trailer }: detail) => {
+const MovieDetails = ({
+  movieDetails,
+  actorsDetails,
+  trailer,
+  similaMovies,
+}: detail) => {
   console.log(movieDetails);
-  console.log(actorsDetails);
+  console.log(similaMovies);
 
-  if (movieDetails && actorsDetails&& trailer) {
- 
-    const [display, setDisplay] = useState("none")
-    const genres = movieDetails.genres;
-    const director = actorsDetails.crew[0].name;
-    const video = trailer.results[0].key
+  if (movieDetails && actorsDetails && trailer && similaMovies) {
+    const router = useRouter();
+
+    const [display, setDisplay] = useState("none");
+    const genres = movieDetails?.genres;
+    const director = actorsDetails?.crew[0].name;
+    const video = trailer?.results[0]?.key;
+    similaMovies.length = 5
+    const handleMovieClick = (movieID: number) => {
+      router.push(`/movies/${movieID}`);
+    };
+    const handleSimilarClick = () => {
+      const category = movieDetails.id
+      router.push(`/category/${category}/similar?page=1`);
+    };
     return (
       <div className="w-[1080px] flex gap-6 relative items-center justify-center flex-col mt-[200px]">
         <div className="w-full h-[72px] flex justify-between">
@@ -61,7 +70,10 @@ const MovieDetails = ({ movieDetails, actorsDetails, trailer }: detail) => {
               src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`}
             />
             <div className="absolute flex items-center gap-4 bottom-8 left-6">
-              <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center relative overflow-hidden " onClick={()=>(setDisplay("block"))}>
+              <div
+                className="w-9 h-9 bg-white rounded-full flex items-center justify-center relative overflow-hidden "
+                onClick={() => setDisplay("block")}
+              >
                 <div className="bg-black w-3 h-5 "></div>
                 <div className="bg-white w-4 h-10 rotate-45 top-4 absolute"></div>
                 <div className="bg-white w-4 h-10 -rotate-45 bottom-4 absolute"></div>
@@ -95,16 +107,43 @@ const MovieDetails = ({ movieDetails, actorsDetails, trailer }: detail) => {
             {}
           </div>
         </div>
-      <div className="w-[512px] h-[280px] absolute" style={{display:display == "block" ? "block" : "none"}}>
-      <div className="w-full h-full relative "  >
-       <button onClick={()=>(setDisplay("none"))} className="w-5 h-5 absolute z-10 right-3 top-3">
-        x
-       </button>
-       <iframe className="w-full h-full absolute" title="trailer" src={`https://www.youtube.com//embed/${video}`}  allowFullScreen > </iframe>
+        <div
+          className="w-[512px] h-[280px] absolute"
+          style={{ display: display == "block" ? "block" : "none" }}
+        >
+          <div className="w-full h-full relative ">
+            <button
+              onClick={() => setDisplay("none")}
+              className="w-5 h-5 absolute z-10 right-3 top-3"
+            >
+              x
+            </button>
+            <iframe
+              className="w-full h-full absolute"
+              title="trailer"
+              src={`https://www.youtube.com//embed/${video}`}
+              allowFullScreen
+            >
+              {" "}
+            </iframe>
+          </div>
         </div>
-        {/* <iframe className="w-full h-full absolute" title="trailer" src={`https://www.youtube.com//embed/${video}`}  allowFullScreen > </iframe> */}
-       
-       
+        <div className="w-full">
+          <div className="flex w-full justify-between">
+            <div className="">More like this</div>
+            <button onClick={handleSimilarClick}>see more</button>
+          </div>
+          <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
+            {similaMovies.map((movie, index) => (
+              <div key={index} className="rounded-lg overflow-hidden" onClick={()=>handleMovieClick(movie.id)}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  className="w-full h-[77%] hover:bg-primary/30"
+                />
+                <div className="w-full h-[33%] p-2 bg-[#27272A]"></div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

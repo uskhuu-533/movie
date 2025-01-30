@@ -7,6 +7,7 @@ import Right from "./icon/Right";
 import GenreList from "./Genre-List";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
+
 ;
 type data = {
     id: number,
@@ -15,13 +16,15 @@ type data = {
   };
 type Props = {
   genreID : number,
-  setGenreID : Function
+ 
+
 }
-const GenrePage = ({genreID, setGenreID}:Props) => {
+const GenrePage = ({genreID}:Props) => {
   const router = useRouter();
-      const [genre, setGenre] = useState<data[]>([]);
+      const [genres, setGenre] = useState<data[]>([]);
+      const [idLoading, setIsloading] = useState(false)
       // const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
-     
+  
       const options: object = {
         method: "GET",
         headers: {
@@ -32,12 +35,14 @@ const GenrePage = ({genreID, setGenreID}:Props) => {
       };
       const getGenres = async () => {
         try {
+          setIsloading(true)
           const response = await fetch(
             "https://api.themoviedb.org/3/genre/movie/list?language=en",
             options
           );
           const result = await response.json();
           setGenre(result.genres);
+          setIsloading(false)
         } catch (error) {
           console.log(error);
         }
@@ -45,11 +50,10 @@ const GenrePage = ({genreID, setGenreID}:Props) => {
     
       useEffect(() => {
         getGenres();
-      });
+      },[]);
       const filterMovie =(id:number) => {
-        router.push(`/genres`)
-        setGenreID(id)
-        console.log(genreID)
+        router.push(`/genres?genresid=${id}&page=1`)
+    
       } 
     return (
         <div className="w-full flex justify-center pb-10 text-white">
@@ -58,8 +62,8 @@ const GenrePage = ({genreID, setGenreID}:Props) => {
                 <div>Search Filter</div>
                 <h2>Genres</h2>
                 <p>See lists of movies by genre</p>
-                <div className="flex flex-wrap gap-4 w-full">
-                {genre.map((el: data, index) => (
+                {idLoading == false && (<div className="flex flex-wrap gap-4 w-full">
+                {genres.map((el: data, index) => (
                 <div
                 onClick={()=>filterMovie(el.id)}
                   key={index}
@@ -76,7 +80,7 @@ const GenrePage = ({genreID, setGenreID}:Props) => {
                   <Right />
                 </div>
               ))}
-                </div>
+                </div>)}
             </div>
             <div className="h-full border border-[#27272A]"></div>
           <GenreList genreID={genreID}/></div>

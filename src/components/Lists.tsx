@@ -41,11 +41,11 @@ const Lists = ({ title }: { title: string }) => {
       const result = await response.json();
       const topRatedResult = await topRated.json();
       setMovies(result.results);
-      if (title === "Upcoming") {
+      if (title === "upcoming") {
         setMovies(result.results);
       } else if (title == "Top Rated") {
         setMovies(topRatedResult.results);
-      } else if (title === "Popular") {
+      } else if (title === "popular") {
         setMovies(popularResult.results);
       } else {
         setMovies([]);
@@ -62,13 +62,19 @@ const Lists = ({ title }: { title: string }) => {
   const handleMovieClick = (movieID: number) => {
     router.push(`/movies/${movieID}`);
   };
+  const handleCategoryClick = ()=> {
+    const category = title.toLowerCase().replace(" ","_")
+ 
+    router.push(`/category/${category}?page=1`);
+
+  }
   return (
     <div className="flex flex-col gap-8 ">
       <div className="w-full justify-between flex h-9">
         <p className="text-foreground text-2xl text-white font-semibold">
           {title}
         </p>
-        <p>see more</p>
+        <button onClick={handleCategoryClick}>see more</button>
       </div>
       <div className="w-full h-[912px] grid grid-flow-col grid-rows-2 gap-8">
         {movies.map((el: data, index) => (

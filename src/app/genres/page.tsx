@@ -6,15 +6,14 @@ import GenrePage from "@/components/GenrePage";
 import Footer from "@/components/Footer";
 import { parseAsInteger, useQueryState } from "nuqs";
 export default function Genre() {
-  const {id} = useParams();
-  const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
+  const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger.withDefault(28))
 
     
       return (
        <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
-        <Header setGenreID={setGenreID} />
+        <Header />
       
-      <GenrePage genreID={genreID} setGenreID={setGenreID}/>
+      <GenrePage genreID={genreID}/>
         <Footer />
        
        </div>
