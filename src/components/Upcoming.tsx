@@ -3,8 +3,10 @@ type elements = {
   options: object;
   movies: string[];
   poster_path: string;
+
 };
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   Carousel,
@@ -13,14 +15,17 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getMovieNowPlaying } from "@/utils/requests";
 type data = {
   backdrop_path: string;
   title : string,
   overview : string,
-  vote_average : number
+  vote_average : number,
+  id:number
 };
 const Upcoming = () => {
   const [movies, setMovies] = useState<data[]>([]);
+  const router = useRouter()
 
   const options = {
     method: "GET",
@@ -47,13 +52,18 @@ const Upcoming = () => {
 
   // console.log(movies);
   useEffect(() => {
+    // const result = await getMovieNowPlaying()
+    // setMovies()
     getMovie();
   }, []);
+  const handleMovieClick = (movieID: number) => {
+    router.push(`/movies/${movieID}`);
+  };
   return (
     <Carousel className="w-screen relative  w-max-screen h-[800px]">
       <CarouselContent>
         {movies.map((el: data, index) => (
-          <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
+          <CarouselItem key={index} onClick={()=>handleMovieClick(el.id)} className="md:basis-1/1 lg:basis-1/1">
             <div className="w-full w-max-screem relative flex items-center overflow-hidden h-[800px] ">
               <div className="absolute z-20 text-white">
                 <div>

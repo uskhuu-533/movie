@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { handleClientScriptLoad } from "next/script";
+import { useQueryState } from "nuqs";
 type props ={
     searchValue : string
 }
 type data = {
     title : string,
     release_date : string,
-    vote_average : number
+    vote_average : number,
+    id : number,
+    poster_path : string
 }
 const SearchResult = ({searchValue}:props) => {
     const router = useRouter()
     const [searchResult, setSearchResult] = useState<data[]>([])
+    const [value, setValue] = useQueryState("value")
       const options = {
         method: "GET",
         headers: {
@@ -36,6 +41,9 @@ const SearchResult = ({searchValue}:props) => {
       const handleMovieClick = (movieID: number) => {
         router.push(`/movies/${movieID}`);
       };
+      const handleJumpResults =()=> {
+        router.push(`/search/?value=${searchValue}&page=1`)
+      }
     return(
         <div className="w-full  border border-[#27272A] bg-[#09090B] top-10 p-4 rounded-lg flex-col">
            <div className="w-full h-[90%] flex flex-col gap-2 p-4">
@@ -61,7 +69,7 @@ const SearchResult = ({searchValue}:props) => {
             ))}
             </div>
             <div className="w-full h-1/10 px-4">
-            <div>
+            <div onClick={handleJumpResults}>
                 See all results for "{searchValue}"
             </div>
             </div>

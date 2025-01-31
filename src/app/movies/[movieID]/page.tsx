@@ -16,6 +16,7 @@ export default function movieDetalles() {
   const [trailer, setTrailer] = useState(null);
   const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
   const [similaMovies, setSimilaMovies] = useState(null)
+  
 
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function movieDetalles() {
             Authorization:
               "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
           },
+          
         };
 
         const response = await fetch(

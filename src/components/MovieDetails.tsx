@@ -11,6 +11,13 @@ type data = {
 type movie = {
   genre: string;
 };
+type detail = {
+  similaMovies : Array<movies>
+}
+type movies ={
+  poster_path : string,
+  id : number
+}
 
 const MovieDetails = ({
   movieDetails,
@@ -26,7 +33,7 @@ const MovieDetails = ({
 
     const [display, setDisplay] = useState("none");
     const genres = movieDetails?.genres;
-    const director = actorsDetails?.crew[0].name;
+    const director = actorsDetails?.crew[0]?.name;
     const video = trailer?.results[0]?.key;
     similaMovies.length = 5
     const handleMovieClick = (movieID: number) => {
@@ -134,7 +141,7 @@ const MovieDetails = ({
             <button onClick={handleSimilarClick}>see more</button>
           </div>
           <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
-            {similaMovies.map((movie, index) => (
+            {similaMovies.map((movie:movies, index) => (
               <div key={index} className="rounded-lg overflow-hidden" onClick={()=>handleMovieClick(movie.id)}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}

@@ -11,7 +11,8 @@ import { useQueryState, parseAsInteger } from 'nuqs'
 
 export default function Home() {
 
-  const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
+  const [genreID , setGenreID] = useQueryState("genresid")
+  
 
   return (
    <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">

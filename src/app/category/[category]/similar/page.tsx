@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import { useQueryState, parseAsInteger } from 'nuqs'
 import { useParams } from "next/navigation";
 import CategorySimilar from "@/components/Similar&Categoty";
+
 type data = {
     id:number,
     poster_path :string,

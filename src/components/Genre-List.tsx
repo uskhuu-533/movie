@@ -22,7 +22,6 @@ const GenreList = ({ genreID }: id) => {
   const [data, setData] = useState<page>({});
   const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [isLoading, setIsLoading] = useState(false)
-// console.log(genreId);
 
   const options: object = {
     method: "GET",
@@ -38,8 +37,8 @@ const GenreList = ({ genreID }: id) => {
     try {
     setIsLoading(true)
       const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID}&page=${currentPage}`,
-        options
+        `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID}%2C16&page=${currentPage}`,
+        options,
       );
       const result = await response.json();
      
@@ -73,7 +72,7 @@ const GenreList = ({ genreID }: id) => {
   // console.log(movie)
   return (<>
     {isLoading == false ?(<div className="w-[69%]">
-      <div> titles</div>
+      <div> titles : {data.total_results} </div>
       <div className="grid grid-flow-col grid-rows-5 gap-10">
         {movie.map((el: data, index) => (
           <div
