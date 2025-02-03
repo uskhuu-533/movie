@@ -3,31 +3,46 @@
 import { useState, useEffect, Dispatch } from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
-type data = {
+import { clear } from "node:console";
+import Pagination from "./Pagination";
+import Star from "./icon/Star";
+
+type Props = {
+  searchValue: string;
+};
+type ApiResponse = {
+  total_pages: number;
+  results: Movie[];
+  total_results: number;
+};
+type Movie = {
   poster_path: string;
   id: number;
   results: string;
-  genre_ids: Array<a1>;
+  genre_ids: Array<Genres>;
+  vote_average : number;
+  title : string
 };
-type id = {
-  searchValue: string;
-};
-type page = {
-  total_pages: number;
-};
+type Genres = {}
 
-
-const SearchMovies = ({ searchValue }: id) => {
+const SearchMovies = ({ searchValue }: Props) => {
   const router = useRouter();
-  const [movie, setMovie] = useState<data[]>([]);
-  const [data, setData] = useState<page>({});
+  const [data, setData] = useState<ApiResponse>({
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  });
   const [currentPage, setCurrentPage] = useQueryState(
     "page",
     parseAsInteger.withDefault(1)
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [genreID, setGenreID] = useQueryState("genresid", parseAsInteger);
-  console.log(genreID);
+  const [genreID, setGenreID] = useQueryState<number[]>("genresid", {
+    defaultValue: [],
+    parse: (value) => value.split(",").map(Number),
+    serialize: (array) => array.join(","),
+  });
+  // console.log(genreID);
 
   const options: object = {
     method: "GET",
@@ -45,18 +60,19 @@ const SearchMovies = ({ searchValue }: id) => {
         options
       );
       const result = await response.json();
-      const movies = result.results;
-      setMovie(movies);
+
       setData(result);
 
-      setIsLoading(false);
+      
     } catch (error) {
       console.log(error);
+    }finally {
+      setIsLoading(false);
     }
   };
   const page = data.total_pages;
   const pages = [];
-
+  const movie = data.results;
   for (let i = 1; i <= page; i++) {
     pages.push(i);
   }
@@ -67,13 +83,14 @@ const SearchMovies = ({ searchValue }: id) => {
 
   useEffect(() => {
     getMovie();
-  }, [currentPage, searchValue, genreID]);
+  }, [currentPage, searchValue]);
   const handleChangePage = (page: number) => {
     // router.push(`/genres/?genresid${genreID}?page=${page}`)
     setCurrentPage(page);
   };
   const handleMovieDetail = (movieID: number) => {
     router.push(`/movies/${movieID}`);
+  
   };
   // console.log(movie)
   return (
@@ -83,42 +100,43 @@ const SearchMovies = ({ searchValue }: id) => {
           <div> titles</div>
           <div className="flex flex-wrap gap-10">
             {movie
-              .filter((el:data) => {
-                if(genreID){
-                  return el.genre_ids.some((id)=>id==genreID)
-               }else{
-                  return movie
+              .filter((el: Movie) => {
+                if (genreID.length > 0 ) {
+                  return el.genre_ids.some((id) => id == genreID);
+                } else {
+                  return el;
                 }
               })
-              .map((el: data, index) => (
+              .map((el: Movie, index) => (
                 <div
                   key={index}
-                  className="h-[344px] w-[175px] overflow-hidden rounded-lg"
+                  className="h-[344px] w-[175px] overflow-hidden relative rounded-lg"
                   onClick={() => handleMovieDetail(el.id)}
                 >
+                     <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
                   <img
                     className="h-[70%] w-full"
                     src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
                   />
-                  <div className="h-[30%] bg-[#27272A] w-full"></div>
+                    <div className="h-[30%] bg-[#27272A] w-full p-4">
+                  <div>
+                    <div className="flex gap-2">
+                      <Star width="18px" height="20px" />
+                      <div className="flex items-center">
+                        {" "}
+                        <p className="font-semibold">{el.vote_average}</p>
+                        <p className="text-gray-400 text-sm">/10</p>
+                      </div>
+                    </div>
+                    <p className="text-xl font-semibold line-clamp-2">
+                      {el.title}
+                    </p>
+                  </div>
+                </div>
                 </div>
               ))}
           </div>
-          <div className="flex gap-4">
-            {pages1.map((page) => (
-              <button
-                key={page}
-                className="text-white"
-                onClick={() => handleChangePage(page)}
-              >
-                {page}
-              </button>
-            ))}
-            <p>...</p>
-            <button onClick={() => setCurrentPage(currentPage + 1)}>
-              Next
-            </button>
-          </div>
+          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
         </div>
       ) : null}
     </>

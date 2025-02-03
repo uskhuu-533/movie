@@ -1,31 +1,23 @@
-const Star = () => {
+type Props = {
+  width :string,
+  height : string
+}
+const Star = ({width, height}:Props) => {
   return (
     <svg
-      width="17"
-      height="16"
-      viewBox="0 0 17 16"
-      fill="black"
+      width={width}
+      height={height}
+      viewBox="0 0 16 18"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* <g clip-path="url(#clip0_58_12653)">
-        <path
-          d="M8.91911 1.3335L10.9791 5.50683L15.5858 6.18016L12.2524 9.42683L13.0391 14.0135L8.91911 11.8468L4.79911 14.0135L5.58577 9.42683L2.25244 6.18016L6.85911 5.50683L8.91911 1.3335Z"
-          fill="yellow"
-          stroke="yellow"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g> */}
-      <defs>
-        <clipPath id="clip0_58_12653">
-          <rect
-            width="16"
-            height="16"
-            fill="black"
-            transform="translate(0.918945)"
-          />
-        </clipPath>
-      </defs>
+      <path
+        d="M7.99967 3.3335L10.0597 7.50683L14.6663 8.18016L11.333 11.4268L12.1197 16.0135L7.99967 13.8468L3.87967 16.0135L4.66634 11.4268L1.33301 8.18016L5.93967 7.50683L7.99967 3.3335Z"
+        fill="#FDE047"
+        stroke="#FDE047"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 };

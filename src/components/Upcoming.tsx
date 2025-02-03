@@ -3,11 +3,10 @@ type elements = {
   options: object;
   movies: string[];
   poster_path: string;
-
 };
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { Inter } from "next/font/google";
 import {
   Carousel,
   CarouselContent,
@@ -15,86 +14,119 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getMovieNowPlaying } from "@/utils/requests";
+import { getMovieNowPlaying, getTailer } from "@/utils/requests";
+import Star from "./icon/Star";
 type data = {
   backdrop_path: string;
-  title : string,
-  overview : string,
-  vote_average : number,
-  id:number
+  title: string;
+  overview: string;
+  vote_average: number;
+  id: number;
 };
+const inter = Inter({ subsets: ["latin"] });
 const Upcoming = () => {
+  const [display, setDisplay] = useState(false);
   const [movies, setMovies] = useState<data[]>([]);
-  const router = useRouter()
+  const router = useRouter();
+  const [video, setVideo] = useState("");
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
-    },
-  };
-
-  const getMovie = async () => {
-    try {
-      const response = await fetch(
-        "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
-        options
-      );
-      const result = await response.json();
-
-      setMovies(result.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // console.log(movies);
   useEffect(() => {
-    // const result = await getMovieNowPlaying()
-    // setMovies()
-    getMovie();
+    const fetchNowPlayingMovies = async () => {
+      try {
+        const data = await getMovieNowPlaying();
+        setMovies(data.results);
+      } catch (error) {
+        console.error("Failed to fetch now-playing movies:", error);
+      }
+    };
+
+    fetchNowPlayingMovies();
   }, []);
   const handleMovieClick = (movieID: number) => {
     router.push(`/movies/${movieID}`);
   };
-  return (
-    <Carousel className="w-screen relative  w-max-screen h-[800px]">
-      <CarouselContent>
-        {movies.map((el: data, index) => (
-          <CarouselItem key={index} onClick={()=>handleMovieClick(el.id)} className="md:basis-1/1 lg:basis-1/1">
-            <div className="w-full w-max-screem relative flex items-center overflow-hidden h-[800px] ">
-              <div className="absolute z-20 text-white">
-                <div>
-                  <p>Now playing</p>
-                  <p>{el.title}</p>
-                  <p>{el.vote_average}/10</p>
-                </div>
-                <div className="w-[300px] text-wrap ">{el.overview}</div>
-              </div>
-              <img
-                src={`https://image.tmdb.org/t/p/original/${el.backdrop_path}`}
-                className="absolute z-10 w-full h-auto"
-              />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
 
-      <CarouselPrevious className="absolute left-[5%]" />
-      <CarouselNext className="absolute right-[5%]" />
-    </Carousel>
+  const fetchTrailer = async (movieID: number) => {
+    try {
+      const trailer = await getTailer(movieID);
+      setVideo(trailer);
+    } catch (error) {
+      console.error();
+    } finally {
+      setDisplay(true);
+    }
+  };
+
+  return (
+    <>
+      {display == true && (
+        <div
+          onClick={() => setDisplay(false)}
+          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center absolute"
+        >
+          <div className="w-[512px] h-[280px] z-20 top-[30%]">
+            <div className="w-full h-full relative ">
+              <button
+                onClick={() => setDisplay(false)}
+                className="w-5 h-5 absolute z-30 right-3 top-3"
+              >
+                x
+              </button>
+              <iframe
+                className="w-full h-full absolute"
+                title="trailer"
+                src={`https://www.youtube.com//embed/${video}`}
+                allowFullScreen
+              >
+                {" "}
+              </iframe>
+            </div>
+          </div>
+        </div>
+      )}
+      <Carousel className="w-screen relative mt-[60px]  w-max-screen h-[600px]">
+        <CarouselContent>
+          {movies.map((el: data, index) => (
+            <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
+              <div className="w-full w-max-screem relative flex items-center overflow-hidden h-[600px] ">
+                <div className="absolute z-10 text-white  space-y-4 left-[10%]">
+                  <div className={`${inter.className} `}>
+                    <p className={` text-[16px]`}>Now playing:</p>
+                    <p className="w-52 text-2xl font-semibold truncate">
+                      {el.title}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <Star height="32px" width={"30px"} />
+                      <div className="flex items-center">
+                        <p className="font-semibold">{el.vote_average}</p>
+                        <p className="text-gray-400 text-sm">/10</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-[302px] text-md font-[500] line-clamp-5 ">
+                    {el.overview}
+                  </div>
+                  <button
+                    onClick={() => fetchTrailer(el.id)}
+                    className="bg-black/90 absolute rounded-md px-5 py-2 z-40 "
+                  >
+                    Watch trailer
+                  </button>
+                </div>
+                <img
+                  onClick={() => handleMovieClick(el.id)}
+                  src={`https://image.tmdb.org/t/p/original/${el.backdrop_path}`}
+                  className="absolute  w-full h-auto"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+
+        <CarouselPrevious className="absolute left-[5%]" />
+        <CarouselNext className="absolute right-[5%]" />
+      </Carousel>
+    </>
   );
 };
 export default Upcoming;
-
-{
-  /* <div className="h-[600px] flex gap-1 flex-grow  size-fit relative">
-{movies.map((el, index)=>(
-    <div key={index} className="w-screen relative h-[600px] ease-in-out duration-100" data-carousel-item> 
-    <img  src={`https://image.tmdb.org/t/p/w500/${el.backdrop_path}`} className="absolute z-10 w-full h-[600px] "/>
-    </div>
-))}
-</div> */
-}

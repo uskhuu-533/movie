@@ -2,11 +2,9 @@
 // "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Star from "./icon/Star";
-import { useParams } from "next/navigation";
-import { parseAsInteger, useQueryState } from "nuqs";
+import Pagination from "./Pagination";
 
 type data = {
   id: number;
@@ -15,7 +13,7 @@ type data = {
   title: string;
 };
 type Props = {
-  movies: data1;
+  data: data1;
   category: string;
 };
 type data1 = {
@@ -24,32 +22,20 @@ type data1 = {
 };
 
 const CategorySimilar = ({
-  movies,
+  data,
   category,
   setCurrentPage,
   currentPage,
 }: Props) => {
-  if (movies) {
-    console.log(movies);
+  if (data) {
+    console.log(data);
 
     const router = useRouter();
     const handleMovieClick = (movieID: number) => {
       router.push(`/movies/${movieID}`);
     };
-    const page = movies.total_pages;
-    const pages = [];
 
-    for (let i = 1; i <= page; i++) {
-      pages.push(i);
-    }
-    const pages1 = pages.slice(
-      currentPage >= 3 ? currentPage - 3 : currentPage - 1,
-      currentPage + 4
-    );
-    const handleChangePage = (page: number) => {
-      // router.push(`/genres/?genresid${genreID}?page=${page}`)
-      setCurrentPage(page);
-    };
+
     return (
       <div className="w-screen flex justify-center">
         <div className="w-[1080px] py-[100px] flex flex-col items-center justify-center gap-8 ">
@@ -59,20 +45,21 @@ const CategorySimilar = ({
             </p>
           </div>
           <div className="w-full grid grid-flow-col grid-rows-4 gap-8">
-            {movies.results.map((el: data, index) => (
+            {data.results.map((el: data, index) => (
               <div
                 key={index}
-                className="rounded-lg overflow-hidden "
+                className="rounded-lg relative overflow-hidden "
                 onClick={() => handleMovieClick(el.id)}
               >
+                   <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
                   className="w-full h-[77%] hover:bg-primary/30"
                 />
-                <div className="w-full h-[33%] p-2 bg-[#27272A]">
+                <div className="w-full h-[33%] font-semibold text-xl p-2 bg-[#27272A] line-clamp-2">
                   <div>
                     <div className="flex">
-                      <Star />
+                      <Star width="18px" height="20px"/>
                       <p>{el.vote_average}/10</p>
                     </div>
                     <p>{el.title}</p>
@@ -81,21 +68,7 @@ const CategorySimilar = ({
               </div>
             ))}
           </div>
-          <div className="flex gap-4">
-            {pages1.map((page) => (
-              <button
-                key={page}
-                className="text-white"
-                onClick={() => handleChangePage(page)}
-              >
-                {page}
-              </button>
-            ))}
-            <p>...</p>
-            <button onClick={() => setCurrentPage(currentPage + 1)}>
-              Next
-            </button>
-          </div>
+          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
         </div>
       </div>
     );

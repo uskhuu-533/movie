@@ -3,105 +3,109 @@
 import { useState, useEffect, Dispatch } from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
-type data = {
-  poster_path: string;
-  id: number;
-  results :string
-};
-type id = {
-  genreID: number;
+import { getMovieGenres } from "@/utils/requests";
+import Star from "./icon/Star";
+import Pagination from "./Pagination";
+
+type Props = {
+  genreID: number[];
 };
 type page = {
-  total_pages:number
+  total_pages: number;
+};
+type ApiResponse = {
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+};
+type Movie = {
+  poster_path: string;
+  id: number;
+  results: string;
+  title: string;
+  vote_average: number;
+};
 
-}
-
-const GenreList = ({ genreID }: id) => {
+const GenreList = ({ genreID }: Props) => {
   const router = useRouter();
-  const [movie, setMovie] = useState<data[]>([]);
-  const [data, setData] = useState<page>({});
-  const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [isLoading, setIsLoading] = useState(false)
-
-  const options: object = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
-    },
-  };
-  const getMovie = async () => {
-    console.log(genreID);
-    
-    try {
-    setIsLoading(true)
-      const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID}%2C16&page=${currentPage}`,
-        options,
-      );
-      const result = await response.json();
-     
-      setMovie(result.results);
-      setData(result);
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const page = data.total_pages;
-  const pages = [];
-
-  for (let i = 1; i <= page; i++) {
-    pages.push(i);
-  }
-  const pages1 = pages.slice(
-    currentPage >= 3 ? currentPage - 3 : currentPage - 1,
-    currentPage + 4
+  const [data, setData] = useState<ApiResponse>({
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  });
+  const [currentPage, setCurrentPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1)
   );
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    getMovie();
-  },[currentPage, genreID]);
-  const handleChangePage = (page: number) => {
-    // router.push(`/genres/?genresid${genreID}?page=${page}`)
-    setCurrentPage(page); 
-  };
+    const fetchgetMovie = async () => {
+      try {
+        setIsLoading(true);
+        const APIdata = await getMovieGenres(genreID, currentPage);
+        setData(APIdata);
+      } catch (error) {
+        console.error();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchgetMovie();
+  }, [currentPage, genreID]);
+
+  const movie = data.results;
+
   const handleMovieDetail = (movieID: number) => {
     router.push(`/movies/${movieID}`);
   };
-  // console.log(movie)
-  return (<>
-    {isLoading == false ?(<div className="w-[69%]">
-      <div> titles : {data.total_results} </div>
-      <div className="grid grid-flow-col grid-rows-5 gap-10">
-        {movie.map((el: data, index) => (
-          <div
-            key={index}
-            className="h-[344px] overflow-hidden rounded-lg"
-            onClick={() => handleMovieDetail(el.id)}
-          >
-            <img
-              className="h-[70%] w-full"
-              src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
-            />
-            <div className="h-[30%] bg-[#27272A] w-full"></div>
+
+  return (
+    <>
+      {isLoading == false ? (
+        <div className="w-[69%]">
+          <div className="text-xl font-semibold py-5">
+            {" "}
+            titles : {data.total_results}{" "}
           </div>
-        ))}
-      </div>
-      <div className="flex gap-4">
-        {pages1.map((page) => (
-          <button
-            key={page}
-            className="text-white"
-            onClick={() => handleChangePage(page)}
-          >
-            {page}
-          </button>
-        ))}
-        <p>...</p>
-        <button onClick={()=>(setCurrentPage(currentPage+1))}>Next</button>
-      </div>
-    </div>):null}
+          <div className="grid grid-flow-col grid-rows-5 gap-10">
+            {movie.map((el: Movie, index) => (
+              <div
+                key={index}
+                className="overflow-hidden relative bg-secondary rounded-lg group/item"
+                onClick={() => handleMovieDetail(el.id)}
+              >
+                <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+                <img
+                  className="h-[70%] w-full  "
+                  src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
+                />
+                <div className="h-[30%] bg-[#27272A] w-full p-4">
+                  <div>
+                    <div className="flex gap-2">
+                      <Star width="18px" height="20px" />
+                      <div className="flex items-center">
+                        {" "}
+                        <p className="font-semibold">{el.vote_average}</p>
+                        <p className="text-gray-400 text-sm">/10</p>
+                      </div>
+                    </div>
+                    <p className="text-xl font-semibold line-clamp-2">
+                      {el.title}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            data={data}
+          />
+        </div>
+      ) : null}
     </>
   );
 };

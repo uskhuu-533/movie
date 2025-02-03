@@ -3,28 +3,61 @@
 import { AppIsrManifestAction } from "next/dist/server/dev/hot-reloader-types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import SearchIcon from "./icon/Search-Icon";
+import SeeMore from "./icon/SeeMore";
+// import { Star } from "lucide-react";
+import Star from "./icon/Star";
 
-type data = {
+type Genre = {
   id: number;
   name: string;
 };
-type movie = {
-  genre: string;
-};
-type detail = {
-  similaMovies : Array<movies>
-}
-type movies ={
-  poster_path : string,
-  id : number
-}
 
+type Movie = {
+  id: number;
+  title: string;
+  release_date: string;
+  origin_country: string[];
+  vote_average: number;
+  vote_count: number;
+  poster_path: string;
+  backdrop_path: string;
+  overview: string;
+  genres: Genre[];
+};
+
+type Actor = {
+  name: string;
+};
+
+type CrewMember = {
+  name: string;
+  job: string;
+};
+
+type Trailer = {
+  key: string;
+};
+
+type ApiResponse = {
+  results: Trailer[];
+};
+
+type Props = {
+  movieDetails: Movie;
+  actorsDetails: {
+    crew: CrewMember[];
+    cast: Actor[];
+  };
+  trailer: ApiResponse;
+  similaMovies: Movie[];
+};
 const MovieDetails = ({
   movieDetails,
   actorsDetails,
   trailer,
   similaMovies,
-}: detail) => {
+}: Props) => {
   console.log(movieDetails);
   console.log(similaMovies);
 
@@ -35,124 +68,155 @@ const MovieDetails = ({
     const genres = movieDetails?.genres;
     const director = actorsDetails?.crew[0]?.name;
     const video = trailer?.results[0]?.key;
-    similaMovies.length = 5
+    similaMovies.length = 5;
     const handleMovieClick = (movieID: number) => {
       router.push(`/movies/${movieID}`);
     };
     const handleSimilarClick = () => {
-      const category = movieDetails.id
+      const category = movieDetails.id;
       router.push(`/category/${category}/similar?page=1`);
     };
     return (
-      <div className="w-[1080px] flex gap-6 relative items-center justify-center flex-col mt-[200px]">
-        <div className="w-full h-[72px] flex justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">{movieDetails.title}</h1>
-            <p className="text-lg">
-              {movieDetails.release_date} • {movieDetails.origin_country[0]} •
-              ...
-            </p>
-          </div>
-          <div>
-            <p className="text-sm">Rating</p>
+      <>
+        <div className="w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
+          <div className="w-full h-[72px] flex justify-between">
             <div>
-              <img />
-              <div className="flex">
-                <p>{movieDetails.vote_average}</p>
-                <p>/10</p>
+              <h1 className="text-3xl font-bold">{movieDetails.title}</h1>
+              <p className="text-lg">
+                {movieDetails.release_date} • {movieDetails.origin_country[0]} •
+                ...
+              </p>
+            </div>
+            <div>
+              <p className="text-sm">Rating</p>
+              <div>
+                <img />
+                <div className="flex">
+                  <p>{movieDetails.vote_average}</p>
+                  <p>/10</p>
+                </div>
+                <p>{movieDetails.vote_count}</p>
               </div>
-              <p>{movieDetails.vote_count}</p>
             </div>
           </div>
-        </div>
-        <div className="flex justify-between h-[428px] w-full">
-          <div className="w-[28%] h-full overflow-hidden rounded-sm">
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-            />
+          <div className="flex justify-between h-[428px] w-full">
+            <div className="w-[28%] h-full overflow-hidden rounded-sm">
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+              />
+            </div>
+            <div className="w-[70%] h-full relative rounded-sm overflow-hidden">
+              <img
+                className="bg-[rgba(0, 0, 0, 0.4)] h-full relative"
+                src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`}
+              />
+              <div className="absolute flex items-center gap-4 bottom-8 left-6">
+                <div
+                  className="w-9 h-9 bg-white rounded-full flex items-center justify-center relative overflow-hidden "
+                  onClick={() => setDisplay("block")}
+                >
+                  <div className="bg-black w-3 h-5 "></div>
+                  <div className="bg-white w-4 h-10 rotate-45 top-4 absolute"></div>
+                  <div className="bg-white w-4 h-10 -rotate-45 bottom-4 absolute"></div>
+                </div>
+                <p className="text-lg font-semibold">Play trailer</p>
+              </div>
+            </div>
           </div>
-          <div className="w-[70%] h-full relative rounded-sm overflow-hidden">
-            <img
-              className="bg-[rgba(0, 0, 0, 0.4)] h-full relative"
-              src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`}
-            />
-            <div className="absolute flex items-center gap-4 bottom-8 left-6">
+          <div className="flex">
+            {genres.map((genre: Genre) => (
               <div
-                className="w-9 h-9 bg-white rounded-full flex items-center justify-center relative overflow-hidden "
-                onClick={() => setDisplay("block")}
+                className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
+                key={genre.id}
               >
-                <div className="bg-black w-3 h-5 "></div>
-                <div className="bg-white w-4 h-10 rotate-45 top-4 absolute"></div>
-                <div className="bg-white w-4 h-10 -rotate-45 bottom-4 absolute"></div>
-              </div>
-              <p className="text-lg font-semibold">Play trailer</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex">
-          {genres.map((genre: data) => (
-            <div
-              className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
-              key={genre.id}
-            >
-              {genre.name}
-            </div>
-          ))}
-        </div>
-        <div>{movieDetails.overview}</div>
-        <div className="w-full flex flex-col gap-2">
-          <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-            <p className="font-bold">Director:</p>
-            <p className="">{director}</p>
-          </div>
-          <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-            <p className="font-bold">Writters:</p>
-            <p className=""></p>
-          </div>
-          <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-            <p className="font-bold">Stars:</p>
-            {}
-          </div>
-        </div>
-        <div
-          className="w-[512px] h-[280px] absolute"
-          style={{ display: display == "block" ? "block" : "none" }}
-        >
-          <div className="w-full h-full relative ">
-            <button
-              onClick={() => setDisplay("none")}
-              className="w-5 h-5 absolute z-10 right-3 top-3"
-            >
-              x
-            </button>
-            <iframe
-              className="w-full h-full absolute"
-              title="trailer"
-              src={`https://www.youtube.com//embed/${video}`}
-              allowFullScreen
-            >
-              {" "}
-            </iframe>
-          </div>
-        </div>
-        <div className="w-full">
-          <div className="flex w-full justify-between">
-            <div className="">More like this</div>
-            <button onClick={handleSimilarClick}>see more</button>
-          </div>
-          <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
-            {similaMovies.map((movie:movies, index) => (
-              <div key={index} className="rounded-lg overflow-hidden" onClick={()=>handleMovieClick(movie.id)}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                  className="w-full h-[77%] hover:bg-primary/30"
-                />
-                <div className="w-full h-[33%] p-2 bg-[#27272A]"></div>
+                {genre.name}
               </div>
             ))}
           </div>
+          <div className="text-lg">{movieDetails.overview}</div>
+          <div className="w-full flex flex-col text-lg gap-4">
+            <div className="w-full border-b flex gap-5 border-b-[#27272A]">
+              <p className="font-bold">Director:</p>
+              <p className="">{director}</p>
+            </div>
+            <div className="w-full border-b flex gap-5 border-b-[#27272A]">
+              <p className="font-bold">Writters:</p>
+              <p className="">{}</p>
+            </div>
+            <div className="w-full border-b flex gap-5 border-b-[#27272A]">
+              <p className="font-bold">Stars:</p>
+              {actorsDetails.cast.splice(0, 5).map((cast, index) => (
+                <p key={index}>{cast.name}</p>
+              ))}
+            </div>
+          </div>
+          <div
+            className="w-[512px] h-[280px] absolute z-20 top-[30%]"
+            style={{ display: display == "block" ? "block" : "none" }}
+          >
+            <div className="w-full h-full relative ">
+              <button
+                onClick={() => setDisplay("none")}
+                className="w-5 h-5 absolute z-30 right-3 top-3"
+              >
+                x
+              </button>
+              <iframe
+                className="w-full h-full absolute"
+                title="trailer"
+                src={`https://www.youtube.com//embed/${video}`}
+                allowFullScreen
+              >
+                {" "}
+              </iframe>
+            </div>
+          </div>
+
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex w-full justify-between">
+              <div className="text-2xl font-bold ">More like this</div>
+              <div className="flex items-center gap-1 font-semibold">
+                <button onClick={handleSimilarClick}>see more</button>
+                <SeeMore />
+              </div>
+            </div>
+            <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
+              {similaMovies.map((movie: Movie, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg overflow-hidden"
+                  onClick={() => handleMovieClick(movie.id)}
+                >
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    className="w-full h-[75%] hover:bg-primary/30"
+                  />
+                   <div className="h-[35%] bg-[#27272A] w-full p-4">
+                  <div>
+                    <div className="flex gap-2">
+                      <Star width="18px" height="20px" />
+                      <div className="flex items-center">
+                        {" "}
+                        <p className="font-semibold">{movie.vote_average}</p>
+                        <p className="text-gray-400 text-sm">/10</p>
+                      </div>
+                    </div>
+                    <p className="text-xl font-semibold line-clamp-2">
+                      {movie.title}
+                    </p>
+                  </div>
+                </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+        <div
+          onClick={() => setDisplay("none")}
+          className="w-screen z-10 absolute h-screen bg-black/80"
+          style={{ display: display == "block" ? "block" : "none" }}
+        ></div>
+      </>
     );
   }
 };

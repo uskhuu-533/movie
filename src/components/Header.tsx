@@ -7,8 +7,11 @@ import Logo from "./icon/Logo";
 import SearchResult from "./SearchResult";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
+import { getGenre } from "@/utils/requests";
+import SearchIcon from "./icon/Search-Icon";
+import { useTheme } from "next-themes";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 type Data = {
   id: number;
@@ -31,14 +34,6 @@ const Header = () => {
   });
   const [Page, setPage] = useState("");
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
-    },
-  };
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/search") {
@@ -50,28 +45,28 @@ const Header = () => {
     }
   }, []);
   useEffect(() => {
-    const getGenres = async () => {
+    const fetchgetGenre = async () => {
       try {
-        const response = await fetch(
-          "https://api.themoviedb.org/3/genre/movie/list?language=en",
-          options
-        );
-        const result = await response.json();
-        setGenre(result.genres);
+        const data = await getGenre();
+        setGenre(data.genres);
       } catch (error) {
-        console.error("Error fetching genres:", error);
+        console.error(error);
+      } finally {
       }
     };
-    getGenres();
-  }, []);
 
+    fetchgetGenre();
+  }, []);
+  const { setTheme } = useTheme()
   const toggleGenre = (id: number) => {
     router.push(`/genres?genresid=${id}&page=1`);
-    // const updatedGenres = genreID.includes(id)
-    //   ? genreID.filter((genre) => genre !== id)
-    //   : [...genreID, id];
+    const updatedGenres = genreID.includes(id)
+      ? genreID.filter((genre) => genre !== id)
+      : [...genreID, id];
 
-    // setGenreID(updatedGenres);
+    {
+      Page == "genres" && setGenreID(updatedGenres);
+    }
 
     console.log("ajillaa");
   };
@@ -79,35 +74,50 @@ const Header = () => {
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valueE = e.target.value;
     setSearchValue(valueE);
-    {Page == "search" && setValue(valueE)}
+    {
+      Page == "search" && setValue(valueE);
+    }
   };
+  const changeTheme = () => {
+    const theme = localStorage.getItem("theme")
+    console.log(theme);
+    
+    if (theme == "dark"){
+      setTheme("light")
+    }else{  setTheme("dark")
+    }}
+  
 
-  return (
-    <div className="w-full z-40 h-[60px] flex justify-center items-center fixed bg-[#09090B]">
-      <div className="w-[1280px] h-[60px] flex justify-between items-center">
+  return (<>
+ <div onClick={()=> setDisplay(false)} className="w-screen z-20  absolute h-screen " style={{display : display == true ? "block" : "none" }} ></div>
+    <div className="w-full z-30 h-[60px]  justify-center items-center fixed dark:bg-[#09090B] flex light:bg-white">
+      <div className="w-[1280px] h-[60px]  flex justify-between items-center">
         <Logo fill={"#4338CA"} />
         <div className="relative">
           <div className="w-[488px] gap-3 flex">
             <button
               onClick={() => setDisplay((prev) => !prev)}
-              className="w-[96px] z-30 h-[36px] bg-[#09090B] border rounded-md border-[#27272A] flex items-center justify-center font-bold text-white text-[14px] gap-2 cursor-pointer"
+              className="w-[96px] z-20 h-[36px] light:text-black  border rounded-md border-[#27272A] flex items-center justify-center font-bold dark:text-white text-[14px] gap-2 cursor-pointer "
             >
               <Bottom />
               <p>Genre</p>
             </button>
             <div className="flex flex-col items-center">
-              <div>
+              <div className="flex items-center relative">
+                <SearchIcon />
                 {Page == "search" ? (
                   <input
+                  onClick={()=>setDisplay(false)}
                     onChange={(e) => handleSearchValue(e)}
                     value={value || ""}
-                    className="w-[380px] h-9 bg-[#09090B] border rounded-md border-[#27272A] flex items-center justify-center"
+                    className="w-[380px] h-9 dark:bg-[#09090B] light:bg-white border rounded-md border-[#27272A] pl-10 flex items-center justify-center"
                   />
                 ) : (
                   <input
+                  onClick={()=>setDisplay(false)}
                     onChange={handleSearchValue}
                     value={searchValue}
-                    className="w-[380px] h-9 bg-[#09090B] border rounded-md border-[#27272A] flex items-center justify-center text-white px-3"
+                    className="w-[380px] h-9 dark:bg-[#09090B] light:bg-white border border rounded-md border-[#27272A] pl-10 flex items-center justify-center text-white px-3"
                     placeholder="Search movies..."
                   />
                 )}
@@ -121,7 +131,7 @@ const Header = () => {
           </div>
 
           {display && (
-            <div className="absolute p-5 w-[580px] top-10 bg-[#09090B] border border-[#27272A] rounded-lg h-[340px] flex flex-col gap-5">
+            <div className="absolute p-5 z-40 w-[580px] top-10 bg-[#09090B] border border-[#27272A] rounded-lg h-[340px] flex flex-col gap-5">
               <div className="text-white flex flex-col gap">
                 <p className="text-2xl font-extrabold">Genres</p>
                 <p className="text-[16px]">See lists of movies by genre</p>
@@ -132,14 +142,14 @@ const Header = () => {
                   <div
                     key={el.id}
                     onClick={() => toggleGenre(el.id)}
-                    className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
+                    className="border border-[#27272A] z-30 rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
                     style={{
                       background: genreID.includes(el.id) ? "white" : "none",
-                      color: genreID.includes(el.id) ? "black" : "white",
+                      color : genreID.includes(el.id) ? "black" : "white",
                     }}
                   >
                     <p
-                      className={`text-[14px] text-white font-semibold ${inter.className}`}
+                      // className={`text-[14px] font-semibold ${inter.className}`}
                     >
                       {el.name}
                     </p>
@@ -150,11 +160,13 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="w-9 h-9 flex items-center justify-center border rounded-md border-[#27272A] cursor-pointer">
+        <div onClick={()=>changeTheme()} className="w-9 h-9 flex items-center justify-center border rounded-md border-[#27272A] cursor-pointer">
           <img src="moon.png" />
         </div>
       </div>
     </div>
+   
+    </>
   );
 };
 

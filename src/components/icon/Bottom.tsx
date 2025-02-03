@@ -1,4 +1,17 @@
+'use client'
+
+import { useEffect, useState } from "react";
+
+
 const Bottom = () => {
+  const [theme, setTheme] = useState<string | null> ("")
+  useEffect(()=> {
+    const theme = ()=> {
+      const theme = localStorage.getItem("theme")
+      setTheme(theme)
+    }
+    theme()
+  })
   return (
     <svg
       width="10"
@@ -9,7 +22,7 @@ const Bottom = () => {
     >
       <path
         d="M1 0.5L5 4.5L9 0.5"
-        stroke="#FAFAFA"
+        stroke={theme == "light" ? "black" : "white"}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

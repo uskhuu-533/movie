@@ -22,7 +22,7 @@ const {category} = useParams()
 const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
  
-      const [movies, setMovies] = useState(null);
+      const [data, setData] = useState(null);
       const [isLoading, setIsLoading] = useState(false)
 
       const options: object = {
@@ -46,7 +46,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
           
          console.log(result)
      
-            setMovies(result);
+            setData(result);
         
          
        
@@ -61,7 +61,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
   return (<>
    <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
     <Header/>
-    {isLoading == false && (<CategorySimilar currentPage={currentPage} setCurrentPage={setCurrentPage} movies={movies} category={category}/>)}
+    {isLoading == false && (<CategorySimilar currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} category={category}/>)}
     <Footer />
    
    </div>

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { handleClientScriptLoad } from "next/script";
 import { useQueryState } from "nuqs";
+import Star from "./icon/Star";
+import SeeMore from "./icon/SeeMore";
 type props ={
     searchValue : string
 }
@@ -45,24 +47,28 @@ const SearchResult = ({searchValue}:props) => {
         router.push(`/search/?value=${searchValue}&page=1`)
       }
     return(
-        <div className="w-full  border border-[#27272A] bg-[#09090B] top-10 p-4 rounded-lg flex-col">
+        <div className="w-full  border border-[#27272A] bg-[#09090B] top-10 p-2 rounded-lg flex-col">
            <div className="w-full h-[90%] flex flex-col gap-2 p-4">
              {searchResult.map((movie:data, index)=>(
-                <div onClick={() => handleMovieClick(movie.id)} className="w-full h-[116px] border-b border-b-[#27272A]  flex justify-between" key={index}>
+                <div onClick={() => handleMovieClick(movie.id)} className="w-full h-[116px] border-b border-b-[#27272A]  item-center pb-2 flex justify-between hover:bg-white/20 rounded-md " key={index}>
                     <div className="w-[80%] flex gap-x-2">
-                        <img className="h-[95%] w-[20%] rounded-md" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                        <img className="h-[100%] w-[20%] rounded-md" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
                     <div>
                         <p>{movie.title}</p>
-                        <div className="flex">
-                            <p>{movie.vote_average}</p>
-                            <p>/10</p>
+                        <div className="flex gap-1">
+                          <Star width="18px" height="20px"/>
+                          <div className="flex items-center">
+                            <p className="font-semibold">{movie.vote_average}</p>
+                            <p className="text-gray-400 text-sm">/10</p>
+                            </div>
                         </div>
                         <p className="mt-4">{movie.release_date}</p>
                     </div>
                     </div>
                     <div className="h-full flex items-end pr-4">
-                        <div className="w-full h-[50%] flex items-center">
+                        <div className="w-full h-[50%] flex gap-1 items-center">
                         <p>see more</p>
+                        <SeeMore />
                         </div>
                         </div>
                 </div>
