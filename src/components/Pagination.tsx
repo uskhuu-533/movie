@@ -1,3 +1,7 @@
+'use client'
+
+import { useRouter } from "next/navigation"
+
 type Props ={
     currentPage : number,
     setCurrentPage : Function,
@@ -8,7 +12,9 @@ type ApiResponse = {
 
 }
 
+
 const Pagination = ({currentPage, setCurrentPage, data}: Props) => {
+  const router = useRouter()
     const page = data.total_pages;
     const pages = [];
 
@@ -19,9 +25,13 @@ const Pagination = ({currentPage, setCurrentPage, data}: Props) => {
       currentPage >= 3 ? currentPage - 3 : currentPage - 1,
       currentPage + 4
     );
+    const changePage = (page:number)=> {
+      // router.push(`${window.location.pathname}?page=${page}`,{scroll:false})
+      setCurrentPage(page)
+    }
     return (
         <div className="flex gap-4 pt-4">
-            {currentPage > 1 && (<button onClick={() => setCurrentPage(currentPage + 1)}> Previous</button>)}
+            {currentPage > 1 && (<button onClick={() => setCurrentPage(currentPage - 1)}> Previous</button>)}
             {pages1.map((page) => (
               <button
                 key={page}
@@ -29,7 +39,7 @@ const Pagination = ({currentPage, setCurrentPage, data}: Props) => {
                 style={{borderWidth:currentPage == page ? "2px": "none",
                   borderColor : currentPage == page ? "gray" : "none"
                 }}
-                onClick={() => setCurrentPage(page)}
+                onClick={() => changePage(page)}
               >
                 {page}
               </button>

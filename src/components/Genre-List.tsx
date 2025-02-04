@@ -6,6 +6,8 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { getMovieGenres } from "@/utils/requests";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
+import Image from "next/image";
+
 
 type Props = {
   genreID: number[];
@@ -33,7 +35,7 @@ const GenreList = ({ genreID }: Props) => {
     total_pages: 0,
     total_results: 0,
   });
-  const [currentPage, setCurrentPage] = useQueryState(
+  const [currentPage, setCurrentPage] = useQueryState<number>(
     "page",
     parseAsInteger.withDefault(1)
   );
@@ -69,7 +71,7 @@ const GenreList = ({ genreID }: Props) => {
             {" "}
             titles : {data.total_results}{" "}
           </div>
-          <div className="grid grid-flow-col grid-rows-5 gap-10">
+          <div className="grid grid-flow-row grid-cols-4 gap-10">
             {movie.map((el: Movie, index) => (
               <div
                 key={index}
@@ -81,13 +83,14 @@ const GenreList = ({ genreID }: Props) => {
                   className="h-[70%] w-full  "
                   src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
                 />
+                {/* <Image src={`https://image.tmdb.org/t/p/w500/${el.poster_path}&w=2048&q=75`} height={50} alt="" width={500} quality={30}/> */}
                 <div className="h-[30%] bg-[#27272A] w-full p-4">
                   <div>
                     <div className="flex gap-2">
                       <Star width="18px" height="20px" />
                       <div className="flex items-center">
-                        {" "}
-                        <p className="font-semibold">{el.vote_average}</p>
+                 
+                        <p className="font-semibold">{Math.round((el.vote_average)*10)/10}</p>
                         <p className="text-gray-400 text-sm">/10</p>
                       </div>
                     </div>

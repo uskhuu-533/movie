@@ -42,6 +42,7 @@ const SearchMovies = ({ searchValue }: Props) => {
     parse: (value) => value.split(",").map(Number),
     serialize: (array) => array.join(","),
   });
+  const [totalResult, setResults] = useState()
   // console.log(genreID);
 
   const options: object = {
@@ -70,16 +71,9 @@ const SearchMovies = ({ searchValue }: Props) => {
       setIsLoading(false);
     }
   };
-  const page = data.total_pages;
-  const pages = [];
+
   const movie = data.results;
-  for (let i = 1; i <= page; i++) {
-    pages.push(i);
-  }
-  const pages1 = pages.slice(
-    currentPage >= 3 ? currentPage - 3 : currentPage - 1,
-    currentPage + 4
-  );
+
 
   useEffect(() => {
     getMovie();
@@ -97,14 +91,14 @@ const SearchMovies = ({ searchValue }: Props) => {
     <>
       {isLoading == false ? (
         <div className="w-[69%]">
-          <div> titles</div>
+          <div> titles : {}</div>
           <div className="flex flex-wrap gap-10">
             {movie
               .filter((el: Movie) => {
                 if (genreID.length > 0 ) {
-                  return el.genre_ids.some((id) => id == genreID);
+                  return genreID?.map((id)=>el.genre_ids.includes(id)).includes(true)
                 } else {
-                  return el;
+                  return movie;
                 }
               })
               .map((el: Movie, index) => (

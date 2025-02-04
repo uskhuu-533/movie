@@ -29,8 +29,10 @@ const GenrePage = () => {
     "page",
     parseAsInteger.withDefault(1)
   );
+ 
   const [Page, setPage] = useState("");
-  const [value, setValue] = useQueryState("value")
+  const [value, setValue] = useQueryState("value", {defaultValue : ""})
+  const [theme, setTheme] = useState<null | string>("")
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -60,6 +62,7 @@ const GenrePage = () => {
       
     fetchgetGenre();
   }, []);
+  console.log(genreID)
 
   const toggleGenre = (id: number) => {
     const updatedGenres = genreID.includes(id)
@@ -72,8 +75,11 @@ const GenrePage = () => {
   };
 
   return (
-    <div className="w-full flex justify-center pb-10 text-white" >
-      <div className="w-[1280px] mt-[150px] flex gap-4 @5xl:flex-col!" style={{ flexDirection : Page == "search" ? "row-reverse" : "row"}}>
+    <div className="w-full flex justify-center pb-10 @container text-white" >
+      <div className="w-[1280px] mt-[150px] flex gap-4  @5xl:flex-col" >
+          {Page == "search" ? (<>
+            <SearchMovies searchValue={value}/>
+            <div className="h-full border border-[#27272A]"></div></>):null}
         <div className="w-[28%]"> 
           <div className="text-3xl py-8 font-bold">Search Filter</div>
           <h2 className="text-2xl py-2 font-bold">Genres</h2>
@@ -106,9 +112,8 @@ const GenrePage = () => {
           )}
         </div>
 
-        <div className="h-full border border-[#27272A]"></div>
-        {Page == "search" ? (<SearchMovies searchValue={value}/>):null}
-       {Page == "genres" ? (<GenreList genreID={genreID} />): null}
+        {Page == "genres" ? (<><div className="h-full border border-[#27272A]"></div><GenreList genreID={genreID} /></>): null}
+     
       </div>
     </div>
   );

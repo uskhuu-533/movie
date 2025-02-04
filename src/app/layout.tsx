@@ -37,7 +37,7 @@ export default function RootLayout({
              {/* className={`${geistSans.variable} ${geistMono.variable} antialiased`} */}
                  <NuqsAdapter>{children}</NuqsAdapter>
            </ThemeProvider>
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        
       
              {/* <NuqsAdapter>{children}</NuqsAdapter> */}
 

@@ -21,7 +21,7 @@ type Movie = {
 };
 
 type ActorsDetails = {
-  crew: { name: string; job: string }[];
+  crew: { name: string }[];
   cast: { name: string }[];
 };
 
@@ -34,23 +34,24 @@ type SimilarMovies = {
     id: number;
     title: string;
     poster_path: string;
+    vote_average : number
   }[];
 };
 
 type MovieData = {
-  movieDetails: Movie | null ;
-  actorsDetails: ActorsDetails | null;
-  trailer: Trailer | null;
-  similaMovies: SimilarMovies["results"] | null;
+  movieDetails: Movie | undefined;
+  actorsDetails: ActorsDetails | undefined;
+  trailer: Trailer | undefined;
+  similaMovies: SimilarMovies["results"] | undefined;
 };
 
 export default function MovieDetailsPage() {
   const { movieID } = useParams();
-  const [movieData, setMovieData] = useState<MovieData>({
-    movieDetails: null,
-    actorsDetails: null,
-    trailer: null,
-    similaMovies: null,
+  const [movieData, setMovieData] = useState<MovieData | undefined>({
+    movieDetails: undefined,
+    actorsDetails: undefined,
+    trailer: undefined,
+    similaMovies: undefined,
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,52 +63,14 @@ export default function MovieDetailsPage() {
               const data = await getMovieDetail(movieID);
               setMovieData(data);
             } catch (error) {
-              console.error("Failed to fetch now-playing movies:", error);
+              console.error("Failed to fetch", error);
             }finally{
               setIsLoading(false);
             }
           };
       
           fetchMovieDetails();
-        
-      // const fetchMovieDetails = async () => {
-      //   setIsLoading(true);
-      //   const options = {
-      //     method: "GET",
-      //     headers: {
-      //       accept: "application/json",
-      //       Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-      //     },
-      //   };
 
-      //   try {
-      //     const [movieResponse, creditsResponse, videoResponse, similarResponse] = await Promise.all([
-      //       fetch(`https://api.themoviedb.org/3/movie/${movieID}?language=en-US`, options),
-      //       fetch(`https://api.themoviedb.org/3/movie/${movieID}/credits?language=en-US`, options),
-      //       fetch(`https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`, options),
-      //       fetch(`https://api.themoviedb.org/3/movie/${movieID}/similar?language=en-US&page=1`, options),
-      //     ]);
-
-      //     if (!movieResponse.ok || !creditsResponse.ok || !videoResponse.ok || !similarResponse.ok) {
-      //       throw new Error("Failed to fetch movie details");
-      //     }
-
-      //     const [movieDetails, actorsDetails, trailer, similaMovies] = await Promise.all([
-      //       movieResponse.json(),
-      //       creditsResponse.json(),
-      //       videoResponse.json(),
-      //       similarResponse.json(),
-      //     ]);
-
-      //     setMovieData({ movieDetails, actorsDetails, trailer, similaMovies: similaMovies.results });
-      //   } catch (error) {
-      //     console.error("Error fetching movie details:", error);
-      //   } finally {
-      //     setIsLoading(false);
-      //   }
-      // };
-
-      // fetchMovieDetails();
     }
   }, [movieID]);
 
@@ -115,7 +78,7 @@ export default function MovieDetailsPage() {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
-  const { movieDetails, actorsDetails, trailer, similaMovies } = movieData;
+  const { movieDetails, actorsDetails, trailer, similaMovies } = movieData ??{}
 
   return (
     <div className="flex text-white items-center flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">

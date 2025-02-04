@@ -5,17 +5,19 @@ import Star from "./icon/Star";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
+import Homeloading from "./Loading";
 
 
 type data = {
   poster_path: string;
-  vote_average: string;
+  vote_average: number;
   title: string;
   id: number;
 };
 const Lists = ({ title }: { title: string }) => {
   const router = useRouter();
   const [movies, setMovies] = useState<data[]>([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   
   const options: object = {
@@ -29,6 +31,7 @@ const Lists = ({ title }: { title: string }) => {
 
   const getMovie = async () => {
     try {
+      setIsLoading(true)
       const response = await fetch(
         "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
         options
@@ -56,6 +59,8 @@ const Lists = ({ title }: { title: string }) => {
       }
     } catch (error) {
       console.log(error);
+    }finally{
+      setIsLoading(false)
     }
   };
   movies.length = 10;
@@ -67,24 +72,24 @@ const Lists = ({ title }: { title: string }) => {
     router.push(`/movies/${movieID}`);
   };
   const handleCategoryClick = ()=> {
-    const category = title.toLowerCase().replace(" ","_")
+    const category:string = title.toLowerCase().replace(" ", "_")
  
     router.push(`/category/${category}?page=1`);
 
   }
   return (
-    <div className="flex flex-col gap-8 ">
-      <div className="w-full justify-between flex px-4 h-9">
-        <p className="text-foreground text-2xl text-white font-semibold">
-          {title}
-        </p>
-        <button className="font-semibold flex items-center gap-2 hover:gap-3" onClick={handleCategoryClick}>
-          <p>see more</p>
-          <SeeMore />
-          </button>
-      </div>
-      <div className="w-full grid grid-flow-row md:grid-cols-5 sm:grid-cols-3 sm:px-4 md:px-4 gap-8 2xl:grid-cols-5  xl:grid-cols-4">
-        {movies.map((el: data, index) => (
+<>{isLoading == false ? (<div className="flex flex-col gap-8 ">
+   <div className="w-full justify-between flex px-4 h-9">
+     <p className="text-foreground text-2xl dark:text-white font-semibold">
+       {title}
+     </p>
+     <button className="font-semibold flex items-center gap-2 hover:gap-3" onClick={handleCategoryClick}>
+       <p>see more</p>
+       <SeeMore />
+       </button>
+   </div>
+   <div className="w-full grid grid-flow-row md:grid-cols-4 sm:grid-cols-3 sm:px-8 md:px-8 gap-8 2xl:grid-cols-5 lg:grid-cols-5  xl:grid-cols-5 grid-cols-2 px-8">
+     {movies.map((el: data, index) => (
           <div
             key={index}
             className="rounded-lg overflow-hidden relative "
@@ -99,7 +104,7 @@ const Lists = ({ title }: { title: string }) => {
               <div>
                 <div className="flex gap-2">
                   <Star width="18px" height="20px"/>
-                  <div className="flex items-center">   <p className="font-semibold">{el.vote_average}</p>
+                  <div className="flex items-center">   <p className="font-semibold">{Math.round((el.vote_average)*10)/10}</p>
                   <p className="text-gray-400 text-sm">/10</p></div>
                  
                 </div>
@@ -109,7 +114,9 @@ const Lists = ({ title }: { title: string }) => {
           </div>
         ))}
       </div>
-    </div>
+    </div>):    <Homeloading />}
+
+    </>
   );
 };
 export default Lists;

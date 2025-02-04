@@ -5,6 +5,7 @@
 import { useRouter } from "next/navigation";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
+import { Params } from "next/dist/server/request/params";
 
 type data = {
   id: number;
@@ -13,8 +14,10 @@ type data = {
   title: string;
 };
 type Props = {
-  data: data1;
-  category: string;
+  data: data1 | null;
+  category: string | string[] | undefined
+  setCurrentPage : Function;
+  currentPage : number
 };
 type data1 = {
   total_pages: number;
@@ -37,7 +40,7 @@ const CategorySimilar = ({
 
 
     return (
-      <div className="w-screen flex justify-center">
+      <div  className="w-screen flex justify-center">
         <div className="w-[1080px] py-[100px] flex flex-col items-center justify-center gap-8 ">
           <div className="w-full justify-between flex h-9">
             <p className="text-foreground text-2xl text-white font-semibold">
@@ -54,13 +57,13 @@ const CategorySimilar = ({
                    <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-                  className="w-full h-[77%] hover:bg-primary/30"
+                  className="w-full h-[75%] hover:bg-primary/30"
                 />
-                <div className="w-full h-[33%] font-semibold text-xl p-2 bg-[#27272A] line-clamp-2">
+                <div className="w-full h-[25%] font-semibold text-xl p-2 bg-[#27272A] line-clamp-2">
                   <div>
                     <div className="flex">
                       <Star width="18px" height="20px"/>
-                      <p>{el.vote_average}/10</p>
+                      <p>{Math.round((el.vote_average)*10)/10}/10</p>
                     </div>
                     <p>{el.title}</p>
                   </div>

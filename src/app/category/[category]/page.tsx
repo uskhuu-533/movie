@@ -10,12 +10,7 @@ import Footer from "@/components/Footer";
 import { useQueryState, parseAsInteger } from 'nuqs'
 import { useParams } from "next/navigation";
 import CategorySimilar from "@/components/Similar&Categoty";
-type data = {
-    id:number,
-    poster_path :string,
-    vote_average : number,
-    title :string
-}
+
 
 export default function Home() {
 const {category} = useParams()
@@ -24,7 +19,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
  
       const [data, setData] = useState(null);
       const [isLoading, setIsLoading] = useState(false)
-
+   
       const options: object = {
         method: "GET",
         headers: {
@@ -40,8 +35,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
             `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${currentPage}`,
             options
           );
-
-        
+         
           const result = await response.json();
           
          console.log(result)

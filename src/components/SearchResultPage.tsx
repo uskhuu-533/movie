@@ -27,7 +27,7 @@ const SearchResultPage = () => {
   const router = useRouter();
       const [genres, setGenre] = useState<data[]>([]);
       const [idLoading, setIsloading] = useState(false);
-      const [value, setValue] = useQueryState("value")
+      const [value, setValue] = useQueryState("value", {defaultValue:""})
       // const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger)
       const [genreID, setGenreID] = useQueryState("genresid", {
         defaultValue: [],

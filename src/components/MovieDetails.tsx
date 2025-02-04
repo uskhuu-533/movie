@@ -12,7 +12,6 @@ type Genre = {
   id: number;
   name: string;
 };
-
 type Movie = {
   id: number;
   title: string;
@@ -23,34 +22,37 @@ type Movie = {
   poster_path: string;
   backdrop_path: string;
   overview: string;
-  genres: Genre[];
+  genres: { id: number; name: string }[] | undefined;
 };
 
-type Actor = {
-  name: string;
+type ActorsDetails = {
+  crew: { name: string }[];
+  cast: { name: string }[];
 };
 
-type CrewMember = {
-  name: string;
-  job: string;
-};
+type SimilarMovies ={
+  results: {
+    id: number;
+    title: string;
+    poster_path: string;
+    vote_average : number
+  }[] | undefined;
+}
+
 
 type Trailer = {
-  key: string;
+ 
+    results: { key: string }[] | undefined;
+  
 };
 
-type ApiResponse = {
-  results: Trailer[];
-};
+
 
 type Props = {
-  movieDetails: Movie;
-  actorsDetails: {
-    crew: CrewMember[];
-    cast: Actor[];
-  };
-  trailer: ApiResponse;
-  similaMovies: Movie[];
+  movieDetails: Movie | undefined;
+  actorsDetails: ActorsDetails | undefined
+  trailer: Trailer | undefined;
+  similaMovies: SimilarMovies["results"] | undefined;
 };
 const MovieDetails = ({
   movieDetails,
@@ -61,13 +63,13 @@ const MovieDetails = ({
   console.log(movieDetails);
   console.log(similaMovies);
 
-  if (movieDetails && actorsDetails && trailer && similaMovies) {
+  if (movieDetails && actorsDetails && trailer && similaMovies && trailer.results) {
     const router = useRouter();
 
     const [display, setDisplay] = useState("none");
     const genres = movieDetails?.genres;
     const director = actorsDetails?.crew[0]?.name;
-    const video = trailer?.results[0]?.key;
+    const video = trailer.results[0].key; 
     similaMovies.length = 5;
     const handleMovieClick = (movieID: number) => {
       router.push(`/movies/${movieID}`);
@@ -124,7 +126,7 @@ const MovieDetails = ({
             </div>
           </div>
           <div className="flex">
-            {genres.map((genre: Genre) => (
+            {genres && genres.map((genre: Genre) => (
               <div
                 className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
                 key={genre.id}
@@ -145,7 +147,7 @@ const MovieDetails = ({
             </div>
             <div className="w-full border-b flex gap-5 border-b-[#27272A]">
               <p className="font-bold">Stars:</p>
-              {actorsDetails.cast.splice(0, 5).map((cast, index) => (
+              {actorsDetails.cast.slice(0, 5).map((cast, index) => (
                 <p key={index}>{cast.name}</p>
               ))}
             </div>
@@ -164,7 +166,7 @@ const MovieDetails = ({
               <iframe
                 className="w-full h-full absolute"
                 title="trailer"
-                src={`https://www.youtube.com//embed/${video}`}
+                src={`https://www.youtube.com/embed/${video}`}
                 allowFullScreen
               >
                 {" "}
@@ -181,14 +183,14 @@ const MovieDetails = ({
               </div>
             </div>
             <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
-              {similaMovies.map((movie: Movie, index) => (
+              {similaMovies.map((results, index:number) => (
                 <div
                   key={index}
                   className="rounded-lg overflow-hidden"
-                  onClick={() => handleMovieClick(movie.id)}
+                  onClick={() => handleMovieClick(results.id)}
                 >
                   <img
-                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
                     className="w-full h-[75%] hover:bg-primary/30"
                   />
                    <div className="h-[35%] bg-[#27272A] w-full p-4">
@@ -197,12 +199,12 @@ const MovieDetails = ({
                       <Star width="18px" height="20px" />
                       <div className="flex items-center">
                         {" "}
-                        <p className="font-semibold">{movie.vote_average}</p>
+                        <p className="font-semibold">{results.vote_average}</p>
                         <p className="text-gray-400 text-sm">/10</p>
                       </div>
                     </div>
                     <p className="text-xl font-semibold line-clamp-2">
-                      {movie.title}
+                      {results.title}
                     </p>
                   </div>
                 </div>
