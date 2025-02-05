@@ -62,7 +62,7 @@ const Upcoming = () => {
       {display == true && (
         <div
           onClick={() => setDisplay(false)}
-          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center absolute"
+          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
         >
           <div className="w-[512px] h-[280px] z-20 top-[30%]">
             <div className="w-full h-full relative ">
@@ -108,7 +108,7 @@ const Upcoming = () => {
                   </div>
                   <button
                     onClick={() => fetchTrailer(el.id)}
-                    className="bg-black/90 absolute rounded-md px-5 py-2 z-40 "
+                    className="dark:bg-black/90 bg-white absolute text-black dark:text-white rounded-md px-5 py-2 z-40 "
                   >
                     Watch trailer
                   </button>

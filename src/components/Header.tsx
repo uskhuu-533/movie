@@ -10,6 +10,7 @@ import { useQueryState } from "nuqs";
 import { getGenre } from "@/utils/requests";
 import SearchIcon from "./icon/Search-Icon";
 import { useTheme } from "next-themes";
+import Moon from "./icon/Moon";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -59,15 +60,12 @@ const Header = () => {
   }, []);
   const { setTheme } = useTheme()
   const toggleGenre = (id: number) => {
-    router.push(`/genres?genresid=${id}&page=1`);
     const updatedGenres = genreID.includes(id)
       ? genreID.filter((genre) => genre !== id)
       : [...genreID, id];
-
-    {
-      Page == "genres" && setGenreID(updatedGenres);
-    }
-
+      {Page == "genres" && setGenreID(updatedGenres)}
+    const queryParam = updatedGenres.join(",");
+    router.push(`/genres?genresid=${queryParam}`);
     console.log("ajillaa");
   };
 
@@ -86,11 +84,12 @@ const Header = () => {
       setTheme("light")
     }else{  setTheme("dark")
     }}
+    
   
 
   return (<>
  <div onClick={()=> setDisplay(false)} className="w-screen z-20  absolute h-screen " style={{display : display == true ? "block" : "none" }} ></div>
-    <div className="w-full z-30 h-[60px]  justify-center items-center fixed dark:bg-[#09090B] flex light:bg-white">
+    <div className="w-full z-30 h-[60px]  justify-center items-center fixed dark:bg-[#09090B] flex bg-white">
       <div className="w-[1280px] h-[60px]  flex justify-between items-center">
         <Logo fill={"#4338CA"} />
         <div className="relative">
@@ -117,7 +116,7 @@ const Header = () => {
                   onClick={()=>setDisplay(false)}
                     onChange={handleSearchValue}
                     value={searchValue}
-                    className="w-[380px] h-9 dark:bg-[#09090B] light:bg-white border border rounded-md border-[#27272A] pl-10 flex items-center justify-center text-white px-3"
+                    className="w-[380px] h-9 dark:bg-[#09090B] light:bg-white border border rounded-md border-[#27272A] pl-10 flex items-center justify-center dark:text-white light:text-black px-3"
                     placeholder="Search movies..."
                   />
                 )}
@@ -131,26 +130,24 @@ const Header = () => {
           </div>
 
           {display && (
-            <div className="absolute p-5 z-40 w-[580px] top-10 bg-[#09090B] border border-[#27272A] rounded-lg h-[340px] flex flex-col gap-5">
-              <div className="text-white flex flex-col gap">
+            <div className="absolute p-5 z-40 w-[580px] top-10 dark:bg-[#09090B] bg-white border border-[#27272A] rounded-lg h-[340px] flex flex-col gap-5">
+              <div className="dark:text-white  flex flex-col gap">
                 <p className="text-2xl font-extrabold">Genres</p>
                 <p className="text-[16px]">See lists of movies by genre</p>
               </div>
-              <div className="w-full border border-[#27272A]"></div>
+              <div className="w-full border border-gray-500/30"></div>
               <div className="flex flex-wrap gap-4">
                 {genre.map((el) => (
                   <div
                     key={el.id}
                     onClick={() => toggleGenre(el.id)}
-                    className="border border-[#27272A] z-30 rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
+                    className="border border-[#27272A] z-30 rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center "
                     style={{
                       background: genreID.includes(el.id) ? "white" : "none",
                       color : genreID.includes(el.id) ? "black" : "white",
                     }}
                   >
-                    <p
-                      // className={`text-[14px] font-semibold ${inter.className}`}
-                    >
+                    <p>
                       {el.name}
                     </p>
                     <Right />
@@ -161,7 +158,7 @@ const Header = () => {
           )}
         </div>
         <div onClick={()=>changeTheme()} className="w-9 h-9 flex items-center justify-center border rounded-md border-[#27272A] cursor-pointer">
-          <img src="moon.png" />
+          <Moon />
         </div>
       </div>
     </div>

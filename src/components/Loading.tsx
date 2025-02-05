@@ -10,7 +10,7 @@ export default function Homeloading(){
       </div>
       <div className="w-full grid grid-flow-row md:grid-cols-4 sm:grid-cols-3 sm:px-8 md:px-8 gap-8 2xl:grid-cols-5 lg:grid-cols-5  xl:grid-cols-5 grid-cols-2 px-8">
         {movies.map((index) => (
-          <div key={index} className="rounded-lg h-[300px] bg-gray-900 overflow-hidden relative ">
+          <div key={index} className="rounded-lg h-[300px] bg-gray-500/30 overflow-hidden relative ">
        
           </div>
         ))}

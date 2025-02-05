@@ -2,11 +2,12 @@
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import Right from "./icon/Right";
-import GenreList from "./Genre-List";
-import { useRouter } from "next/navigation";
+
+import { useRouter, useSearchParams } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { getGenre } from "@/utils/requests";
 import SearchMovies from "./SearchMovies";
+import GenreMovieList from "./Genre-Movie-List";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,8 @@ const GenrePage = () => {
     parse: (value) => value.split(",").map(Number),
     serialize: (array) => array.join(","),
   });
+  // const searchParams = useSearchParams();
+  // const genreID = (searchParams.get("genres") || "").split(",");
   const [currentPage, setCurrentPage] = useQueryState(
     "page",
     parseAsInteger.withDefault(1)
@@ -33,6 +36,7 @@ const GenrePage = () => {
   const [Page, setPage] = useState("");
   const [value, setValue] = useQueryState("value", {defaultValue : ""})
   const [theme, setTheme] = useState<null | string>("")
+  // const searchParams = useSearchParams()
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -65,6 +69,12 @@ const GenrePage = () => {
   console.log(genreID)
 
   const toggleGenre = (id: number) => {
+    // const params = new URLSearchParams(searchParams);
+    // genreID.push(id);
+    // params.set("genresid", genreID.join(""));
+    // // setCurrentPage(1);
+ 
+    // router.push(`?${params.toString()}`);
     const updatedGenres = genreID.includes(id)
       ? genreID.filter((genre) => genre !== id)
       : [...genreID, id];
@@ -75,12 +85,12 @@ const GenrePage = () => {
   };
 
   return (
-    <div className="w-full flex justify-center pb-10 @container text-white" >
+    <div className="w-full flex justify-center pb-10 @container dark:text-white" >
       <div className="w-[1280px] mt-[150px] flex gap-4  @5xl:flex-col" >
           {Page == "search" ? (<>
             <SearchMovies searchValue={value}/>
-            <div className="h-full border border-[#27272A]"></div></>):null}
-        <div className="w-[28%]"> 
+            <div className="h-[2280px] border border-[#27272A]"></div></>):null}
+        <div className="w-[28%] h-fit sticky top-[100px]"> 
           <div className="text-3xl py-8 font-bold">Search Filter</div>
           <h2 className="text-2xl py-2 font-bold">Genres</h2>
           <p className="text-xl pb-5">See lists of movies by genre</p>
@@ -112,7 +122,7 @@ const GenrePage = () => {
           )}
         </div>
 
-        {Page == "genres" ? (<><div className="h-full border border-[#27272A]"></div><GenreList genreID={genreID} /></>): null}
+        {Page == "genres" ? (<><div className="h-full h-[2280px] border border-[#27272A]"></div><GenreMovieList genreID={genreID} /></>): null}
      
       </div>
     </div>

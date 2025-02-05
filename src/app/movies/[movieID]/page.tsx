@@ -18,6 +18,7 @@ type Movie = {
   backdrop_path: string;
   overview: string;
   genres: { id: number; name: string }[];
+  runtime: number
 };
 
 type ActorsDetails = {
@@ -81,7 +82,7 @@ export default function MovieDetailsPage() {
   const { movieDetails, actorsDetails, trailer, similaMovies } = movieData ??{}
 
   return (
-    <div className="flex text-white items-center flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
+    <div className="flex dark:text-white items-center flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
       <Header />
       <MovieDetails
         movieDetails={movieDetails}

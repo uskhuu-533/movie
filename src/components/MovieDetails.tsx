@@ -23,6 +23,7 @@ type Movie = {
   backdrop_path: string;
   overview: string;
   genres: { id: number; name: string }[] | undefined;
+  runtime: number
 };
 
 type ActorsDetails = {
@@ -30,27 +31,24 @@ type ActorsDetails = {
   cast: { name: string }[];
 };
 
-type SimilarMovies ={
-  results: {
-    id: number;
-    title: string;
-    poster_path: string;
-    vote_average : number
-  }[] | undefined;
-}
-
-
-type Trailer = {
- 
-    results: { key: string }[] | undefined;
-  
+type SimilarMovies = {
+  results:
+    | {
+        id: number;
+        title: string;
+        poster_path: string;
+        vote_average: number;
+      }[]
+    | undefined;
 };
 
-
+type Trailer = {
+  results: { key: string }[] | undefined;
+};
 
 type Props = {
   movieDetails: Movie | undefined;
-  actorsDetails: ActorsDetails | undefined
+  actorsDetails: ActorsDetails | undefined;
   trailer: Trailer | undefined;
   similaMovies: SimilarMovies["results"] | undefined;
 };
@@ -63,13 +61,19 @@ const MovieDetails = ({
   console.log(movieDetails);
   console.log(similaMovies);
 
-  if (movieDetails && actorsDetails && trailer && similaMovies && trailer.results) {
+  if (
+    movieDetails &&
+    actorsDetails &&
+    trailer &&
+    similaMovies &&
+    trailer.results
+  ) {
     const router = useRouter();
 
-    const [display, setDisplay] = useState("none");
+    const [display, setDisplay] = useState(false);
     const genres = movieDetails?.genres;
     const director = actorsDetails?.crew[0]?.name;
-    const video = trailer.results[0].key; 
+    const video = trailer.results[0]?.key;
     similaMovies.length = 5;
     const handleMovieClick = (movieID: number) => {
       router.push(`/movies/${movieID}`);
@@ -78,6 +82,8 @@ const MovieDetails = ({
       const category = movieDetails.id;
       router.push(`/category/${category}/similar?page=1`);
     };
+    const hour = Math.floor((movieDetails.runtime)/60)
+    const minut = movieDetails.runtime-hour*60
     return (
       <>
         <div className="w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
@@ -85,19 +91,21 @@ const MovieDetails = ({
             <div>
               <h1 className="text-3xl font-bold">{movieDetails.title}</h1>
               <p className="text-lg">
-                {movieDetails.release_date} • {movieDetails.origin_country[0]} •
-                ...
+                {movieDetails.release_date} • {movieDetails.origin_country[0]} • {hour}h {minut}m
+                
               </p>
             </div>
             <div>
               <p className="text-sm">Rating</p>
-              <div>
-                <img />
-                <div className="flex">
-                  <p>{movieDetails.vote_average}</p>
-                  <p>/10</p>
+              <div className="flex">
+                <Star height="35px" width="35px"/>
+                <div>
+                <div className="flex items-center ">
+                  <div className="text-bold text-md">{movieDetails.vote_average}/</div>
+                  <div className="text-sm ">10</div>
                 </div>
-                <p>{movieDetails.vote_count}</p>
+                <div className="text-gray-500/30 text-sm">{movieDetails.vote_count}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -114,26 +122,27 @@ const MovieDetails = ({
               />
               <div className="absolute flex items-center gap-4 bottom-8 left-6">
                 <div
-                  className="w-9 h-9 bg-white rounded-full flex items-center justify-center relative overflow-hidden "
-                  onClick={() => setDisplay("block")}
+                  className="w-9 h-9 dark:bg-white bg-black rounded-full flex items-center justify-center relative overflow-hidden "
+                  onClick={() => setDisplay(true)}
                 >
-                  <div className="bg-black w-3 h-5 "></div>
-                  <div className="bg-white w-4 h-10 rotate-45 top-4 absolute"></div>
-                  <div className="bg-white w-4 h-10 -rotate-45 bottom-4 absolute"></div>
+                  <div className="dark:bg-black bg-white w-3 h-5 "></div>
+                  <div className="dark:bg-white bg-black w-4 h-10 rotate-45 top-4 absolute"></div>
+                  <div className="dark:bg-white bg-black w-4 h-10 -rotate-45 bottom-4 absolute"></div>
                 </div>
-                <p className="text-lg font-semibold">Play trailer</p>
+                <p className="text-lg text-white font-semibold">Play trailer</p>
               </div>
             </div>
           </div>
           <div className="flex">
-            {genres && genres.map((genre: Genre) => (
-              <div
-                className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
-                key={genre.id}
-              >
-                {genre.name}
-              </div>
-            ))}
+            {genres &&
+              genres.map((genre: Genre) => (
+                <div
+                  className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
+                  key={genre.id}
+                >
+                  {genre.name}
+                </div>
+              ))}
           </div>
           <div className="text-lg">{movieDetails.overview}</div>
           <div className="w-full flex flex-col text-lg gap-4">
@@ -152,27 +161,7 @@ const MovieDetails = ({
               ))}
             </div>
           </div>
-          <div
-            className="w-[512px] h-[280px] absolute z-20 top-[30%]"
-            style={{ display: display == "block" ? "block" : "none" }}
-          >
-            <div className="w-full h-full relative ">
-              <button
-                onClick={() => setDisplay("none")}
-                className="w-5 h-5 absolute z-30 right-3 top-3"
-              >
-                x
-              </button>
-              <iframe
-                className="w-full h-full absolute"
-                title="trailer"
-                src={`https://www.youtube.com/embed/${video}`}
-                allowFullScreen
-              >
-                {" "}
-              </iframe>
-            </div>
-          </div>
+   
 
           <div className="w-full flex flex-col gap-4">
             <div className="flex w-full justify-between">
@@ -182,8 +171,8 @@ const MovieDetails = ({
                 <SeeMore />
               </div>
             </div>
-            <div className="w-full h-[381px] grid grid-flow-col grid-rows-1 gap-8">
-              {similaMovies.map((results, index:number) => (
+            <div className="w-full h-[381px] grid grid-flow-row grid-cols-5 gap-8">
+              {similaMovies.map((results, index: number) => (
                 <div
                   key={index}
                   className="rounded-lg overflow-hidden"
@@ -191,33 +180,55 @@ const MovieDetails = ({
                 >
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
-                    className="w-full h-[75%] hover:bg-primary/30"
+                    className="w-full h-[70%] hover:bg-primary/30"
                   />
-                   <div className="h-[35%] bg-[#27272A] w-full p-4">
-                  <div>
-                    <div className="flex gap-2">
-                      <Star width="18px" height="20px" />
-                      <div className="flex items-center">
-                        {" "}
-                        <p className="font-semibold">{results.vote_average}</p>
-                        <p className="text-gray-400 text-sm">/10</p>
+                  <div className="h-[30%] bg-gray-500/30 w-full p-4">
+                    <div>
+                      <div className="flex gap-2">
+                        <Star width="18px" height="20px" />
+                        <div className="flex items-center">
+                          {" "}
+                          <p className="font-semibold">
+                            {results.vote_average}
+                          </p>
+                          <p className="text-gray-400 text-sm">/10</p>
+                        </div>
                       </div>
+                      <p className="text-xl font-semibold line-clamp-2">
+                        {results.title}
+                      </p>
                     </div>
-                    <p className="text-xl font-semibold line-clamp-2">
-                      {results.title}
-                    </p>
                   </div>
-                </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
+        {display == true && (
         <div
-          onClick={() => setDisplay("none")}
-          className="w-screen z-10 absolute h-screen bg-black/80"
-          style={{ display: display == "block" ? "block" : "none" }}
-        ></div>
+          onClick={() => setDisplay(false)}
+          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
+        >
+          <div className="w-[512px] h-[280px] z-20 top-[30%]">
+            <div className="w-full h-full relative ">
+              <button
+                onClick={() => setDisplay(false)}
+                className="w-5 h-5 absolute z-30 right-3 top-3"
+              >
+                x
+              </button>
+              <iframe
+                className="w-full h-full absolute"
+                title="trailer"
+                src={`https://www.youtube.com//embed/${video}`}
+                allowFullScreen
+              >
+                {" "}
+              </iframe>
+            </div>
+          </div>
+        </div>
+      )}
       </>
     );
   }

@@ -22,7 +22,7 @@ const SeeMore = () => {
     >
       <path
         d="M1.3335 6.00016H10.6668M10.6668 6.00016L6.00016 1.3335M10.6668 6.00016L6.00016 10.6668"
-        stroke={theme == "dark" ? "black" : "white"}
+        stroke={theme == "light" ? "black" : "white"}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

@@ -100,7 +100,7 @@ const Lists = ({ title }: { title: string }) => {
               className="w-full h-[77%] hover:bg-primary/30"
             />
             
-            <div className="w-full h-[33%] p-2 pt-4 dark:bg-[#27272A] light:bg-muted">
+            <div className="w-full h-[33%] p-2 pt-4 dark:bg-[#27272A] bg-gray-500/30">
               <div>
                 <div className="flex gap-2">
                   <Star width="18px" height="20px"/>

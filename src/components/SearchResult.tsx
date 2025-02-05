@@ -47,10 +47,10 @@ const SearchResult = ({searchValue}:props) => {
         router.push(`/search/?value=${searchValue}&page=1`)
       }
     return(
-        <div className="w-full  border border-[#27272A] bg-[#09090B] top-10 p-2 rounded-lg flex-col">
+        <div className="w-full  border border-[#27272A] dark:bg-[#09090B] bg-white top-10 p-2 rounded-lg flex-col">
            <div className="w-full h-[90%] flex flex-col gap-2 p-4">
              {searchResult.map((movie:data, index)=>(
-                <div onClick={() => handleMovieClick(movie.id)} className="w-full h-[116px] border-b border-b-[#27272A]  item-center pb-2 flex justify-between hover:bg-white/20 rounded-md " key={index}>
+                <div onClick={() => handleMovieClick(movie.id)} className="w-full h-[116px] border-b border-b-gray-500/30  item-center pb-2 flex justify-between hover:bg-white/20  " key={index}>
                     <div className="w-[80%] flex gap-x-2">
                         <img className="h-[100%] w-[20%] rounded-md" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
                     <div>
@@ -58,7 +58,7 @@ const SearchResult = ({searchValue}:props) => {
                         <div className="flex gap-1">
                           <Star width="18px" height="20px"/>
                           <div className="flex items-center">
-                            <p className="font-semibold">{movie.vote_average}</p>
+                            <p className="font-semibold">{Math.round((movie.vote_average)*10)/10}</p>
                             <p className="text-gray-400 text-sm">/10</p>
                             </div>
                         </div>

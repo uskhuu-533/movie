@@ -59,7 +59,7 @@ const CategorySimilar = ({
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
                   className="w-full h-[75%] hover:bg-primary/30"
                 />
-                <div className="w-full h-[25%] font-semibold text-xl p-2 bg-[#27272A] line-clamp-2">
+                <div className="w-full h-[25%] font-semibold text-xl p-2 bg-gray-500/30 line-clamp-2">
                   <div>
                     <div className="flex">
                       <Star width="18px" height="20px"/>

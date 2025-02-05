@@ -6,7 +6,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import { Dispatch, useEffect, useState } from "react"
 import Right from "./icon/Right";
-import GenreList from "./Genre-List";
+
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import SearchMovies from "./SearchMovies";

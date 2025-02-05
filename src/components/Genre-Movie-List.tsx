@@ -28,7 +28,7 @@ type Movie = {
   vote_average: number;
 };
 
-const GenreList = ({ genreID }: Props) => {
+const GenreMovieList = ({ genreID }: Props) => {
   const router = useRouter();
   const [data, setData] = useState<ApiResponse>({
     results: [],
@@ -65,14 +65,14 @@ const GenreList = ({ genreID }: Props) => {
 
   return (
     <>
-      {isLoading == false ? (
-        <div className="w-[69%]">
-          <div className="text-xl font-semibold py-5">
+    
+        <div className="w-[69%] relative h-[2125px]">
+        {isLoading == false ? (  <><div className="text-xl font-semibold py-5">
             {" "}
             titles : {data.total_results}{" "}
           </div>
           <div className="grid grid-flow-row grid-cols-4 gap-10">
-            {movie.map((el: Movie, index) => (
+            {movie?.map((el: Movie, index) => (
               <div
                 key={index}
                 className="overflow-hidden relative bg-secondary rounded-lg group/item"
@@ -83,8 +83,8 @@ const GenreList = ({ genreID }: Props) => {
                   className="h-[70%] w-full  "
                   src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
                 />
-                {/* <Image src={`https://image.tmdb.org/t/p/w500/${el.poster_path}&w=2048&q=75`} height={50} alt="" width={500} quality={30}/> */}
-                <div className="h-[30%] bg-[#27272A] w-full p-4">
+              
+                <div className="h-[30%] bg-gray-500/30 w-full p-4">
                   <div>
                     <div className="flex gap-2">
                       <Star width="18px" height="20px" />
@@ -100,16 +100,19 @@ const GenreList = ({ genreID }: Props) => {
                   </div>
                 </div>
               </div>
+              
             ))}
           </div>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             data={data}
-          />
+          /></>) : null}
+       
         </div>
-      ) : null}
+      
+     
     </>
   );
 };
-export default GenreList;
+export default GenreMovieList 

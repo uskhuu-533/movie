@@ -90,9 +90,9 @@ const SearchMovies = ({ searchValue }: Props) => {
   return (
     <>
       {isLoading == false ? (
-        <div className="w-[69%]">
-          <div> titles : {}</div>
-          <div className="flex flex-wrap gap-10">
+        <div className="w-full relative mb-[200px]">
+          <div className="py-5"> titles : {}</div>
+          <div className="grid grid-flow-row grid-cols-4 gap-10 h-full">
             {movie
               .filter((el: Movie) => {
                 if (genreID.length > 0 ) {
@@ -104,15 +104,15 @@ const SearchMovies = ({ searchValue }: Props) => {
               .map((el: Movie, index) => (
                 <div
                   key={index}
-                  className="h-[344px] w-[175px] overflow-hidden relative rounded-lg"
+                  className="overflow-hidden relative rounded-lg h-[430px]"
                   onClick={() => handleMovieDetail(el.id)}
                 >
                      <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
                   <img
                     className="h-[70%] w-full"
-                    src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
                   />
-                    <div className="h-[30%] bg-[#27272A] w-full p-4">
+                    <div className="h-[30%] bg-gray-500/30 w-full p-4">
                   <div>
                     <div className="flex gap-2">
                       <Star width="18px" height="20px" />
@@ -133,6 +133,7 @@ const SearchMovies = ({ searchValue }: Props) => {
           <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
         </div>
       ) : null}
+      
     </>
   );
 };

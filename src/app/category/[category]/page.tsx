@@ -53,7 +53,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
         getMovie()
       }, [category, currentPage])
   return (<>
-   <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
+   <div className="flex dark:text-white flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
     <Header/>
     {isLoading == false && (<CategorySimilar currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} category={category}/>)}
     <Footer />

@@ -20,7 +20,7 @@ export default function Home() {
  
 
   return (
-   <div className="flex text-white flex-col w-screen bg-[#09090B] gap-[30px] overflow-hidden">
+   <div className="flex dark:text-white flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
     <Header/>
     <GenrePage />
     <Footer />
