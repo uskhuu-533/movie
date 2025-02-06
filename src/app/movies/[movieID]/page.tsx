@@ -82,7 +82,7 @@ export default function MovieDetailsPage() {
   const { movieDetails, actorsDetails, trailer, similaMovies } = movieData ??{}
 
   return (
-    <div className="flex dark:text-white items-center flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
+    <div className="flex dark:text-white items-center flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] ">
       <Header />
       <MovieDetails
         movieDetails={movieDetails}

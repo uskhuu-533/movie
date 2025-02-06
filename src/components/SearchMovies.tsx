@@ -3,9 +3,9 @@
 import { useState, useEffect, Dispatch } from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { clear } from "node:console";
 import Pagination from "./Pagination";
 import Star from "./icon/Star";
+import GenreLoading from "./loading/Genre-Movie-Loading";
 
 type Props = {
   searchValue: string;
@@ -71,12 +71,31 @@ const SearchMovies = ({ searchValue }: Props) => {
       setIsLoading(false);
     }
   };
+const getMov = async() => {
+  try {
+    
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en`,
+      options
+    );
+    const result = await response.json();
+    console.log((result));
+    
+    
 
+    
+  } catch (error) {
+    console.log(error);
+  }finally {
+
+  }
+}
   const movie = data.results;
 
 
   useEffect(() => {
     getMovie();
+    getMov()
   }, [currentPage, searchValue]);
   const handleChangePage = (page: number) => {
     // router.push(`/genres/?genresid${genreID}?page=${page}`)
@@ -90,8 +109,8 @@ const SearchMovies = ({ searchValue }: Props) => {
   return (
     <>
       {isLoading == false ? (
-        <div className="w-full relative mb-[200px]">
-          <div className="py-5"> titles : {}</div>
+        <div className="w-[70%] pb-[50px]">
+          <div className=""> titles : {}</div>
           <div className="grid grid-flow-row grid-cols-4 gap-10 h-full">
             {movie
               .filter((el: Movie) => {
@@ -129,10 +148,11 @@ const SearchMovies = ({ searchValue }: Props) => {
                 </div>
                 </div>
               ))}
+             
           </div>
           <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
         </div>
-      ) : null}
+      ) : <GenreLoading />}
       
     </>
   );

@@ -5,7 +5,7 @@
 import { useRouter } from "next/navigation";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
-import { Params } from "next/dist/server/request/params";
+
 
 type data = {
   id: number;
@@ -43,12 +43,12 @@ const CategorySimilar = ({
       <div  className="w-screen flex justify-center">
         <div className="w-[1080px] py-[100px] flex flex-col items-center justify-center gap-8 ">
           <div className="w-full justify-between flex h-9">
-            <p className="text-foreground text-2xl text-white font-semibold">
-              {category}
+            <p className="capitalize text-foreground text-2xl text-white font-semibold">
+              {category?.toString().replace("_", " ")}
             </p>
           </div>
           <div className="w-full grid grid-flow-col grid-rows-4 gap-8">
-            {data.results.map((el: data, index) => (
+            {data?.results?.map((el: data, index) => (
               <div
                 key={index}
                 className="rounded-lg relative overflow-hidden "

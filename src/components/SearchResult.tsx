@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleClientScriptLoad } from "next/script";
 import { useQueryState } from "nuqs";
 import Star from "./icon/Star";
 import SeeMore from "./icon/SeeMore";

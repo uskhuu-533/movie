@@ -1,14 +1,14 @@
 
 
 "use client"
-import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
-import { Dispatch, useEffect, useState } from "react"
+
+
+import {  useEffect, useState } from "react"
 import Right from "./icon/Right";
 
 import { useRouter } from "next/navigation";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
 import SearchMovies from "./SearchMovies";
 
 ;
@@ -90,7 +90,7 @@ const SearchResultPage = () => {
                   }}
                 >
                   <p
-                    className={`text-[14px] text-white font-semibold ${inter.className}`}
+                    className={`text-[14px] text-white font-semibold `}
                   >
                     {el.name}
                   </p>

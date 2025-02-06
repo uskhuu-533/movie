@@ -5,7 +5,7 @@ import Star from "./icon/Star";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
-import Homeloading from "./Loading";
+import Homeloading from "./loading/Loading";
 
 
 type data = {

@@ -1,9 +1,9 @@
 "use client";
 
-import { AppIsrManifestAction } from "next/dist/server/dev/hot-reloader-types";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import SearchIcon from "./icon/Search-Icon";
+
 import SeeMore from "./icon/SeeMore";
 // import { Star } from "lucide-react";
 import Star from "./icon/Star";

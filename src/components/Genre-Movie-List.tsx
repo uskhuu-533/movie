@@ -1,19 +1,16 @@
 "use client";
 
-import { useState, useEffect, Dispatch } from "react";
+import { useState, useEffect} from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { getMovieGenres } from "@/utils/requests";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
-import Image from "next/image";
+import GenreLoading from "./loading/Genre-Movie-Loading";
 
 
 type Props = {
   genreID: number[];
-};
-type page = {
-  total_pages: number;
 };
 type ApiResponse = {
   results: Movie[];
@@ -66,7 +63,7 @@ const GenreMovieList = ({ genreID }: Props) => {
   return (
     <>
     
-        <div className="w-[69%] relative h-[2125px]">
+        <div className="w-[69%] relative h-fit">
         {isLoading == false ? (  <><div className="text-xl font-semibold py-5">
             {" "}
             titles : {data.total_results}{" "}
@@ -107,7 +104,7 @@ const GenreMovieList = ({ genreID }: Props) => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             data={data}
-          /></>) : null}
+          /></>) : <GenreLoading />}
        
         </div>
       

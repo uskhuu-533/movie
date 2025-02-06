@@ -1,5 +1,5 @@
 "use client";
-import { Inter } from "next/font/google";
+
 import { useEffect, useState } from "react";
 import Right from "./icon/Right";
 import Bottom from "./icon/Bottom";
@@ -11,6 +11,7 @@ import { getGenre } from "@/utils/requests";
 import SearchIcon from "./icon/Search-Icon";
 import { useTheme } from "next-themes";
 import Moon from "./icon/Moon";
+import Close from "./icon/Close";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,7 @@ const Header = () => {
   const [value, setValue] = useQueryState("value");
   const [genreID, setGenreID] = useQueryState("genresid", {
     defaultValue: [],
-    parse: (value) => value.split(",").map(Number),
+    parse: (value) => value.split(",").map(Number).filter((num)=>num!==0),
     serialize: (array) => array.join(","),
   });
   const [Page, setPage] = useState("");
@@ -55,7 +56,8 @@ const Header = () => {
       } finally {
       }
     };
-
+    console.log(genreID);
+    
     fetchgetGenre();
   }, []);
   const { setTheme } = useTheme()
@@ -88,7 +90,7 @@ const Header = () => {
   
 
   return (<>
- <div onClick={()=> setDisplay(false)} className="w-screen z-20  absolute h-screen " style={{display : display == true ? "block" : "none" }} ></div>
+ <div onClick={()=> setDisplay(false)} className="w-screen z-20  fixed  h-screen " style={{display : display == true ? "block" : "none" }} ></div>
     <div className="w-full z-30 h-[60px]  justify-center items-center fixed dark:bg-[#09090B] flex bg-white">
       <div className="w-[1280px] h-[60px]  flex justify-between items-center">
         <Logo fill={"#4338CA"} />
@@ -141,7 +143,7 @@ const Header = () => {
                   <div
                     key={el.id}
                     onClick={() => toggleGenre(el.id)}
-                    className="border border-[#27272A] z-30 rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center "
+                    className="border border-[#27272A] z-30 rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-1 flex items-center "
                     style={{
                       background: genreID.includes(el.id) ? "white" : "none",
                       color : genreID.includes(el.id) ? "black" : "white",
@@ -150,7 +152,7 @@ const Header = () => {
                     <p>
                       {el.name}
                     </p>
-                    <Right />
+                    {genreID.includes(el.id)?<Close />:<Right />}
                   </div>
                 ))}
               </div>

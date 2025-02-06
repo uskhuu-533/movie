@@ -23,14 +23,20 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
   }
   const pages1 = pages.slice(
     currentPage >= 2 ? currentPage - 2 : currentPage - 1,
-    currentPage + 2
+    currentPage >=498  ? currentPage : currentPage + 2
   );
   const changePage = (page: number) => {
     // router.push(`${window.location.pathname}?page=${page}`,{scroll:false})
     setCurrentPage(page);
   };
+  const lastPage = () => {
+    {page >= 500 ? setCurrentPage(500) : setCurrentPage(page)}
+  }
+  if(page > 500){
+    pages.length = 500
+  }
   return (
-    <div className="flex gap-4 pt-4 items-center sticky mb-[10px]">
+    <div className="flex gap-4  pt-4 items-center">
       {currentPage > 1 && (
         <button onClick={() => setCurrentPage(currentPage - 1)}>
           
@@ -57,11 +63,10 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
 
       {currentPage < page-4 && (
         <>
-          {" "}
           <p>...</p>
-          <button onClick={() => setCurrentPage(page)}>{page}</button>{" "}
+          <button onClick={() => lastPage()}>{page >= 500 ? 500 : page}</button>{" "}
         </>
-      )}{currentPage !== page && ( <button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>)}
+      )}{currentPage !== 500 && ( <button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>)}
     </div>
   );
 };
