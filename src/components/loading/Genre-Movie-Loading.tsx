@@ -6,11 +6,11 @@ const GenreLoading = () => {
         
      
       </div>
-      <div className="grid animate-pulse grid-flow-row grid-cols-4 gap-10">
+      <div className="animate-pulse grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
         {movie?.map((el, index) => (
           <div
             key={index}
-            className="overflow-hidden  h-[400px] bg-gray-500/30  relative bg-secondary rounded-lg group/item"
+            className="overflow-hidden  h-[381px] bg-gray-500/30  relative bg-secondary rounded-lg group/item"
           
           >
        

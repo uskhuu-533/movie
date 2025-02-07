@@ -23,9 +23,12 @@ const GenrePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [genreID, setGenreID] = useQueryState<number[]>("genresid", {
     defaultValue: [],
-    parse: (value) => value.split(",").map(Number).filter((num)=>num !== 0),
+    parse: (value) =>
+      value
+        .split(",")
+        .map(Number)
+        .filter((num) => num !== 0),
     serialize: (array) => array.join(","),
-
   });
   // const searchParams = useSearchParams();
   // const genreID = (searchParams.get("genres") || "").split(",");
@@ -33,15 +36,15 @@ const GenrePage = () => {
     "page",
     parseAsInteger.withDefault(1)
   );
- 
+
   const [Page, setPage] = useState("");
-  const [value, setValue] = useQueryState("value", {defaultValue : ""})
-  const [theme, setTheme] = useState<null | string>("")
+  const [value, setValue] = useQueryState("value", { defaultValue: "" });
+  const [theme, setTheme] = useState<null | string>("");
   // const searchParams = useSearchParams()
 
   useEffect(() => {
     const path = window.location.pathname;
-    console.log(path)
+    console.log(path);
     if (path === "/search") {
       setPage("search");
     } else if (path === "/genres") {
@@ -52,22 +55,21 @@ const GenrePage = () => {
   }, []);
   useEffect(() => {
     const fetchgetGenre = async () => {
-          try {
-            setIsLoading(true)
-            const data = await getGenre();
-            setGenres(data.genres); 
-          } catch (error) {
-            setError("");
-            console.error( error);
-          }finally{
-         
-            setIsLoading(false)
-          }
-        };
-      
+      try {
+        setIsLoading(true);
+        const data = await getGenre();
+        setGenres(data.genres);
+      } catch (error) {
+        setError("");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchgetGenre();
   }, []);
-  console.log(genreID)
+  console.log(genreID);
 
   const toggleGenre = (id: number) => {
     // const params = new URLSearchParams(searchParams);
@@ -75,55 +77,64 @@ const GenrePage = () => {
     // params.set("genresid", genreID.join(""));
     // router.push(`?${params.toString()}`);
     const updatedGenres = genreID.includes(id)
-      ? genreID.filter((genre) => genre !== id && genre !== 0 )
+      ? genreID.filter((genre) => genre !== id && genre !== 0)
       : [...genreID, id];
-      
+
     setGenreID(updatedGenres);
-    setCurrentPage(1)
+    setCurrentPage(1);
     const queryParam = updatedGenres.join(",");
     // router.push(`/genres?genresid=${queryParam}&page=1`);
   };
 
   return (
-    <div className="w-full min-h-screen flex justify-center pb-10  dark:text-white" >
-      <div className="w-[1280px] mt-[150px] flex gap-4  @5xl:flex-col" >
-          {Page == "search" ? (<>
-            <SearchMovies searchValue={value}/>
-            <div className="h-full  border border-[#27272A]"></div></>):null}
-        <div className="w-[28%] "> 
-         <div className="text-3xl py-8 font-bold">Search Filter</div>
-         <div className="h-fit sticky top-[100px]  z-10 "><h2 className="text-2xl py-2 font-bold">Genres</h2>
-          <p className="text-xl pb-5">See lists of movies by genre</p>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : error ? (
-            <div>{error}</div>
-          ) : (
-            <div className="flex flex-wrap gap-4 w-full">
-              {genres.map((el: Genre, index) => (
-                <div
-                  onClick={() => toggleGenre(el.id)}
-                  key={index}
-                  className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
-                  style={{
-                    background: genreID.includes(el.id) ? "white" : "none",
-                    color: genreID.includes(el.id) ? "black" : "white",
-                  }}
-                >
-                  <p
-                    className={`text-[14px] font-semibold ${inter.className}`}
+    <div className="w-full  flex justify-center pb-10  dark:text-white">
+      <div className="max-w-[1280px] mt-[150px] flex lg:flex-row gap-4 flex-col">
+        {Page == "search" ? (
+          <>
+            <SearchMovies searchValue={value} />
+            <div className="h-full  border border-[#27272A]"></div>
+          </>
+        ) : null}
+        <div className="lg:w-[28%] px-10 lg:px-2 w-full ">
+          <div className="text-3xl py-8 font-bold">Search Filter</div>
+          <div className="h-fit sticky top-[100px]  z-10 ">
+            <h2 className="text-2xl py-2 font-bold">Genres</h2>
+            <p className="text-xl pb-5">See lists of movies by genre</p>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : error ? (
+              <div>{error}</div>
+            ) : (
+              <div className="flex flex-wrap gap-4 w-full">
+                {genres.map((el: Genre, index) => (
+                  <div
+                    onClick={() => toggleGenre(el.id)}
+                    key={index}
+                    className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
+                    style={{
+                      background: genreID.includes(el.id) ? "white" : "none",
+                      color: genreID.includes(el.id) ? "black" : "white",
+                    }}
                   >
-                    {el.name}
-                  </p>
-               {genreID.includes(el.id) ? <Close />:  <Right />}
-                </div>
-              ))}
-            </div>
-          )}</div> 
+                    <p
+                      className={`text-[14px] font-semibold ${inter.className}`}
+                    >
+                      {el.name}
+                    </p>
+                    {genreID.includes(el.id) ? <Close /> : <Right />}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {Page == "genres" ? (<><div className="h-full h-[2280px] border border-[#27272A]"></div><GenreMovieList genreID={genreID} /></>): null}
-     
+        {Page == "genres" ? (
+          <>
+            <div className="h-full h-full border border-[#27272A]"></div>
+            <GenreMovieList genreID={genreID} />
+          </>
+        ) : null}
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQueryState } from "nuqs";
 import Star from "./icon/Star";
 import SeeMore from "./icon/SeeMore";
+import SearchLoading from "./loading/Search-Loading";
 type props ={
     searchValue : string
 }
@@ -16,7 +16,7 @@ type data = {
 const SearchResult = ({searchValue}:props) => {
     const router = useRouter()
     const [searchResult, setSearchResult] = useState<data[]>([])
-    const [value, setValue] = useQueryState("value")
+    const [isLoading, setIsLoading] = useState(false)
       const options = {
         method: "GET",
         headers: {
@@ -28,10 +28,12 @@ const SearchResult = ({searchValue}:props) => {
       useEffect(() => {
         const getGenres = async () => {
           try {
+            setIsLoading(true)
             const response =await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en-US&page=1`, options)
             const result = await response.json();
             console.log()
             setSearchResult(result.results);
+            setIsLoading(false)
           } catch (error) {
             console.error("Error fetching genres:", error);
           }
@@ -46,12 +48,12 @@ const SearchResult = ({searchValue}:props) => {
         router.push(`/search/?value=${searchValue}&page=1`)
       }
     return(
-        <div className="w-full  border border-[#27272A] dark:bg-[#09090B] bg-white top-10 p-2 rounded-lg flex-col">
-           <div className="w-full h-[90%] flex flex-col gap-2 p-4">
+        <div className="w-full  border border-[#27272A] dark:bg-[#09090B] bg-white top-14 lg:top-10 p-2 rounded-lg flex-col">
+           {isLoading == false ?(<div className="w-full h-[90%] flex flex-col gap-2 p-4">
              {searchResult.map((movie:data, index)=>(
                 <div onClick={() => handleMovieClick(movie.id)} className="w-full h-[116px] border-b border-b-gray-500/30  item-center pb-2 flex justify-between hover:bg-white/20  " key={index}>
                     <div className="w-[80%] flex gap-x-2">
-                        <img className="h-[100%] w-[20%] rounded-md" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+                        <img className="h-[100%] w-[20%] rounded-md" src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}/>
                     <div>
                         <p>{movie.title}</p>
                         <div className="flex gap-1">
@@ -72,7 +74,7 @@ const SearchResult = ({searchValue}:props) => {
                         </div>
                 </div>
             ))}
-            </div>
+            </div>):<SearchLoading />}
             <div className="w-full h-1/10 px-4">
             <div onClick={handleJumpResults}>
                 See all results for "{searchValue}"

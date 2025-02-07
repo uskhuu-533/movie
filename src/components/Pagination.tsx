@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 type Props = {
   currentPage: number;
   setCurrentPage: Function;
-  data: ApiResponse;
+  data: ApiResponse | null
 };
 type ApiResponse = {
-  total_pages: number;
+  total_pages: number | undefined;
 };
 
 const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
   console.log(currentPage);
   
   const router = useRouter();
-  const page = data.total_pages;
+  const page = data?.total_pages;
   const pages = [];
-
+if(page){
   for (let i = 1; i <= page; i++) {
     pages.push(i);
   }
@@ -68,6 +68,6 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
         </>
       )}{currentPage !== 500 && ( <button onClick={() => setCurrentPage(currentPage + 1)}>Next</button>)}
     </div>
-  );
+  );}
 };
 export default Pagination;

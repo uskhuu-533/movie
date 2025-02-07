@@ -88,13 +88,25 @@ const Upcoming = () => {
         <CarouselContent>
           {movies.map((el: data, index) => (
             <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
-              <div className="w-full w-max-screem relative flex items-center overflow-hidden h-[600px] ">
-                <div className="absolute z-10 text-white  space-y-4 left-[10%]">
-                  <div className={`${inter.className} `}>
-                    <p className={` text-[16px]`}>Now playing:</p>
-                    <p className="w-52 text-2xl font-semibold truncate">
-                      {el.title}
-                    </p>
+              <div className="w-full w-max-screem relative lg:flex items-center overflow-hidden h-[600px] ">
+                <div className=" lg:max-2xl:h-full sm:max-lg:h-[50%] overflow-hidden flex items-center ">
+                  <img
+                    onClick={() => handleMovieClick(el.id)}
+                    src={`https://image.tmdb.org/t/p/original/${el.backdrop_path}`}
+                    className="w-full  h-auto min-h-[246px]"
+                  />
+                </div>
+
+                <div className="lg:absolute  z-10 text-white p-10  space-y-4 lg:px-36">
+                  <div
+                    className={`${inter.className} lg:flex-col flex w-full lg:w-fit justify-between`}
+                  >
+                    <div>
+                      <p className={` text-[16px]`}>Now playing:</p>
+                      <p className="w-52 text-2xl font-semibold truncate">
+                        {el.title}
+                      </p>
+                    </div>
                     <div className="flex items-center gap-2">
                       <Star height="32px" width={"30px"} />
                       <div className="flex items-center">
@@ -103,7 +115,7 @@ const Upcoming = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="w-[302px] text-md font-[500] line-clamp-5 ">
+                  <div className="lg:w-[302px] text-md font-[500] line-clamp-5 ">
                     {el.overview}
                   </div>
                   <button
@@ -113,18 +125,13 @@ const Upcoming = () => {
                     Watch trailer
                   </button>
                 </div>
-                <img
-                  onClick={() => handleMovieClick(el.id)}
-                  src={`https://image.tmdb.org/t/p/original/${el.backdrop_path}`}
-                  className="absolute  w-full h-auto"
-                />
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="absolute left-[5%]" />
-        <CarouselNext className="absolute right-[5%]" />
+        <CarouselPrevious className="absolute invisible lg:visible left-[5%]" />
+        <CarouselNext className="absolute invisible lg:visible right-[5%]" />
       </Carousel>
     </>
   );

@@ -20,10 +20,10 @@ type Movie = {
   id: number;
   results: string;
   genre_ids: Array<Genres>;
-  vote_average : number;
-  title : string
+  vote_average: number;
+  title: string;
 };
-type Genres = {}
+type Genres = {};
 
 const SearchMovies = ({ searchValue }: Props) => {
   const router = useRouter();
@@ -42,7 +42,7 @@ const SearchMovies = ({ searchValue }: Props) => {
     parse: (value) => value.split(",").map(Number),
     serialize: (array) => array.join(","),
   });
-  const [totalResult, setResults] = useState()
+  const [totalResult, setResults] = useState();
   // console.log(genreID);
 
   const options: object = {
@@ -63,39 +63,30 @@ const SearchMovies = ({ searchValue }: Props) => {
       const result = await response.json();
 
       setData(result);
-
-      
     } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
-const getMov = async() => {
-  try {
-    
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en`,
-      options
-    );
-    const result = await response.json();
-    console.log((result));
-    
-    
-
-    
-  } catch (error) {
-    console.log(error);
-  }finally {
-
-  }
-}
+  const getMov = async () => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en`,
+        options
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
   const movie = data.results;
-
 
   useEffect(() => {
     getMovie();
-    getMov()
+    getMov();
   }, [currentPage, searchValue]);
   const handleChangePage = (page: number) => {
     // router.push(`/genres/?genresid${genreID}?page=${page}`)
@@ -103,57 +94,64 @@ const getMov = async() => {
   };
   const handleMovieDetail = (movieID: number) => {
     router.push(`/movies/${movieID}`);
-  
   };
   // console.log(movie)
   return (
     <>
-      {isLoading == false ? (
-        <div className="w-[70%] pb-[50px]">
-          <div className=""> titles : {}</div>
-          <div className="grid grid-flow-row grid-cols-4 gap-10 h-full">
-            {movie
-              .filter((el: Movie) => {
-                if (genreID.length > 0 ) {
-                  return genreID?.map((id)=>el.genre_ids.includes(id)).includes(true)
-                } else {
-                  return movie;
-                }
-              })
-              .map((el: Movie, index) => (
-                <div
-                  key={index}
-                  className="overflow-hidden relative rounded-lg h-[430px]"
-                  onClick={() => handleMovieDetail(el.id)}
-                >
-                     <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
-                  <img
-                    className="h-[70%] w-full"
-                    src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-                  />
+      <div className="lg:w-[70%] px-5 w-full pb-[50px]">
+        {isLoading == false ? (
+          <>
+            <div className=""> Results for "{searchValue}"</div>
+            <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
+              {movie
+                .filter((el: Movie) => {
+                  if (genreID.length > 0) {
+                    return genreID
+                      ?.map((id) => el.genre_ids.includes(id))
+                      .includes(true);
+                  } else {
+                    return movie;
+                  }
+                })
+                .map((el: Movie, index) => (
+                  <div
+                    key={index}
+                    className="overflow-hidden relative rounded-lg h-[430px]"
+                    onClick={() => handleMovieDetail(el.id)}
+                  >
+                    <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+                    <img
+                      className="h-[70%] w-full"
+                      src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
+                    />
                     <div className="h-[30%] bg-gray-500/30 w-full p-4">
-                  <div>
-                    <div className="flex gap-2">
-                      <Star width="18px" height="20px" />
-                      <div className="flex items-center">
-                        {" "}
-                        <p className="font-semibold">{el.vote_average}</p>
-                        <p className="text-gray-400 text-sm">/10</p>
+                      <div>
+                        <div className="flex gap-2">
+                          <Star width="18px" height="20px" />
+                          <div className="flex items-center">
+                            {" "}
+                            <p className="font-semibold">{el.vote_average}</p>
+                            <p className="text-gray-400 text-sm">/10</p>
+                          </div>
+                        </div>
+                        <p className="text-xl font-semibold line-clamp-2">
+                          {el.title}
+                        </p>
                       </div>
                     </div>
-                    <p className="text-xl font-semibold line-clamp-2">
-                      {el.title}
-                    </p>
                   </div>
-                </div>
-                </div>
-              ))}
-             
-          </div>
-          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
-        </div>
-      ) : <GenreLoading />}
-      
+                ))}
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              data={data}
+            />
+          </>
+        ) : (
+          <GenreLoading />
+        )}
+      </div>
     </>
   );
 };

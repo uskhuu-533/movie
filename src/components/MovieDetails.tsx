@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +22,7 @@ type Movie = {
   backdrop_path: string;
   overview: string;
   genres: { id: number; name: string }[] | undefined;
-  runtime: number
+  runtime: number;
 };
 
 type ActorsDetails = {
@@ -51,12 +50,14 @@ type Props = {
   actorsDetails: ActorsDetails | undefined;
   trailer: Trailer | undefined;
   similaMovies: SimilarMovies["results"] | undefined;
+
 };
 const MovieDetails = ({
   movieDetails,
   actorsDetails,
   trailer,
   similaMovies,
+
 }: Props) => {
   console.log(movieDetails);
   console.log(similaMovies);
@@ -82,42 +83,46 @@ const MovieDetails = ({
       const category = movieDetails.id;
       router.push(`/category/${category}/similar?page=1`);
     };
-    const hour = Math.floor((movieDetails.runtime)/60)
-    const minut = movieDetails.runtime-hour*60
+    const hour = Math.floor(movieDetails.runtime / 60);
+    const minut = movieDetails.runtime - hour * 60;
     return (
       <>
-        <div className="w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
-          <div className="w-full h-[72px] flex justify-between">
+        <div className="max-w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
+          <div className="w-full h-[72px] flex justify-between xl:px-0 px-8">
             <div>
               <h1 className="text-3xl font-bold">{movieDetails.title}</h1>
               <p className="text-lg">
-                {movieDetails.release_date} • {movieDetails.origin_country[0]} • {hour}h {minut}m
-                
+                {movieDetails.release_date} • {movieDetails.origin_country[0]} •{" "}
+                {hour}h {minut}m
               </p>
             </div>
             <div>
               <p className="text-sm">Rating</p>
               <div className="flex">
-                <Star height="35px" width="35px"/>
+                <Star height="35px" width="35px" />
                 <div>
-                <div className="flex items-center ">
-                  <div className="text-bold text-md">{movieDetails.vote_average}/</div>
-                  <div className="text-sm ">10</div>
-                </div>
-                <div className="text-gray-500/30 text-sm">{movieDetails.vote_count}</div>
+                  <div className="flex items-center ">
+                    <div className="text-bold text-md">
+                      {movieDetails.vote_average}/
+                    </div>
+                    <div className="text-sm ">10</div>
+                  </div>
+                  <div className="text-gray-500/30 text-sm">
+                    {movieDetails.vote_count}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex justify-between h-[428px] w-full">
-            <div className="w-[28%] h-full overflow-hidden rounded-sm">
+          <div className="flex justify-between h-[428px] px-9 xl:px-0 w-full">
+            <div className="w-[28%] lg:block hidden h-full overflow-hidden rounded-sm">
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
               />
             </div>
-            <div className="w-[70%] h-full relative rounded-sm overflow-hidden">
+            <div className="lg:w-[70%] w-full h-auto relative rounded-sm overflow-hidden">
               <img
-                className="bg-[rgba(0, 0, 0, 0.4)] h-full relative"
+                className="bg-[rgba(0, 0, 0, 0.4)] h-auto w-full relative"
                 src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`}
               />
               <div className="absolute flex items-center gap-4 bottom-8 left-6">
@@ -133,19 +138,28 @@ const MovieDetails = ({
               </div>
             </div>
           </div>
-          <div className="flex">
-            {genres &&
-              genres.map((genre: Genre) => (
-                <div
-                  className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
-                  key={genre.id}
-                >
-                  {genre.name}
-                </div>
-              ))}
+          <div className="flex xl:px-0 px-8 gap-4">
+          <div className="w-[28%] lg:hidden  h-full overflow-hidden rounded-sm">
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+              />
+            </div>
+            <div className=" w-full flex flex-col gap-4">
+              <div className="flex gap-2 w-full">
+                {genres &&
+                  genres.map((genre: Genre) => (
+                    <div
+                      className="flex items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
+                      key={genre.id}
+                    >
+                      {genre.name}
+                    </div>
+                  ))}
+              </div>
+              <div className="text-lg">{movieDetails.overview}</div>
+            </div>
           </div>
-          <div className="text-lg">{movieDetails.overview}</div>
-          <div className="w-full flex flex-col text-lg gap-4">
+          <div className="w-full flex flex-col text-lg gap-4 xl:px-0 px-8">
             <div className="w-full border-b flex gap-5 border-b-[#27272A]">
               <p className="font-bold">Director:</p>
               <p className="">{director}</p>
@@ -161,9 +175,8 @@ const MovieDetails = ({
               ))}
             </div>
           </div>
-   
 
-          <div className="w-full flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4 xl:px-0 px-8">
             <div className="flex w-full justify-between">
               <div className="text-2xl font-bold ">More like this</div>
               <div className="flex items-center gap-1 font-semibold">
@@ -171,11 +184,11 @@ const MovieDetails = ({
                 <SeeMore />
               </div>
             </div>
-            <div className="w-full h-[381px] grid grid-flow-row grid-cols-5 gap-8">
+            <div className="w-full flex flex-wrap gap-8">
               {similaMovies.map((results, index: number) => (
                 <div
                   key={index}
-                  className="rounded-lg overflow-hidden"
+                  className="rounded-lg h-[381px] w-[190px] overflow-hidden"
                   onClick={() => handleMovieClick(results.id)}
                 >
                   <img
@@ -205,30 +218,30 @@ const MovieDetails = ({
           </div>
         </div>
         {display == true && (
-        <div
-          onClick={() => setDisplay(false)}
-          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
-        >
-          <div className="w-[512px] h-[280px] z-20 top-[30%]">
-            <div className="w-full h-full relative ">
-              <button
-                onClick={() => setDisplay(false)}
-                className="w-5 h-5 absolute z-30 right-3 top-3"
-              >
-                x
-              </button>
-              <iframe
-                className="w-full h-full absolute"
-                title="trailer"
-                src={`https://www.youtube.com//embed/${video}`}
-                allowFullScreen
-              >
-                {" "}
-              </iframe>
+          <div
+            onClick={() => setDisplay(false)}
+            className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
+          >
+            <div className="w-[512px] h-[280px] z-20 top-[30%]">
+              <div className="w-full h-full relative ">
+                <button
+                  onClick={() => setDisplay(false)}
+                  className="w-5 h-5 absolute z-30 right-3 top-3"
+                >
+                  x
+                </button>
+                <iframe
+                  className="w-full h-full absolute"
+                  title="trailer"
+                  src={`https://www.youtube.com//embed/${video}`}
+                  allowFullScreen
+                >
+                  {" "}
+                </iframe>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </>
     );
   }

@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MovieDetails from "@/components/MovieDetails";
 import { getMovieDetail } from "@/utils/requests";
+import MovieDetailLoading from "@/components/loading/Movie-Detail-Loading";
 
 type Movie = {
   id: number;
@@ -75,21 +76,20 @@ export default function MovieDetailsPage() {
     }
   }, [movieID]);
 
-  if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+
 
   const { movieDetails, actorsDetails, trailer, similaMovies } = movieData ??{}
 
   return (
     <div className="flex dark:text-white items-center flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] ">
       <Header />
-      <MovieDetails
+      {isLoading == false ?(<MovieDetails
         movieDetails={movieDetails}
         actorsDetails={actorsDetails}
         trailer={trailer}
         similaMovies={similaMovies}
-      />
+       
+      />):<MovieDetailLoading />}
       <Footer />
     </div>
   );

@@ -60,7 +60,7 @@ const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withD
   return (<>
    <div className="flex dark:text-white flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
     <Header/>
-    {isLoading == false && (<CategorySimilar currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} category={"More Like This"}/>)}
+    <CategorySimilar currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} category={"More Like This"} isLoading={isLoading}/>
     <Footer />
    
    </div>

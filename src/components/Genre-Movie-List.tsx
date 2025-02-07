@@ -63,12 +63,12 @@ const GenreMovieList = ({ genreID }: Props) => {
   return (
     <>
     
-        <div className="w-[69%] relative h-fit">
+        <div className="lg:w-[70%] w-full px-5 relative h-fit">
         {isLoading == false ? (  <><div className="text-xl font-semibold py-5">
             {" "}
             titles : {data.total_results}{" "}
           </div>
-          <div className="grid grid-flow-row grid-cols-4 gap-10">
+          <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
             {movie?.map((el: Movie, index) => (
               <div
                 key={index}
