@@ -72,10 +72,10 @@ const GenreMovieList = ({ genreID }: Props) => {
             {movie?.map((el: Movie, index) => (
               <div
                 key={index}
-                className="overflow-hidden relative bg-secondary rounded-lg group/item"
+                className="overflow-hidden relative bg-secondary rounded-lg group/item group"
                 onClick={() => handleMovieDetail(el.id)}
               >
-                <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+                <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
                 <img
                   className="h-[70%] w-full  "
                   src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}

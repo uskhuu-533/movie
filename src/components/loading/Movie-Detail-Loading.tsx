@@ -24,13 +24,13 @@ const MovieDetailLoading = () => {
           
         </div>
       </div>
-      <div className="flex xl:px-0 px-8 gap-4 ">
+      <div className="flex w-full xl:px-0 px-8 gap-4 ">
         <div className="w-[28%] lg:hidden  h-full overflow-hidden bg-gray-500/30 rounded-sm"></div>
         <div className=" w-full flex flex-col gap-4">
-          <div className="flex gap-2 w-full">
+          <div className="flex gap-2 w-full ">
             {genres.map((genre, index) => (
               <div
-                className="flex bg-gray-500/30 h-[30px] w-[80px] items-center px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
+                className="flex bg-gray-500/30 h-[30px] w-[80px] px-2.5 py-0.5 font-semibold border border-[#27272A] rounded-full"
                 key={index}
               ></div>
             ))}
@@ -40,18 +40,18 @@ const MovieDetailLoading = () => {
       </div>
       <div className="w-full flex flex-col text-lg gap-4 xl:px-0 px-8">
         <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-          <p className="font-bold h-6 w-[60px] bg-500/30"></p>
-          <p className="h-6 w-[60px] bg-500/30"></p>
+          <p className="font-bold h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
         </div>
         <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-          <p className="font-bold h-6 w-[60px] bg-500/30"></p>
-          <p className="h-6 w-[60px] bg-500/30"></p>
+          <p className="font-bold h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
         </div>
         <div className="w-full border-b flex gap-5 border-b-[#27272A]">
-          <p className="h-6 w-[60px] bg-500/30"></p>
-          <p className="h-6 w-[60px] bg-500/30"></p>
-          <p className="h-6 w-[60px] bg-500/30"></p>
-          <p className="h-6 w-[60px] bg-500/30"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
+          <p className="h-6 w-[60px] bg-gray-500/30 rounded-full"></p>
        
         </div>
       </div>

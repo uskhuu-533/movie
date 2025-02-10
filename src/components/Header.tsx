@@ -1,18 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Right from "./icon/Right";
+
 import Bottom from "./icon/Bottom";
 import Logo from "./icon/Logo";
 import SearchResult from "./SearchResult";
-import { useRouter } from "next/navigation";
+
 import { useQueryState } from "nuqs";
-import { getGenre } from "@/utils/requests";
+
 import SearchIcon from "./icon/Search-Icon";
 import { useTheme } from "next-themes";
 import Moon from "./icon/Moon";
-import Close from "./icon/Close";
 import WhiteClose from "./icon/WhiteClose";
+import Genre from "./Genre";
+import { Sun } from "lucide-react";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -25,8 +26,6 @@ type props = {
 };
 
 const Header = () => {
-  const router = useRouter();
-  const [genre, setGenre] = useState<Data[]>([]);
   const [display, setDisplay] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [value, setValue] = useQueryState("value");
@@ -52,32 +51,8 @@ const Header = () => {
       setPage("");
     }
   }, []);
-  useEffect(() => {
-    const fetchgetGenre = async () => {
-      try {
-        const data = await getGenre();
-        setGenre(data.genres);
-      } catch (error) {
-        console.error(error);
-      } finally {
-      }
-    };
-    console.log(genreID);
-
-    fetchgetGenre();
-  }, []);
   const { setTheme } = useTheme();
-  const toggleGenre = (id: number) => {
-    const updatedGenres = genreID.includes(id)
-      ? genreID.filter((genre) => genre !== id)
-      : [...genreID, id];
-    {
-      Page == "genres" && setGenreID(updatedGenres);
-    }
-    const queryParam = updatedGenres.join(",");
-    router.push(`/genres?genresid=${queryParam}`);
-    console.log("ajillaa");
-  };
+  const { theme } = useTheme();
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valueE = e.target.value;
@@ -88,8 +63,6 @@ const Header = () => {
   };
   const changeTheme = () => {
     const theme = localStorage.getItem("theme");
-    console.log(theme);
-
     if (theme == "dark") {
       setTheme("light");
     } else {
@@ -151,20 +124,7 @@ const Header = () => {
                 </div>
                 <div className="w-full border border-gray-500/30"></div>
                 <div className="flex flex-wrap gap-4">
-                  {genre.map((el) => (
-                    <div
-                      key={el.id}
-                      onClick={() => toggleGenre(el.id)}
-                      className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-1 flex items-center "
-                      style={{
-                        background: genreID.includes(el.id) ? "white" : "none",
-                        color: genreID.includes(el.id) ? "black" : "white",
-                      }}
-                    >
-                      <p>{el.name}</p>
-                      {genreID.includes(el.id) ? <Close /> : <Right />}
-                    </div>
-                  ))}
+                  <Genre />
                 </div>
               </div>
             )}
@@ -180,7 +140,7 @@ const Header = () => {
               onClick={() => changeTheme()}
               className="w-9 h-9 flex items-center justify-center border rounded-md border-[#27272A] "
             >
-              <Moon />
+              {theme == "light" ? <Moon /> : <Sun width={16} height={16} />}
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
 // import { Star } from "lucide-react";
 import Star from "./icon/Star";
+import {X} from "lucide-react";
 
 type Genre = {
   id: number;
@@ -188,9 +189,10 @@ const MovieDetails = ({
               {similaMovies.map((results, index: number) => (
                 <div
                   key={index}
-                  className="rounded-lg h-[381px] w-[190px] overflow-hidden"
+                  className="rounded-lg h-[381px] w-[190px] relative overflow-hidden group"
                   onClick={() => handleMovieClick(results.id)}
                 >
+                <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
                     className="w-full h-[70%] hover:bg-primary/30"
@@ -222,13 +224,13 @@ const MovieDetails = ({
             onClick={() => setDisplay(false)}
             className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
           >
-            <div className="w-[512px] h-[280px] z-20 top-[30%]">
+            <div className="max-w-[512px] w-full h-[280px] z-20 top-[30%] lg:max-w-[800px] lg:h-[450px]">
               <div className="w-full h-full relative ">
                 <button
                   onClick={() => setDisplay(false)}
                   className="w-5 h-5 absolute z-30 right-3 top-3"
                 >
-                  x
+                  <X/>
                 </button>
                 <iframe
                   className="w-full h-full absolute"

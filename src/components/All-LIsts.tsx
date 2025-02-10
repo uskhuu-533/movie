@@ -4,7 +4,7 @@ type elements = {
     movies : object,
     res :object
   }
-import { useState, useEffect } from "react"
+
 import Lists from "./Lists"
 
 const AllLists = () => {

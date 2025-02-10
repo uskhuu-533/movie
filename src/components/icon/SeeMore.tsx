@@ -1,17 +1,19 @@
 'use client'
 
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 const SeeMore = () => {
-  const [theme, setTheme] = useState<string | null> ("")
-  useEffect(()=> {
-    const theme = ()=> {
-      const theme = localStorage.getItem("theme")
-      setTheme(theme)
-    }
-    theme()
-  })
-  console.log(theme);
-  
+const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <svg
       width="12"
@@ -28,5 +30,6 @@ const SeeMore = () => {
       />
     </svg>
   );
+
 };
 export default SeeMore;

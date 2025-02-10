@@ -1,15 +1,8 @@
-
-
 const key = "2e484ac3ed90b99b5bad898e86132c71";
 export const getGenre = async () => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=${key}`,
-      {
-        next: {
-          revalidate: 3600,
-        },
-      }
+      `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=${key}`
     );
     const result = await response.json();
     return result;
@@ -20,12 +13,7 @@ export const getGenre = async () => {
 export const getMovieNowPlaying = async () => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${key}`,
-      {
-        next: {
-          revalidate: 3600,
-        },
-      }
+      `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${key}`
     );
 
     const result = await response.json();
@@ -42,35 +30,15 @@ export const getMovieDetail = async (
       await Promise.all([
         fetch(
           `https://api.themoviedb.org/3/movie/${movieID}?language=en-US&api_key=${key}`,
-          {
-            next: {
-              revalidate: 3600,
-            },
-          }
         ),
         fetch(
           `https://api.themoviedb.org/3/movie/${movieID}/credits?language=en-US&api_key=${key}`,
-          {
-            next: {
-              revalidate: 3600,
-            },
-          }
         ),
         fetch(
           `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US&api_key=${key}`,
-          {
-            next: {
-              revalidate: 3600,
-            },
-          }
         ),
         fetch(
           `https://api.themoviedb.org/3/movie/${movieID}/similar?language=en-US&page=1&api_key=${key}`,
-          {
-            next: {
-              revalidate: 3600,
-            },
-          }
         ),
       ]);
 
@@ -97,12 +65,7 @@ export const getMovieGenres = async (
 ) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID}&page=${currentPage}&api_key=${key}`,
-      {
-        next: {
-          revalidate: 3600,
-        },
-      }
+      `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreID}&page=${currentPage}&api_key=${key}`
     );
     const result = await response.json();
 
@@ -115,12 +78,7 @@ export const getMovieGenres = async (
 export const getTailer = async (movieID: number) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US&api_key=${key}`,
-      {
-        next: {
-          revalidate: 3600,
-        },
-      }
+      `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US&api_key=${key}`
     );
     const result = await response.json();
     console.log(result.results, "temdeg");
@@ -129,3 +87,39 @@ export const getTailer = async (movieID: number) => {
     console.error();
   }
 };
+export const getCategoryMovie = async (category: string | string[] | undefined, currenrPage:number) => {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${currenrPage}&api_key=${key}`
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error();
+  }
+};
+
+export const getsearchMovie = async (
+  searchValue: string,
+  currentPage: number
+) => {
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en&page=${currentPage}&api_key=${key}`
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error();
+  }
+};
+
+export const getSimilarMovie = async (movieID:string | string[] | undefined, currenrPage:number) => {
+  try{
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/similar?language=en-US&page=${currenrPage}&api_key=${key}`)
+    const results = await response.json()
+    return results
+  }catch(error){
+    console.error();
+  }
+}

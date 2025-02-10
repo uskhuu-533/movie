@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+
 
 type Props = {
   currentPage: number;
@@ -14,7 +14,7 @@ type ApiResponse = {
 const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
   console.log(currentPage);
   
-  const router = useRouter();
+
   const page = data?.total_pages;
   const pages = [];
 if(page){
@@ -26,7 +26,6 @@ if(page){
     currentPage >=498  ? currentPage : currentPage + 2
   );
   const changePage = (page: number) => {
-    // router.push(`${window.location.pathname}?page=${page}`,{scroll:false})
     setCurrentPage(page);
   };
   const lastPage = () => {

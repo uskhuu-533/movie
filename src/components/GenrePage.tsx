@@ -1,13 +1,13 @@
 "use client";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
-import Right from "./icon/Right";
-import { useRouter, useSearchParams } from "next/navigation";
-import { parseAsInteger, useQueryState } from "nuqs";
-import { getGenre } from "@/utils/requests";
+
+import {  useQueryState } from "nuqs";
+
 import SearchMovies from "./SearchMovies";
 import GenreMovieList from "./Genre-Movie-List";
-import Close from "./icon/Close";
+
+import Genre from "./Genre";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +17,6 @@ interface Genre {
 }
 
 const GenrePage = () => {
-  const router = useRouter();
-  const [genres, setGenres] = useState<Genre[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [genreID, setGenreID] = useQueryState<number[]>("genresid", {
@@ -30,17 +28,9 @@ const GenrePage = () => {
         .filter((num) => num !== 0),
     serialize: (array) => array.join(","),
   });
-  // const searchParams = useSearchParams();
-  // const genreID = (searchParams.get("genres") || "").split(",");
-  const [currentPage, setCurrentPage] = useQueryState(
-    "page",
-    parseAsInteger.withDefault(1)
-  );
 
   const [Page, setPage] = useState("");
   const [value, setValue] = useQueryState("value", { defaultValue: "" });
-  const [theme, setTheme] = useState<null | string>("");
-  // const searchParams = useSearchParams()
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -53,38 +43,9 @@ const GenrePage = () => {
       setPage("");
     }
   }, []);
-  useEffect(() => {
-    const fetchgetGenre = async () => {
-      try {
-        setIsLoading(true);
-        const data = await getGenre();
-        setGenres(data.genres);
-      } catch (error) {
-        setError("");
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+ 
 
-    fetchgetGenre();
-  }, []);
-  console.log(genreID);
 
-  const toggleGenre = (id: number) => {
-    // const params = new URLSearchParams(searchParams);
-    // genreID.push(id);
-    // params.set("genresid", genreID.join(""));
-    // router.push(`?${params.toString()}`);
-    const updatedGenres = genreID.includes(id)
-      ? genreID.filter((genre) => genre !== id && genre !== 0)
-      : [...genreID, id];
-
-    setGenreID(updatedGenres);
-    setCurrentPage(1);
-    const queryParam = updatedGenres.join(",");
-    // router.push(`/genres?genresid=${queryParam}&page=1`);
-  };
 
   return (
     <div className="w-full  flex justify-center pb-10  dark:text-white">
@@ -106,24 +67,7 @@ const GenrePage = () => {
               <div>{error}</div>
             ) : (
               <div className="flex flex-wrap gap-4 w-full">
-                {genres.map((el: Genre, index) => (
-                  <div
-                    onClick={() => toggleGenre(el.id)}
-                    key={index}
-                    className="border border-[#27272A] rounded-full pt-[2px] pr-[10px] pb-[2px] pl-[10px] gap-2 flex items-center cursor-pointer"
-                    style={{
-                      background: genreID.includes(el.id) ? "white" : "none",
-                      color: genreID.includes(el.id) ? "black" : "white",
-                    }}
-                  >
-                    <p
-                      className={`text-[14px] font-semibold ${inter.className}`}
-                    >
-                      {el.name}
-                    </p>
-                    {genreID.includes(el.id) ? <Close /> : <Right />}
-                  </div>
-                ))}
+                <Genre/>
               </div>
             )}
           </div>

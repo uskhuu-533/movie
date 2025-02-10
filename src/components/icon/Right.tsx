@@ -1,4 +1,10 @@
+'use client'
+
+import { useTheme } from "next-themes";
+
 const Right = () => {
+  const {theme} = useTheme()
+  if(theme){
   return (
     <svg
       width="10"
@@ -9,11 +15,12 @@ const Right = () => {
     >
       <path
         d="M1 9L5 5L1 1"
-        stroke="#FAFAFA"
+        stroke={theme == "dark" ? "white" : "black"}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
   );
+}
 };
 export default Right;

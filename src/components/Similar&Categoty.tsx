@@ -54,10 +54,10 @@ const CategorySimilar = ({
             {data?.results?.map((el: data, index) => (
               <div
                 key={index}
-                className="rounded-lg relative overflow-hidden "
+                className="rounded-lg relative overflow-hidden group"
                 onClick={() => handleMovieClick(el.id)}
               >
-                   <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+                   <div className="w-full h-[75%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
                 <img
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
                   className="w-full h-[75%] hover:bg-primary/30"

@@ -6,6 +6,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import Pagination from "./Pagination";
 import Star from "./icon/Star";
 import GenreLoading from "./loading/Genre-Movie-Loading";
+import { getsearchMovie } from "@/utils/requests";
 
 type Props = {
   searchValue: string;
@@ -42,64 +43,31 @@ const SearchMovies = ({ searchValue }: Props) => {
     parse: (value) => value.split(",").map(Number),
     serialize: (array) => array.join(","),
   });
-  const [totalResult, setResults] = useState();
-  // console.log(genreID);
-
-  const options: object = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
-    },
-  };
-  const getMovie = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en&page=${currentPage}`,
-        options
-      );
-      const result = await response.json();
-
-      setData(result);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const getMov = async () => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${searchValue}&include_adult=false&language=en`,
-        options
-      );
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  };
   const movie = data.results;
 
   useEffect(() => {
-    getMovie();
-    getMov();
+   const fetchMovie = async ()=>{
+    try{
+      setIsLoading(true)
+      const result = await getsearchMovie(searchValue, currentPage)
+      setData(result)
+    }catch(error){
+      console.error();
+    }finally{
+      setIsLoading(false)
+    }
+   }
+    fetchMovie();
   }, [currentPage, searchValue]);
-  const handleChangePage = (page: number) => {
-    // router.push(`/genres/?genresid${genreID}?page=${page}`)
-    setCurrentPage(page);
-  };
+
   const handleMovieDetail = (movieID: number) => {
     router.push(`/movies/${movieID}`);
   };
-  // console.log(movie)
+
   return (
     <>
       <div className="lg:w-[70%] px-5 w-full pb-[50px]">
-        {isLoading == false ? (
+       {searchValue.length !== 0 ?(<>{isLoading == false ? (
           <>
             <div className=""> Results for "{searchValue}"</div>
             <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
@@ -150,7 +118,7 @@ const SearchMovies = ({ searchValue }: Props) => {
           </>
         ) : (
           <GenreLoading />
-        )}
+        )}</>): <div className="w-full flex items-center justify-center h-[95px] border border-gray-500/50 rounded-md">No results found.</div>}
       </div>
     </>
   );

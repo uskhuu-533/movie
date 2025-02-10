@@ -1,17 +1,19 @@
-'use client'
-
+'use client';
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-
 const Bottom = () => {
-  const [theme, setTheme] = useState<string | null> ("")
-  useEffect(()=> {
-    const theme = ()=> {
-      const theme = localStorage.getItem("theme")
-      setTheme(theme)
-    }
-    theme()
-  })
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <svg
       width="10"
@@ -22,11 +24,12 @@ const Bottom = () => {
     >
       <path
         d="M1 0.5L5 4.5L9 0.5"
-        stroke={theme == "light" ? "black" : "white"}
+        stroke={theme === "light" ? "black" : "white"}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
   );
 };
+
 export default Bottom;

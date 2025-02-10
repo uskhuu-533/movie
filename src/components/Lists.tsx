@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
 import Homeloading from "./loading/Loading";
+import { getCategoryMovie } from "@/utils/requests";
+
 
 
 type data = {
@@ -18,55 +20,20 @@ const Lists = ({ title }: { title: string }) => {
   const router = useRouter();
   const [movies, setMovies] = useState<data[]>([]);
   const [isLoading, setIsLoading] = useState(false)
-
-  
-  const options: object = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTQ4NGFjM2VkOTBiOTliNWJhZDg5OGU4NjEzMmM3MSIsIm5iZiI6MTczNzk2MDA3OC4xMzUsInN1YiI6IjY3OTcyYThlNzAyZjQ5MmY0NzhmNDA5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1Har0MUDTTalUUSbdcR4CXRsSCIO30jGTEiNGDyyFUQ",
-    },
-  };
-
-  const getMovie = async () => {
-    try {
-      setIsLoading(true)
-      const response = await fetch(
-        "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-        options
-      );
-      const topRated = await fetch(
-        "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-        options
-      );
-      const popular = await fetch(
-        "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-        options
-      );
-      const popularResult = await popular.json();
-      const result = await response.json();
-      const topRatedResult = await topRated.json();
-      setMovies(result.results);
-      if (title === "Upcoming") {
-        setMovies(result.results);
-      } else if (title == "Top Rated") {
-        setMovies(topRatedResult.results);
-      } else if (title === "Popular") {
-        setMovies(popularResult.results);
-      } else {
-        setMovies([]);
-      }
-    } catch (error) {
-      console.log(error);
-    }finally{
-      setIsLoading(false)
-    }
-  };
-  movies.length = 10;
-  // console.log(movies)
   useEffect(() => {
-    getMovie();
+    const  fetchMovie = async () => {
+      try{
+        setIsLoading(true)
+        const data =await getCategoryMovie(title.toLowerCase().replace(" ", "_"), 1)
+        setMovies(data.results) 
+      }catch(error){
+        console.error()
+      }finally{
+        setIsLoading(false)
+      }
+    }
+    fetchMovie()
+
   }, []);
   const handleMovieClick = (movieID: number) => {
     router.push(`/movies/${movieID}`);
@@ -89,12 +56,12 @@ const Lists = ({ title }: { title: string }) => {
        </button>
    </div>
    <div className="w-full grid grid-flow-row md:grid-cols-4 sm:grid-cols-3 sm:px-8 md:px-8 gap-8 2xl:grid-cols-5 lg:grid-cols-5  xl:grid-cols-5 grid-cols-2 px-8">
-     {movies.map((el: data, index) => (
+     {movies.slice(0, 10).map((el: data, index) => (
           <div
             key={index}
-            className="rounded-lg overflow-hidden relative "
+            className="rounded-lg overflow-hidden relative group"
             onClick={() => handleMovieClick(el.id)}
-          >   <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+          >   <div className="w-full h-[77%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
             <img
               src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
               className="w-full h-[77%] hover:bg-primary/30"
