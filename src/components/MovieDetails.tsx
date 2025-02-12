@@ -108,7 +108,7 @@ const MovieDetails = ({ movieID }: Props) => {
   return (
     <>
       {isLoading == false ? (
-        <div className="max-w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
+        <div className="max-w-[1080px] flex gap-6  items-center flex-col lg:mt-[150px] mt-[100px]">
           <div className="w-full h-fit flex justify-between xl:px-0 px-8">
             <div>
               <h1 className="text-3xl font-bold">{movieDetails?.title}</h1>

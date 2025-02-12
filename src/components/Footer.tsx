@@ -9,7 +9,7 @@ const Footer = () => {
           <Logo fill="#FAFAFA" />
           <p className="text-[14px]">© 2024 Movie Z. All Rights Reserved.</p>
         </div>
-        <div className="w-2/5 h-full flex justify-between text-[14px]">
+        <div className="w-2/5 h-full flex justify-between gap-8 text-[14px]">
           <div className="flex flex-col gap-4">
             <p className="font-semibold text-[15px]">Contact Information</p>
             <div className="flex items-center gap-2">
@@ -28,7 +28,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col gap-5">
-            <p className="font-semibold text-[15px]">Follow us</p>
+            <p className="font-semibold text-[15px] line-1">Follow us</p>
             <div className="flex flex-col lg:flex-row lg:gap-4 gap-2">
               <a href="">Facebook</a>
               <a href="">Instagram</a>

@@ -1,3 +1,4 @@
+import Metadata from '@/components/icon/Metadata-Logo'
 import { ImageResponse } from 'next/og'
  
 // Image metadata
@@ -12,21 +13,7 @@ export default function Icon() {
   return new ImageResponse(
     (
       // ImageResponse JSX element
-      <div
-        style={{
-          fontSize: 20,
-          background: '#4338CA',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          borderRadius : "50%",
-          justifyContent: 'center',
-          color: 'white',
-        }}
-      >
-        Z
-      </div>
+      <Metadata/>
     ),
     // ImageResponse options
     {
