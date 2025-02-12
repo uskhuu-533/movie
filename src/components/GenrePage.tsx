@@ -10,9 +10,7 @@ import GenreMovieList from "./Genre-Movie-List";
 import Genre from "./Genre";
 
 const GenrePage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [genreID, setGenreID] = useQueryState<number[]>("genresid", {
+  const [genreID] = useQueryState<number[]>("genresid", {
     defaultValue: [],
     parse: (value) =>
       value
@@ -23,7 +21,7 @@ const GenrePage = () => {
   });
 
   const [Page, setPage] = useState("");
-  const [value, setValue] = useQueryState("value", { defaultValue: "" });
+  const [value] = useQueryState("value", { defaultValue: "" });
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -54,15 +52,11 @@ const GenrePage = () => {
           <div className="h-fit sticky top-[100px]  z-10 ">
             <h2 className="text-2xl py-2 font-bold">Genres</h2>
             <p className="text-xl pb-5">See lists of movies by genre</p>
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : error ? (
-              <div>{error}</div>
-            ) : (
+       
               <div className="flex flex-wrap gap-4 w-full">
                 <Genre loc="genreAndSearch"/>
               </div>
-            )}
+            
           </div>
         </div>
 

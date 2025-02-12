@@ -38,7 +38,7 @@ const SearchMovies = ({ searchValue }: Props) => {
     parseAsInteger.withDefault(1)
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [genreID, setGenreID] = useQueryState<number[]>("genresid", {
+  const [genreID] = useQueryState<number[]>("genresid", {
     defaultValue: [],
     parse: (value) => value.split(",").map(Number),
     serialize: (array) => array.join(","),
