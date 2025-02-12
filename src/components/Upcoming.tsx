@@ -1,12 +1,7 @@
 "use client";
-type elements = {
-  options: object;
-  movies: string[];
-  poster_path: string;
-};
+
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Inter } from "next/font/google";
 import {
   Carousel,
   CarouselContent,

@@ -25,7 +25,7 @@ const Genre = ({loc}:props) => {
     serialize: (array) => array.join(","),
   });
   const [genre, setGenre] = useState<Data[]>([]);
-  const [Page, setPage] = useState("");
+
   useEffect(() => {
     const fetchgetGenre = async () => {
       try {
@@ -49,16 +49,7 @@ const Genre = ({loc}:props) => {
     router.push(`/genres?genresid=${queryParam}`);
     
   };
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path === "/search") {
-      setPage("search");
-    } else if (path === "/genres") {
-      setPage("genres");
-    } else {
-      setPage("");
-    }
-  }, []);
+
   return (
     <>
       {genre.map((el) => (
