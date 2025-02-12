@@ -19,6 +19,8 @@ type data = {
   vote_average: number;
   id: string;
 };
+import Autoplay from 'embla-carousel-autoplay'
+
 
 const Upcoming = () => {
   const [display, setDisplay] = useState(false);
@@ -99,7 +101,10 @@ const Upcoming = () => {
       )}
       <Carousel
         className="w-screen relative mt-[60px]  w-max-screen h-[600px]"
-        plugins={[]}
+        plugins={[Autoplay({ delay: 5000 })]}
+        opts={{
+          loop: true,
+        }}
       >
         <CarouselContent>
           {movies.map((el: data, index) => (
