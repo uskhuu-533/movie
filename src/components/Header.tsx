@@ -11,9 +11,8 @@ import { useQueryState } from "nuqs";
 import SearchIcon from "./icon/Search-Icon";
 import { useTheme } from "next-themes";
 import Moon from "./icon/Moon";
-import WhiteClose from "./icon/WhiteClose";
 import Genre from "./Genre";
-import { Sun } from "lucide-react";
+import { Sun, X } from "lucide-react";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -29,15 +28,6 @@ const Header = () => {
   const [display, setDisplay] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [value, setValue] = useQueryState("value");
-  const [genreID, setGenreID] = useQueryState("genresid", {
-    defaultValue: [],
-    parse: (value) =>
-      value
-        .split(",")
-        .map(Number)
-        .filter((num) => num !== 0),
-    serialize: (array) => array.join(","),
-  });
   const [Page, setPage] = useState("");
   const [trasnlateSearch, setTranslate] = useState(false);
 
@@ -73,6 +63,7 @@ const Header = () => {
   const deleteTags = () => {
     setDisplay(false);
     setTranslate(false);
+    setSearchValue("");
   };
   return (
     <>
@@ -88,7 +79,7 @@ const Header = () => {
                 <Bottom />
                 <p>Genre</p>
               </button>
-              <div className="flex flex-col lg:items-center lg:relative">
+              <div className="flex flex-col lg:items-center relative">
                 <div className="flex items-center">
                   <SearchIcon />
                   {Page == "search" ? (
@@ -109,7 +100,7 @@ const Header = () => {
                   )}
                 </div>
                 {searchValue !== "" && Page !== "search" && (
-                  <div className="lg:w-[580px] w-[100px] absolute lg:top-10 top-14">
+                  <div className="w-[180px] lg:w-[580px] absolute top-10 ">
                     <SearchResult searchValue={searchValue} />
                   </div>
                 )}
@@ -117,14 +108,14 @@ const Header = () => {
             </div>
 
             {display && (
-              <div className="absolute p-5 z-40 lg:w-[580px] md:w-[450px] w-[330px] lg:top-10 top-14 dark:bg-[#09090B] bg-white border border-[#27272A] rounded-lg flex flex-col gap-5 left-8 lg:left-0">
+              <div className="absolute p-5 z-40 lg:w-[580px] md:w-[450px] sm:w-[330px] w-[80%]  lg:top-10 top-14 dark:bg-[#09090B] bg-white border border-[#27272A] rounded-lg flex flex-col gap-5 left-8 lg:left-0">
                 <div className="dark:text-white  flex flex-col gap">
                   <p className="text-2xl font-extrabold">Genres</p>
                   <p className="text-[16px]">See lists of movies by genre</p>
                 </div>
                 <div className="w-full border border-gray-500/30"></div>
                 <div className="flex flex-wrap gap-4">
-                  <Genre />
+                  <Genre loc="header"/>
                 </div>
               </div>
             )}
@@ -183,7 +174,7 @@ const Header = () => {
                 )}
               </div>
               {searchValue !== "" && Page !== "search" && (
-                <div className="w-[577px] absolute top-10">
+                <div className="max-w-[340px] w-[80%] h-[500px] overflow-scroll absolute top-14 left-8">
                   <SearchResult searchValue={searchValue} />
                 </div>
               )}
@@ -191,7 +182,7 @@ const Header = () => {
           </div>
           <div onClick={() => deleteTags()}>
             {" "}
-            <WhiteClose />
+            <X />
           </div>
         </div>
       </div>

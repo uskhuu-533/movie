@@ -91,7 +91,7 @@ const GenreMovieList = ({ genreID }: Props) => {
                         <p className="text-gray-400 text-sm">/10</p>
                       </div>
                     </div>
-                    <p className="text-xl font-semibold line-clamp-2">
+                    <p className="sm:text-xl font-semibold line-clamp-2">
                       {el.title}
                     </p>
                   </div>

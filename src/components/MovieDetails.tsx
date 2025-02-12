@@ -89,7 +89,7 @@ const MovieDetails = ({
     return (
       <>
         <div className="max-w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
-          <div className="w-full h-[72px] flex justify-between xl:px-0 px-8">
+          <div className="w-full h-fit flex justify-between xl:px-0 px-8">
             <div>
               <h1 className="text-3xl font-bold">{movieDetails.title}</h1>
               <p className="text-lg">
@@ -115,15 +115,15 @@ const MovieDetails = ({
               </div>
             </div>
           </div>
-          <div className="flex justify-between h-[428px] px-9 xl:px-0 w-full">
-            <div className="w-[28%] lg:block hidden h-full overflow-hidden rounded-sm">
+          <div className="flex justify-between sm:h-[428px] overflow-hidden h-[250px] px-6 xl:px-0 w-full">
+            <div className="w-[28%] lg:block hidden h-fit overflow-hidden rounded-sm">
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
               />
             </div>
             <div className="lg:w-[70%] w-full h-auto relative rounded-sm overflow-hidden">
               <img
-                className="bg-[rgba(0, 0, 0, 0.4)] h-auto w-full relative"
+                className="bg-[rgba(0, 0, 0, 0.4)] h-full w-full w-auto  absolute"
                 src={`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`}
               />
               <div className="absolute flex items-center gap-4 bottom-8 left-6">
@@ -139,14 +139,28 @@ const MovieDetails = ({
               </div>
             </div>
           </div>
-          <div className="flex xl:px-0 px-8 gap-4">
-          <div className="w-[28%] lg:hidden  h-full overflow-hidden rounded-sm">
+          <div className="sm:flex-row flex flex-col xl:px-0 px-8 gap-4">
+            <div className="flex lg:hidden h-full gap-2 sm:w-[28%] w-[100%]">
+          <div className="w-full lg:hidden  h-full overflow-hidden rounded-sm">
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
               />
             </div>
+            <div className="flex w-full h-fit sm:hidden gap-2 flex-wrap">
+                {genres &&
+                  genres.map((genre: Genre) => (
+                    <div
+                      className="flex items-center px-2.5 py-0.5 h-[40px] font-semibold border border-[#27272A] rounded-full"
+                      key={genre.id}
+                    >
+                      {genre.name}
+                    </div>
+                  ))}
+              
+              </div>
+            </div>
             <div className=" w-full flex flex-col gap-4">
-              <div className="flex gap-2 w-full">
+              <div className="sm:flex gap-2 w-full hidden flex-wrap">
                 {genres &&
                   genres.map((genre: Genre) => (
                     <div
@@ -156,11 +170,12 @@ const MovieDetails = ({
                       {genre.name}
                     </div>
                   ))}
+              
               </div>
               <div className="text-lg">{movieDetails.overview}</div>
             </div>
           </div>
-          <div className="w-full flex flex-col text-lg gap-4 xl:px-0 px-8">
+          <div className="w-full flex flex-col h-fit text-lg gap-4 xl:px-0 px-6">
             <div className="w-full border-b flex gap-5 border-b-[#27272A]">
               <p className="font-bold">Director:</p>
               <p className="">{director}</p>
@@ -169,11 +184,13 @@ const MovieDetails = ({
               <p className="font-bold">Writters:</p>
               <p className="">{}</p>
             </div>
-            <div className="w-full border-b flex gap-5 border-b-[#27272A]">
+            <div className="w-full border-b flex h-fit gap-5 border-b-[#27272A]">
               <p className="font-bold">Stars:</p>
+              <div className="flex flex-wrap">
               {actorsDetails.cast.slice(0, 5).map((cast, index) => (
                 <p key={index}>{cast.name}</p>
               ))}
+              </div>
             </div>
           </div>
 
@@ -189,7 +206,7 @@ const MovieDetails = ({
               {similaMovies.map((results, index: number) => (
                 <div
                   key={index}
-                  className="rounded-lg h-[381px] w-[190px] relative overflow-hidden group"
+                  className="rounded-lg h-[381px] max-w-[190px] w-full relative overflow-hidden group"
                   onClick={() => handleMovieClick(results.id)}
                 >
                 <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>

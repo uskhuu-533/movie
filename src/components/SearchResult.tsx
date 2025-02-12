@@ -43,20 +43,20 @@ const SearchResult = ({ searchValue }: props) => {
   return (
     <div className="w-full  border border-[#27272A] dark:bg-[#09090B] bg-white top-14 lg:top-10 p-2 rounded-lg flex-col">
       {isLoading == false ? (
-        <div className="w-full h-[90%] flex flex-col gap-2 p-4">
+        <div className="w-full h-[90%] flex flex-col gap-2 lg:p-4">
           {searchResult.map((movie: data, index) => (
             <div
               onClick={() => handleMovieClick(movie.id)}
-              className="w-full h-[116px] border-b border-b-gray-500/30  item-center pb-2 flex justify-between hover:bg-white/20  "
+              className="w-full h-[116px] border-b border-b-gray-500/30  item-center pb-2 flex lg:justify-between hover:bg-white/20  "
               key={index}
             >
-              <div className="w-[80%] flex gap-x-2">
+              <div className="w-[70%] flex gap-x-2">
                 <img
-                  className="h-[100%] w-[20%] rounded-md"
+                  className="h-[100%] lg:w-[20%] w-[35%] rounded-md"
                   src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
                 />
                 <div>
-                  <p>{movie.title}</p>
+                  <p className="line-clamp-2">{movie.title}</p>
                   <div className="flex gap-1">
                     <Star width="18px" height="20px" />
                     <div className="flex items-center">
@@ -66,11 +66,11 @@ const SearchResult = ({ searchValue }: props) => {
                       <p className="text-gray-400 text-sm">/10</p>
                     </div>
                   </div>
-                  <p className="mt-4">{movie.release_date}</p>
+                  <p className="mt-4">{(movie.release_date).split("-")[0]}</p>
                 </div>
               </div>
-              <div className="h-full flex items-end pr-4">
-                <div className="w-full h-[50%] flex gap-1 items-center">
+              <div className="h-full  flex items-end pr-4">
+                <div className="w-full h-[50%] flex items-center">
                   <p>see more</p>
                   <SeeMore />
                 </div>

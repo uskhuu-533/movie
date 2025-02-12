@@ -1,6 +1,6 @@
 const SearchLoading = () => {
   return (
-    <div className="w-full h-[130px] flex items-center justify-center">
+    <div className="w-full h-[130px]  flex items-center justify-center">
       <div role="status">
         <svg
           aria-hidden="true"

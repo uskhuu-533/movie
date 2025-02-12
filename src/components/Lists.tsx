@@ -1,6 +1,5 @@
 "use client";
 
-// import { Star } from "lucide-react";
 import Star from "./icon/Star";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -61,13 +60,13 @@ const Lists = ({ title }: { title: string }) => {
             key={index}
             className="rounded-lg overflow-hidden relative group"
             onClick={() => handleMovieClick(el.id)}
-          >   <div className="w-full h-[77%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
+          >   <div className="w-full h-[75%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
             <img
               src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-              className="w-full h-[77%] hover:bg-primary/30"
+              className="w-full h-[75%] hover:bg-primary/30"
             />
             
-            <div className="w-full h-[33%] p-2 pt-4 dark:bg-[#27272A] bg-gray-500/30">
+            <div className="w-full h-[25%] p-2 sm:pt-4  dark:bg-[#27272A] bg-gray-500/30">
               <div>
                 <div className="flex gap-2">
                   <Star width="18px" height="20px"/>
@@ -75,7 +74,7 @@ const Lists = ({ title }: { title: string }) => {
                   <p className="text-gray-400 text-sm">/10</p></div>
                  
                 </div>
-                <p className="text-xl font-semibold">{el.title}</p>
+                <p className="md:text-xl text-sm sm:text-lg font-semibold">{el.title}</p>
               </div>
             </div>
           </div>

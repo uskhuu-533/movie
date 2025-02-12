@@ -9,13 +9,6 @@ import GenreMovieList from "./Genre-Movie-List";
 
 import Genre from "./Genre";
 
-const inter = Inter({ subsets: ["latin"] });
-
-interface Genre {
-  id: number;
-  name: string;
-}
-
 const GenrePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +60,7 @@ const GenrePage = () => {
               <div>{error}</div>
             ) : (
               <div className="flex flex-wrap gap-4 w-full">
-                <Genre/>
+                <Genre loc="genreAndSearch"/>
               </div>
             )}
           </div>

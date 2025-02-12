@@ -1,5 +1,3 @@
-// fetch('https://api.themoviedb.org/3/movie/1022789/similar?language=en-US&page=1', options)
-// "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -62,7 +60,7 @@ const CategorySimilar = ({
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
                   className="w-full h-[75%] hover:bg-primary/30"
                 />
-                <div className="w-full h-[25%] font-semibold text-xl p-2 bg-gray-500/30 line-clamp-2">
+                <div className="w-full h-[25%] font-semibold md:text-xl sm:text-lg text-sm p-2 bg-gray-500/30 line-clamp-2">
                   <div>
                     <div className="flex">
                       <Star width="18px" height="20px"/>

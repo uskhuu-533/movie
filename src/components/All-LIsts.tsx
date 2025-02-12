@@ -1,9 +1,4 @@
 "use client"
-type elements = {
-    account_id : number,
-    movies : object,
-    res :object
-  }
 
 import Lists from "./Lists"
 

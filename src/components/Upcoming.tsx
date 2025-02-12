@@ -33,12 +33,9 @@ const Upcoming = () => {
   const [video, setVideo] = useState("");
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-
-
- 
-
   const updateTarget = useCallback(
-    (e: { matches: any }) => {
+    (e: MediaQueryListEvent) => {
+      console.log(e.matches);
       if (e.matches) {
         setIsLargeScreen(true);
       } else {
@@ -81,8 +78,6 @@ const Upcoming = () => {
     }
   };
 
-
-
   return (
     <>
       {display == true && (
@@ -103,14 +98,15 @@ const Upcoming = () => {
                 title="trailer"
                 src={`https://www.youtube.com//embed/${video}`}
                 allowFullScreen
-              >
-              </iframe>
+              ></iframe>
             </div>
           </div>
         </div>
       )}
-      <Carousel  className="w-screen relative mt-[60px]  w-max-screen h-[600px]" 
-   >
+      <Carousel className="w-screen relative mt-[60px]  w-max-screen h-[600px]"
+      plugins={[
+        
+      ]}>
         <CarouselContent>
           {movies.map((el: data, index) => (
             <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
@@ -119,13 +115,13 @@ const Upcoming = () => {
                   <img
                     onClick={() => handleMovieClick(el.id)}
                     src={`https://image.tmdb.org/t/p/original/${el.backdrop_path}`}
-                    className="w-full sm:h-auto h-full min-h-[200px]"
+                    className="w-full sm:h-auto h-full min-h-[300px] min-w-[270px]"
                     style={
                       el.title == "Werewolves"
                         ? {
                             marginTop: isLargeScreen == false ? "40%" : "25%",
-                            marginLeft: "20%",
-                            scale: "1.4",
+                            marginLeft: "30%",
+                            scale: "2",
                           }
                         : el.title == "Kraven the Hunter"
                         ? {
@@ -141,7 +137,6 @@ const Upcoming = () => {
                         : el.title == "Star Trek: Section 31"
                         ? {
                             marginTop: isLargeScreen == false ? "10%" : "0",
-                         
                           }
                         : el.title == "The Gardener"
                         ? { marginTop: isLargeScreen == false ? "10%" : "0" }
@@ -154,7 +149,6 @@ const Upcoming = () => {
                 <div className="lg:absolute  z-10 dark:text-white p-10  space-y-4 lg:px-36">
                   <div
                     className={`${inter.className} lg:flex-col flex w-full lg:w-fit lg:text-white justify-between`}
-                
                   >
                     <div>
                       <p className={` text-[16px]`}>Now playing:</p>
@@ -172,15 +166,12 @@ const Upcoming = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="lg:w-[302px] text-md font-[500] line-clamp-5 lg:text-white "
-                  
-                >
+                  <div className="lg:w-[302px] text-md font-[500] line-clamp-5 lg:text-white ">
                     {el.overview}
                   </div>
                   <button
                     onClick={() => fetchTrailer(el.id)}
                     className="bg-gray-400/40  absolute rounded-md px-5 py-2 z-40 "
-                
                   >
                     Watch trailer
                   </button>
@@ -190,7 +181,7 @@ const Upcoming = () => {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious  className="absolute invisible lg:visible left-[5%]" />
+        <CarouselPrevious className="absolute invisible lg:visible left-[5%]" />
         <CarouselNext className="absolute invisible lg:visible right-[5%]" />
       </Carousel>
     </>

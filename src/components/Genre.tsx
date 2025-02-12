@@ -10,9 +10,9 @@ type Data = {
   name: string;
 };
 type props = {
-  theme: string | null;
+  loc: string;
 };
-const Genre = () => {
+const Genre = ({loc}:props) => {
   const router = useRouter();
   const { theme } = useTheme();
   const [genreID, setGenreID] = useQueryState("genresid", {
@@ -42,12 +42,12 @@ const Genre = () => {
     const updatedGenres = genreID.includes(id)
       ? genreID.filter((genre) => genre !== id)
       : [...genreID, id];
-    {
-      Page == "genres" && setGenreID(updatedGenres);
-      Page == "search" && setGenreID(updatedGenres)
+    if(loc !== "header"){
+    setGenreID(updatedGenres);
     }
     const queryParam = updatedGenres.join(",");
     router.push(`/genres?genresid=${queryParam}`);
+    
   };
   useEffect(() => {
     const path = window.location.pathname;
