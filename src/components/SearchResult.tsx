@@ -83,7 +83,7 @@ const SearchResult = ({ searchValue }: props) => {
       )}
       <div className="w-full h-1/10 px-4">
         <div onClick={handleJumpResults}>
-          See all results for "{searchValue}"
+          See all results for '{searchValue}'
         </div>
       </div>
     </div>

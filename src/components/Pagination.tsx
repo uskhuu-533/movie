@@ -4,7 +4,7 @@
 
 type Props = {
   currentPage: number;
-  setCurrentPage: Function;
+  setCurrentPage : Function
   data:Response | null
 };
 type Response = {

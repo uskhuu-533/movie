@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Dispatch } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import Pagination from "./Pagination";
@@ -17,14 +17,14 @@ type ApiResponse = {
   total_results: number;
 };
 type Movie = {
+  genre_ids: any;
   poster_path: string;
   id: number;
   results: string;
-  genre_ids: Array<Genres>;
   vote_average: number;
   title: string;
 };
-type Genres = {};
+;
 
 const SearchMovies = ({ searchValue }: Props) => {
   const router = useRouter();
@@ -69,7 +69,7 @@ const SearchMovies = ({ searchValue }: Props) => {
       <div className="lg:w-[70%] px-5 w-full pb-[50px]">
        {searchValue.length !== 0 ?(<>{isLoading == false ? (
           <>
-            <div className=""> Results for "{searchValue}"</div>
+            <div> Results for "{searchValue}"</div>
             <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
               {movie
                 .filter((el: Movie) => {

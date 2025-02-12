@@ -14,15 +14,6 @@ import Moon from "./icon/Moon";
 import Genre from "./Genre";
 import { Sun, X } from "lucide-react";
 
-// const inter = Inter({ subsets: ["latin"] });
-
-type Data = {
-  id: number;
-  name: string;
-};
-type props = {
-  Page: string;
-};
 
 const Header = () => {
   const [display, setDisplay] = useState(false);

@@ -44,15 +44,6 @@ type SimilarMovies = {
     | undefined;
 };
 
-type Trailer = {
-  results: Array<el> | undefined;
-};
-type el ={
-  el : key | undefined
-}
-type key = {
-  key : string
-}
 type Props = {
 movieID :string | string[] | undefined 
 
@@ -60,7 +51,6 @@ movieID :string | string[] | undefined
 type MovieData = {
   movieDetails: Movie | undefined;
   actorsDetails: ActorsDetails | undefined;
-  trailer: Trailer | undefined;
   similaMovies: SimilarMovies["results"] | undefined;
 };
 const MovieDetails = ({
@@ -72,7 +62,6 @@ const MovieDetails = ({
      const [movieData, setMovieData] = useState<MovieData | undefined>({
         movieDetails: undefined,
         actorsDetails: undefined,
-        trailer: undefined,
         similaMovies: undefined,
       });
       const [isLoading, setIsLoading] = useState(true);
@@ -110,7 +99,7 @@ const MovieDetails = ({
     
     
     
-      const { movieDetails, actorsDetails, trailer, similaMovies } = movieData ??{}
+      const { movieDetails, actorsDetails , similaMovies } = movieData ??{}
     
     const [display, setDisplay] = useState(false);
     const genres = movieDetails?.genres;
