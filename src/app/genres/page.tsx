@@ -5,7 +5,6 @@ import GenrePage from "@/components/GenrePage";
 import Footer from "@/components/Footer";
 
 export default function Genre() {
-  // const [genreID , setGenreID] = useQueryState("genresid", parseAsInteger.withDefault(28))
 
     
       return (

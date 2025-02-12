@@ -5,9 +5,9 @@
 type Props = {
   currentPage: number;
   setCurrentPage: Function;
-  data: ApiResponse | null
+  data:Response | null
 };
-type ApiResponse = {
+type Response = {
   total_pages: number | undefined;
 };
 

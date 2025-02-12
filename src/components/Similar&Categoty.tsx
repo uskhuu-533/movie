@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
 import SimilarCategoryLoading from "./loading/Similar-Category-Loading";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
+import { getCategoryMovie, getSimilarMovie } from "@/utils/requests";
 
 
 type data = {
@@ -13,43 +16,67 @@ type data = {
   title: string;
 };
 type Props = {
-  data: data1 | null;
+  title : string,
   category: string | string[] | undefined
-  setCurrentPage : Function;
-  currentPage : number,
-  isLoading: boolean
-};
-type data1 = {
-  total_pages: number;
-  results: Array<data>;
-};
 
+}
+type Response ={
+  results :Array<data>
+  total_pages : number
+
+}
 const CategorySimilar = ({
-  data,
-  category,
-  setCurrentPage,
-  currentPage,
-  isLoading
+ title,
+  category
+
 }: Props) => {
 
+  const [currentPage, setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
+  const [data, setData] = useState<Response | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(()=>{
+    const fetchMovie = async () =>{
+      try{
+        setIsLoading(true)
+       if(title == "similar"){
+        const result = await getSimilarMovie(category, currentPage)
+        console.log("similar");
+        setData(result)
+       }else if (title == "category" ){
+        const resultCategory = await getCategoryMovie(category, currentPage)
+        console.log("category");
+        setData(resultCategory)
+       }
+    
+        
+      }catch(error){
+        console.error();
+      }finally{
+         setIsLoading(false)
+      }
+    }
+    fetchMovie()
+  }, [category, currentPage])
     const router = useRouter();
     const handleMovieClick = (movieID: number) => {
       router.push(`/movies/${movieID}`);
     };
 
+    
 
     return (
       <div  className="w-screen flex justify-center">
-        {isLoading==false ?(
+       {isLoading == false ?(
           <div className="w-[1080px] py-[100px] flex flex-col items-center justify-center gap-8 ">
           <div className="w-full justify-between flex h-9">
             <p className="capitalize text-foreground text-2xl text-white font-semibold xl:px-0 px-8">
-              {category?.toString().replace("_", " ")}
+              {title == "category" ? (category?.toString().replace("_", " ")): "more like this"}
             </p>
           </div>
           <div className="w-full grid grid-flow-row md:grid-cols-5 sm:grid-cols-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:px-0 px-8 gap-8">
-            {data?.results?.map((el: data, index) => (
+            {data?.results.map((el: data, index) => (
               <div
                 key={index}
                 className="rounded-lg relative overflow-hidden group"
@@ -74,7 +101,7 @@ const CategorySimilar = ({
           </div>
           <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data}/>
         </div>)
-        :<SimilarCategoryLoading />}
+        : <SimilarCategoryLoading />}
       </div>
     );
   

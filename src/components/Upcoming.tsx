@@ -22,9 +22,9 @@ type data = {
   title: string;
   overview: string;
   vote_average: number;
-  id: number;
+  id: string;
 };
-const inter = Inter({ subsets: ["latin"] });
+
 
 const Upcoming = () => {
   const [display, setDisplay] = useState(false);
@@ -63,11 +63,11 @@ const Upcoming = () => {
 
     fetchNowPlayingMovies();
   }, []);
-  const handleMovieClick = (movieID: number) => {
+  const handleMovieClick = (movieID: string) => {
     router.push(`/movies/${movieID}`);
   };
 
-  const fetchTrailer = async (movieID: number) => {
+  const fetchTrailer = async (movieID: string) => {
     try {
       const trailer = await getTailer(movieID);
       setVideo(trailer);
@@ -148,7 +148,7 @@ const Upcoming = () => {
                 </div>
                 <div className="lg:absolute  z-10 dark:text-white p-10  space-y-4 lg:px-36">
                   <div
-                    className={`${inter.className} lg:flex-col flex w-full lg:w-fit lg:text-white justify-between`}
+                    className={` lg:flex-col flex w-full lg:w-fit lg:text-white justify-between`}
                   >
                     <div>
                       <p className={` text-[16px]`}>Now playing:</p>
