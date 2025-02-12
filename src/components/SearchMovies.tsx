@@ -24,8 +24,6 @@ type Movie = {
   vote_average: number;
   title: string;
 };
-;
-
 const SearchMovies = ({ searchValue }: Props) => {
   const router = useRouter();
   const [data, setData] = useState<ApiResponse>({
@@ -46,17 +44,17 @@ const SearchMovies = ({ searchValue }: Props) => {
   const movie = data.results;
 
   useEffect(() => {
-   const fetchMovie = async ()=>{
-    try{
-      setIsLoading(true)
-      const result = await getsearchMovie(searchValue, currentPage)
-      setData(result)
-    }catch(error){
-      console.error();
-    }finally{
-      setIsLoading(false)
-    }
-   }
+    const fetchMovie = async () => {
+      try {
+        setIsLoading(true);
+        const result = await getsearchMovie(searchValue, currentPage);
+        setData(result);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchMovie();
   }, [currentPage, searchValue]);
 
@@ -67,58 +65,68 @@ const SearchMovies = ({ searchValue }: Props) => {
   return (
     <>
       <div className="lg:w-[70%] px-5 w-full pb-[50px]">
-       {searchValue.length !== 0 ?(<>{isLoading == false ? (
+        {searchValue.length !== 0 ? (
           <>
-            <div> Results for "{searchValue}"</div>
-            <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
-              {movie
-                .filter((el: Movie) => {
-                  if (genreID.length > 0) {
-                    return genreID
-                      ?.map((id) => el.genre_ids.includes(id))
-                      .includes(true);
-                  } else {
-                    return movie;
-                  }
-                })
-                .map((el: Movie, index) => (
-                  <div
-                    key={index}
-                    className="overflow-hidden relative rounded-lg h-[430px]"
-                    onClick={() => handleMovieDetail(el.id)}
-                  >
-                    <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
-                    <img
-                      className="h-[70%] w-full"
-                      src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-                    />
-                    <div className="h-[30%] bg-gray-500/30 w-full p-4">
-                      <div>
-                        <div className="flex gap-2">
-                          <Star width="18px" height="20px" />
-                          <div className="flex items-center">
-                            {" "}
-                            <p className="font-semibold">{el.vote_average}</p>
-                            <p className="text-gray-400 text-sm">/10</p>
+            {isLoading == false ? (
+              <>
+                <div className="mb-4 text-bold text-lg"> Results for : {`"${searchValue}"`}</div>
+                <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
+                  {movie
+                    .filter((el: Movie) => {
+                      if (genreID.length > 0) {
+                        return genreID
+                          ?.map((id) => el.genre_ids.includes(id))
+                          .includes(true);
+                      } else {
+                        return movie;
+                      }
+                    })
+                    .map((el: Movie, index) => (
+                      <div
+                        key={index}
+                        className="overflow-hidden relative rounded-lg h-[430px]"
+                        onClick={() => handleMovieDetail(el.id)}
+                      >
+                        <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
+                        <img
+                          className="h-[70%] w-full"
+                          src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
+                        />
+                        <div className="h-[30%] bg-gray-500/30 w-full p-4">
+                          <div>
+                            <div className="flex gap-2">
+                              <Star width="18px" height="20px" />
+                              <div className="flex items-center">
+                                {" "}
+                                <p className="font-semibold">
+                                  {el.vote_average}
+                                </p>
+                                <p className="text-gray-400 text-sm">/10</p>
+                              </div>
+                            </div>
+                            <p className="text-xl font-semibold line-clamp-2">
+                              {el.title}
+                            </p>
                           </div>
                         </div>
-                        <p className="text-xl font-semibold line-clamp-2">
-                          {el.title}
-                        </p>
                       </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              data={data}
-            />
+                    ))}
+                </div>
+                <Pagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  data={data}
+                />
+              </>
+            ) : (
+              <GenreLoading />
+            )}
           </>
         ) : (
-          <GenreLoading />
-        )}</>): <div className="w-full flex items-center justify-center h-[95px] border border-gray-500/50 rounded-md">No results found.</div>}
+          <div className="w-full flex items-center justify-center h-[95px] border border-gray-500/50 rounded-md">
+            No results found.
+          </div>
+        )}
       </div>
     </>
   );

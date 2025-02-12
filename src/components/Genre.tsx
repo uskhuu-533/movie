@@ -12,7 +12,7 @@ type Data = {
 type props = {
   loc: string;
 };
-const Genre = ({loc}:props) => {
+const Genre = ({ loc }: props) => {
   const router = useRouter();
   const { theme } = useTheme();
   const [genreID, setGenreID] = useQueryState("genresid", {
@@ -32,7 +32,7 @@ const Genre = ({loc}:props) => {
         const data = await getGenre();
         setGenre(data.genres);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       } finally {
       }
     };
@@ -42,12 +42,11 @@ const Genre = ({loc}:props) => {
     const updatedGenres = genreID.includes(id)
       ? genreID.filter((genre) => genre !== id)
       : [...genreID, id];
-    if(loc !== "header"){
-    setGenreID(updatedGenres);
+    if (loc !== "header") {
+      setGenreID(updatedGenres);
     }
     const queryParam = updatedGenres.join(",");
     router.push(`/genres?genresid=${queryParam}`);
-    
   };
 
   return (

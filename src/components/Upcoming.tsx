@@ -20,7 +20,6 @@ type data = {
   id: string;
 };
 
-
 const Upcoming = () => {
   const [display, setDisplay] = useState(false);
   const [movies, setMovies] = useState<data[]>([]);
@@ -52,7 +51,7 @@ const Upcoming = () => {
         const data = await getMovieNowPlaying();
         setMovies(data.results);
       } catch (error) {
-        console.error("Failed to fetch now-playing movies:", error);
+        console.log("Failed to fetch now-playing movies:", error);
       }
     };
 
@@ -98,10 +97,10 @@ const Upcoming = () => {
           </div>
         </div>
       )}
-      <Carousel className="w-screen relative mt-[60px]  w-max-screen h-[600px]"
-      plugins={[
-        
-      ]}>
+      <Carousel
+        className="w-screen relative mt-[60px]  w-max-screen h-[600px]"
+        plugins={[]}
+      >
         <CarouselContent>
           {movies.map((el: data, index) => (
             <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">

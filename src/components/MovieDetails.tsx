@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
 // import { Star } from "lucide-react";
 import Star from "./icon/Star";
-import {X} from "lucide-react";
+import { X } from "lucide-react";
 import { getMovieDetail, getTailer } from "@/utils/requests";
 import MovieDetailLoading from "./loading/Movie-Detail-Loading";
 
@@ -45,86 +45,83 @@ type SimilarMovies = {
 };
 
 type Props = {
-movieID :string | string[] | undefined 
-
+  movieID: string | string[] | undefined;
 };
 type MovieData = {
   movieDetails: Movie | undefined;
   actorsDetails: ActorsDetails | undefined;
   similaMovies: SimilarMovies["results"] | undefined;
 };
-const MovieDetails = ({
-  movieID
-}: Props) => {
-
-  
-    const router = useRouter();
-     const [movieData, setMovieData] = useState<MovieData | undefined>({
-        movieDetails: undefined,
-        actorsDetails: undefined,
-        similaMovies: undefined,
-      });
-      const [isLoading, setIsLoading] = useState(true);
-      const [video, setVideo] = useState("")
-      useEffect(() => {
-        if (movieID) {
-          setIsLoading(true);
-          const fetchMovieDetails = async () => {
-                try {
-                  const data = await getMovieDetail(movieID);
-                  setMovieData(data);
-                } catch (error) {
-                  console.error("Failed to fetch", error);
-                }finally{
-                  setIsLoading(false);
-                }
-              };
-          
-              fetchMovieDetails();
-    
+const MovieDetails = ({ movieID }: Props) => {
+  const router = useRouter();
+  const [movieData, setMovieData] = useState<MovieData | undefined>({
+    movieDetails: undefined,
+    actorsDetails: undefined,
+    similaMovies: undefined,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [video, setVideo] = useState("");
+  useEffect(() => {
+    if (movieID) {
+      setIsLoading(true);
+      const fetchMovieDetails = async () => {
+        try {
+          const data = await getMovieDetail(movieID);
+          setMovieData(data);
+        } catch (error) {
+          console.log("Failed to fetch", error);
+        } finally {
+          setIsLoading(false);
         }
-      }, [movieID]);
-      const playTrailer = async () => {
-          try {
-              const trailer = await getTailer(movieID);
-              setVideo(trailer);
-              console.log(video);
-              
-            } catch (error) {
-              console.error();
-            } finally {
-              setDisplay(true);
-            }
-      }
-    
-    
-    
-      const { movieDetails, actorsDetails , similaMovies } = movieData ??{}
-    
-    const [display, setDisplay] = useState(false);
-    const genres = movieDetails?.genres;
-    const director = actorsDetails?.crew[0]?.name;
-    // const video = trailer?.results?[0]?.key;
-  
-    const handleMovieClick = (movieID: number) => {
-      router.push(`/movies/${movieID}`);
-    };
-    const handleSimilarClick = () => {
-      const category = movieDetails?.id;
-      router.push(`/category/${category}/similar?page=1`);
-    };
- 
+      };
+
+      fetchMovieDetails();
+    }
+  }, [movieID]);
+  const playTrailer = async () => {
+    try {
+      const trailer = await getTailer(movieID);
+      setVideo(trailer);
+      console.log(video);
+    } catch (error) {
+      console.error();
+    } finally {
+      setDisplay(true);
+    }
+  };
+
+  const { movieDetails, actorsDetails, similaMovies } = movieData ?? {};
+
+  const [display, setDisplay] = useState(false);
+  const genres = movieDetails?.genres;
+  const director = actorsDetails?.crew[0]?.name;
+  // const video = trailer?.results?[0]?.key;
+
+  const handleMovieClick = (movieID: number) => {
+    router.push(`/movies/${movieID}`);
+  };
+  const handleSimilarClick = () => {
+    const category = movieDetails?.id;
+    router.push(`/category/${category}/similar?page=1`);
+  };
 
   return (
-      <>
-      {isLoading == false ?(<div className="max-w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
+    <>
+      {isLoading == false ? (
+        <div className="max-w-[1080px] flex gap-6  items-center flex-col mt-[200px]">
           <div className="w-full h-fit flex justify-between xl:px-0 px-8">
             <div>
               <h1 className="text-3xl font-bold">{movieDetails?.title}</h1>
-              {movieDetails && (<p className="text-lg">
-                {movieDetails?.release_date} • {movieDetails?.origin_country[0]} •{" "}
-                {Math.floor(movieDetails.runtime/60)}h {movieDetails.runtime - (Math.floor(movieDetails.runtime/60)) * 60}m
-              </p>)}
+              {movieDetails && (
+                <p className="text-lg">
+                  {movieDetails?.release_date} •{" "}
+                  {movieDetails?.origin_country[0]} •{" "}
+                  {Math.floor(movieDetails.runtime / 60)}h{" "}
+                  {movieDetails.runtime -
+                    Math.floor(movieDetails.runtime / 60) * 60}
+                  m
+                </p>
+              )}
             </div>
             <div>
               <p className="text-sm">Rating</p>
@@ -170,12 +167,12 @@ const MovieDetails = ({
           </div>
           <div className="sm:flex-row flex flex-col xl:px-0 px-8 gap-4">
             <div className="flex lg:hidden h-full gap-2 sm:w-[28%] w-[100%]">
-          <div className="w-full lg:hidden  h-full overflow-hidden rounded-sm">
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${movieDetails?.poster_path}`}
-              />
-            </div>
-            <div className="flex w-full h-fit sm:hidden gap-2 flex-wrap">
+              <div className="w-full lg:hidden  h-full overflow-hidden rounded-sm">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movieDetails?.poster_path}`}
+                />
+              </div>
+              <div className="flex w-full h-fit sm:hidden gap-2 flex-wrap">
                 {genres &&
                   genres.map((genre: Genre) => (
                     <div
@@ -185,7 +182,6 @@ const MovieDetails = ({
                       {genre.name}
                     </div>
                   ))}
-              
               </div>
             </div>
             <div className=" w-full flex flex-col gap-4">
@@ -199,7 +195,6 @@ const MovieDetails = ({
                       {genre.name}
                     </div>
                   ))}
-              
               </div>
               <div className="text-lg">{movieDetails?.overview}</div>
             </div>
@@ -216,9 +211,9 @@ const MovieDetails = ({
             <div className="w-full border-b flex h-fit gap-5 border-b-[#27272A]">
               <p className="font-bold">Stars:</p>
               <div className="flex flex-wrap">
-              {actorsDetails?.cast.slice(0, 5).map((cast, index) => (
-                <p key={index}>{cast.name}</p>
-              ))}
+                {actorsDetails?.cast.slice(0, 5).map((cast, index) => (
+                  <p key={index}>{cast.name}</p>
+                ))}
               </div>
             </div>
           </div>
@@ -238,7 +233,7 @@ const MovieDetails = ({
                   className="rounded-lg h-[381px] max-w-[190px] w-full relative overflow-hidden group"
                   onClick={() => handleMovieClick(results.id)}
                 >
-                <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
+                  <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
                     className="w-full h-[70%] hover:bg-primary/30"
@@ -264,36 +259,36 @@ const MovieDetails = ({
               ))}
             </div>
           </div>
-   
-        </div>):<MovieDetailLoading />}
-        {display == true && (
-          <div
-            onClick={() => setDisplay(false)}
-            className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
-          >
-            <div className="max-w-[512px] w-full h-[280px] z-20 top-[30%] lg:max-w-[800px] lg:h-[450px]">
-              <div className="w-full h-full relative ">
-                <button
-                  onClick={() => setDisplay(false)}
-                  className="w-5 h-5 absolute z-30 right-3 top-3"
-                >
-                  <X/>
-                </button>
-                <iframe
-                  className="w-full h-full absolute"
-                  title="trailer"
-                  src={`https://www.youtube.com//embed/${video}`}
-                  allowFullScreen
-                >
-                  {" "}
-                </iframe>
-              </div>
+        </div>
+      ) : (
+        <MovieDetailLoading />
+      )}
+      {display == true && (
+        <div
+          onClick={() => setDisplay(false)}
+          className="w-screen h-full z-30 bg-black/80 flex justify-center items-center fixed"
+        >
+          <div className="max-w-[512px] w-full h-[280px] z-20 top-[30%] lg:max-w-[800px] lg:h-[450px]">
+            <div className="w-full h-full relative ">
+              <button
+                onClick={() => setDisplay(false)}
+                className="w-5 h-5 absolute z-30 right-3 top-3"
+              >
+                <X />
+              </button>
+              <iframe
+                className="w-full h-full absolute"
+                title="trailer"
+                src={`https://www.youtube.com//embed/${video}`}
+                allowFullScreen
+              >
+                {" "}
+              </iframe>
             </div>
           </div>
-        )}
-  
-      </>
-    );
-      
+        </div>
+      )}
+    </>
+  );
 };
 export default MovieDetails;

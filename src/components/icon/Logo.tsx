@@ -1,16 +1,26 @@
 "use client"
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 type fill = {
     fill: string,
 
 }
 
 const Logo = ({fill}:fill) => {
-    const router = useRouter()
-    const goHome = ()=> {
-        router.push(`/`)
-    }
+   const [mounted, setMounted] = useState(false);
+   const router = useRouter()
+   const goHome = ()=> {
+       router.push(`/`)
+   }
+      useEffect(() => {
+        setMounted(true);
+      }, []);
+    
+      if (!mounted) {
+        return null;
+      }
+
   return (
     <svg
     onClick={()=>goHome()}

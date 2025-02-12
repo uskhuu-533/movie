@@ -1,21 +1,18 @@
-"use client"
+"use client";
 
 import Header from "@/components/Header";
 import Upcoming from "@/components/Upcoming";
 import AllLists from "@/components/All-LIsts";
 import Footer from "@/components/Footer";
 
-
 export default function Home() {
-
   return (
-   <div className="flex dark:text-white relative light:text-black flex-col w-screen dark:bg-[#09090B] light:bg-[#FFFFFF] gap-[30px] overflow-hidden">
-    <Header/>
-   <Upcoming />
- <AllLists />
-    <Footer />
-   
-   </div>
+    <div className="flex dark:text-white relative light:text-black flex-col w-screen dark:bg-[#09090B] light:bg-[#FFFFFF] gap-[30px] overflow-hidden">
+      <Header />
+      <Upcoming />
+      <AllLists />
+      <Footer />
+    </div>
   );
 }
 // There are three main primitives in JavaScript and TypeScript.

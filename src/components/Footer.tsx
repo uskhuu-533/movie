@@ -13,27 +13,27 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <p className="font-semibold text-[15px]">Contact Information</p>
             <div className="flex items-center gap-2">
-                <Mail width={16} height={16}/>
-                <div>
-                    <p className="font-semibold">Email:</p>
-                    <p>support@movieZ.com</p>
-                </div>
+              <Mail width={16} height={16} />
+              <div>
+                <p className="font-semibold">Email:</p>
+                <p>support@movieZ.com</p>
+              </div>
             </div>
             <div className="flex gap-2 items-center">
-                <Phone width={16} height={16}/>
-                <div>
-                    <p className="font-semibold">Phone:</p>
-                    <p>+976 (11) 123-4567</p>
-                </div>
+              <Phone width={16} height={16} />
+              <div>
+                <p className="font-semibold">Phone:</p>
+                <p>+976 (11) 123-4567</p>
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-5">
             <p className="font-semibold text-[15px]">Follow us</p>
             <div className="flex flex-col lg:flex-row lg:gap-4 gap-2">
-                <a href="">Facebook</a>
-                <a href="">Instagram</a>
-                <a href="">Twiter</a>
-                <a href="">Youtube</a>
+              <a href="">Facebook</a>
+              <a href="">Instagram</a>
+              <a href="">Twiter</a>
+              <a href="">Youtube</a>
             </div>
           </div>
         </div>

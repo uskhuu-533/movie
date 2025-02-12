@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import {  useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
 
 import SearchMovies from "./SearchMovies";
 import GenreMovieList from "./Genre-Movie-List";
@@ -34,9 +34,6 @@ const GenrePage = () => {
       setPage("");
     }
   }, []);
- 
-
-
 
   return (
     <div className="w-full  flex justify-center pb-10  dark:text-white">
@@ -52,11 +49,10 @@ const GenrePage = () => {
           <div className="h-fit sticky top-[100px]  z-10 ">
             <h2 className="text-2xl py-2 font-bold">Genres</h2>
             <p className="text-xl pb-5">See lists of movies by genre</p>
-       
-              <div className="flex flex-wrap gap-4 w-full">
-                <Genre loc="genreAndSearch"/>
-              </div>
-            
+
+            <div className="flex flex-wrap gap-4 w-full">
+              <Genre loc="genreAndSearch" />
+            </div>
           </div>
         </div>
 

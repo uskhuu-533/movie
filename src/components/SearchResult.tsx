@@ -26,8 +26,8 @@ const SearchResult = ({ searchValue }: props) => {
         const result = await getsearchMovie(searchValue, currenrPage);
         setSearchResult(result.results);
       } catch (error) {
-        console.error("Error fetching genres:", error);
-      }finally{
+        console.log("Error fetching genres:", error);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -66,7 +66,7 @@ const SearchResult = ({ searchValue }: props) => {
                       <p className="text-gray-400 text-sm">/10</p>
                     </div>
                   </div>
-                  <p className="mt-4">{(movie.release_date).split("-")[0]}</p>
+                  <p className="mt-4">{movie.release_date.split("-")[0]}</p>
                 </div>
               </div>
               <div className="h-full  flex items-end pr-4">
@@ -83,7 +83,7 @@ const SearchResult = ({ searchValue }: props) => {
       )}
       <div className="w-full h-1/10 px-4">
         <div onClick={handleJumpResults}>
-          See all results for '{searchValue}'
+          See all results for : {searchValue}
         </div>
       </div>
     </div>

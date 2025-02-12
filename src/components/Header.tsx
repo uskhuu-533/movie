@@ -8,12 +8,11 @@ import SearchResult from "./SearchResult";
 
 import { useQueryState } from "nuqs";
 
-import SearchIcon from "./icon/Search-Icon";
+
 import { useTheme } from "next-themes";
 import Moon from "./icon/Moon";
 import Genre from "./Genre";
-import { Sun, X } from "lucide-react";
-
+import { Search, Sun, X } from "lucide-react";
 
 const Header = () => {
   const [display, setDisplay] = useState(false);
@@ -22,28 +21,15 @@ const Header = () => {
   const [Page, setPage] = useState("");
   const [trasnlateSearch, setTranslate] = useState(false);
 
-  useEffect(() => {
-    const path = window.location.pathname;
-    if (path === "/search") {
-      setPage("search");
-    } else if (path === "/genres") {
-      setPage("genres");
-    } else {
-      setPage("");
-    }
-  }, []);
   const { setTheme } = useTheme();
   const { theme } = useTheme();
 
   const handleSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valueE = e.target.value;
     setSearchValue(valueE);
-    {
-      Page == "search" && setValue(valueE);
-    }
+    {Page == "search" && setValue(valueE);}
   };
   const changeTheme = () => {
-    const theme = localStorage.getItem("theme");
     if (theme == "dark") {
       setTheme("light");
     } else {
@@ -56,6 +42,18 @@ const Header = () => {
     setTranslate(false);
     setSearchValue("");
   };
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === "/search") {
+      setPage("search");
+    } else if (path === "/genres") {
+      setPage("genres");
+    } else {
+      setPage("");
+    }
+  }, []);
+
   return (
     <>
       <div className="w-full z-30 h-[60px]  px-5 justify-center items-center fixed  dark:bg-[#09090B] flex bg-white">
@@ -72,7 +70,7 @@ const Header = () => {
               </button>
               <div className="flex flex-col lg:items-center relative">
                 <div className="flex items-center">
-                  <SearchIcon />
+                  <Search className="absolute left-3" width={16} height={16}/>
                   {Page == "search" ? (
                     <input
                       onClick={() => setDisplay(false)}
@@ -106,7 +104,7 @@ const Header = () => {
                 </div>
                 <div className="w-full border border-gray-500/30"></div>
                 <div className="flex flex-wrap gap-4">
-                  <Genre loc="header"/>
+                  <Genre loc="header" />
                 </div>
               </div>
             )}
@@ -116,7 +114,7 @@ const Header = () => {
               onClick={() => setTranslate(true)}
               className="w-9 h-9 flex items-center relative lg:hidden justify-center border rounded-md border-[#27272A] "
             >
-              <SearchIcon />
+              <Search className="absolute left-3" width={16} height={16}/>
             </div>
             <div
               onClick={() => changeTheme()}
@@ -146,7 +144,7 @@ const Header = () => {
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center relative">
-                <SearchIcon />
+                <Search className="absolute left-3" width={16} height={16}/>
                 {Page == "search" ? (
                   <input
                     onClick={() => setDisplay(false)}
