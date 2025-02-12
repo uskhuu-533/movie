@@ -114,7 +114,7 @@ const Header = () => {
               onClick={() => setTranslate(true)}
               className="w-9 h-9 flex items-center relative lg:hidden justify-center border rounded-md border-[#27272A] "
             >
-              <Search className="absolute left-3" width={16} height={16}/>
+              <Search width={16} height={16}/>
             </div>
             <div
               onClick={() => changeTheme()}
