@@ -10,11 +10,11 @@ import { useQueryState } from "nuqs";
 
 
 import { useTheme } from "next-themes";
-import Moon from "./icon/Moon";
 import Genre from "./Genre";
-import { Search, Sun, X } from "lucide-react";
+import { MoonIcon, Search, Sun, X } from "lucide-react";
 
 const Header = () => {
+  
   const [display, setDisplay] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [value, setValue] = useQueryState("value");
@@ -54,6 +54,15 @@ const Header = () => {
     }
   }, []);
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   return (
     <>
       <div className="w-full z-30 h-[60px]  px-5 justify-center items-center fixed  dark:bg-[#09090B] flex bg-white">
@@ -120,7 +129,7 @@ const Header = () => {
               onClick={() => changeTheme()}
               className="w-9 h-9 flex items-center justify-center border rounded-md border-[#27272A] "
             >
-              {theme == "light" ? <Moon /> : <Sun width={16} height={16} />}
+              {theme == "light" ? <MoonIcon height={16} width={16} /> : <Sun width={16} height={16} />}
             </div>
           </div>
         </div>

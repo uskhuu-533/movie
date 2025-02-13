@@ -22,6 +22,8 @@ const Logo = ({fill}:fill) => {
       }
 
   return (
+    <>
+
     <svg
     onClick={()=>goHome()}
       width="93"
@@ -41,6 +43,7 @@ const Logo = ({fill}:fill) => {
         fill={fill}
       />
     </svg>
+    </>
   );
 };
 export default Logo;

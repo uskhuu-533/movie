@@ -1,5 +1,11 @@
-const key = "2e484ac3ed90b99b5bad898e86132c71";
+// const key = "2e484ac3ed90b99b5bad898e86132c71";
+
+const key = process.env.NEXT_PUBLIC_API_KEY
+
+
 export const getGenre = async () => {
+
+  
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/genre/movie/list?language=en&api_key=${key}`
@@ -11,6 +17,8 @@ export const getGenre = async () => {
   }
 };
 export const getMovieNowPlaying = async () => {
+  console.log(key);
+  
   try {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${key}`
