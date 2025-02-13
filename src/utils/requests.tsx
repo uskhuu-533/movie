@@ -1,6 +1,6 @@
-// const key = "2e484ac3ed90b99b5bad898e86132c71";
+const key = "2e484ac3ed90b99b5bad898e86132c71";
 
-const key = process.env.NEXT_PUBLIC_API_KEY
+// const key = process.env.NEXT_PUBLIC_API_KEY
 
 
 export const getGenre = async () => {
