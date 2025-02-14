@@ -228,46 +228,49 @@ const MovieDetails = ({ movieID }: Props) => {
               </div>
             </div>
             <div className="w-full flex flex-wrap sm:gap-8 gap-4">
-              {similaMovies?.filter((result)=>{
-                if (result.poster_path !== null){
-                  return result.poster_path !== null
-                }
-              }).slice(0, 5).map((results, index: number) => (
-                <div
-                  key={index}
-                  className="rounded-lg sm:h-[381px] sm:w-[190px] w-[140px] w-full relative overflow-hidden group"
-                  onClick={() => handleMovieClick(results.id)}
-                >
-                  <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
-                    className="w-full h-[70%] hover:bg-primary/30"
-                    width={100}
-                    height={200}
-                    alt="detail"
-                    quality={100}
-                    priority
-                  />
-              
-                  <div className="h-[30%] bg-gray-500/30 w-full p-4">
-                    <div>
-                      <div className="flex gap-2">
-                        <Star width="18px" height="20px" />
-                        <div className="flex items-center">
-                          {" "}
-                          <p className="font-semibold">
-                            {results.vote_average}
-                          </p>
-                          <p className="text-gray-400 text-sm">/10</p>
+              {similaMovies
+                ?.filter((result) => {
+                  if (result.poster_path !== null) {
+                    return result.poster_path !== null;
+                  }
+                })
+                .slice(0, 5)
+                .map((results, index: number) => (
+                  <div
+                    key={index}
+                    className="rounded-lg sm:h-[381px] sm:w-[190px] w-[140px] relative overflow-hidden group"
+                    onClick={() => handleMovieClick(results.id)}
+                  >
+                    <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
+                      className="w-full h-[70%] hover:bg-primary/30"
+                      width={100}
+                      height={200}
+                      alt="detail"
+                      quality={100}
+                      priority
+                    />
+
+                    <div className="h-[30%] bg-gray-500/30 w-full p-4">
+                      <div>
+                        <div className="flex gap-2">
+                          <Star width="18px" height="20px" />
+                          <div className="flex items-center">
+                            {" "}
+                            <p className="font-semibold">
+                              {results.vote_average}
+                            </p>
+                            <p className="text-gray-400 text-sm">/10</p>
+                          </div>
                         </div>
+                        <p className="text-xl font-semibold line-clamp-2">
+                          {results.title}
+                        </p>
                       </div>
-                      <p className="text-xl font-semibold line-clamp-2">
-                        {results.title}
-                      </p>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
