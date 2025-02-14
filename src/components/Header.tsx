@@ -55,7 +55,10 @@ const Header = () => {
   }, []);
 
   const [mounted, setMounted] = useState(false);
-
+const GenreDisplay = ()=> {
+  setSearchValue("")
+  setDisplay((prev)=>!prev)
+}
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -71,7 +74,7 @@ const Header = () => {
           <div className="lg:relative">
             <div className="w-[488px] gap-3 lg:flex hidden">
               <button
-                onClick={() => setDisplay((prev) => !prev)}
+                onClick={() =>GenreDisplay()}
                 className="w-[96px] h-[36px] light:text-black  border rounded-md border-[#27272A] flex items-center  font-bold dark:text-white text-[14px] "
               >
                 <ChevronDown strokeWidth={1} width={32} height={16}/>
@@ -187,6 +190,12 @@ const Header = () => {
       {display == true && (
         <div
           onClick={() => setDisplay(false)}
+          className="w-screen z-20  fixed  h-screen "
+        ></div>
+      )}
+        {searchValue.length !== 0 && (
+        <div
+          onClick={() => setSearchValue("")}
           className="w-screen z-20  fixed  h-screen "
         ></div>
       )}
