@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <Suspense>
       <div className="flex dark:text-white flex-col w-screen dark:bg-[#09090B] bg-white gap-[30px] overflow-hidden">
-        {/* <Header /> */}
+        <Header />
         <CategorySimilar title="similar" category={category} />
         <Footer />
       </div>

@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "@/components/Theme-Provider";
 
 import "./globals.css";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "MovieZ",
@@ -22,8 +23,10 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
-          <NuqsAdapter>{children}</NuqsAdapter>
+        >   
+          <NuqsAdapter>
+          
+            {children}</NuqsAdapter>
         </ThemeProvider>
       </body>
     </html>
