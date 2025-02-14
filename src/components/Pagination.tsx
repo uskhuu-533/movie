@@ -2,7 +2,7 @@
 
 type Props = {
   currentPage: number;
-  setCurrentPage: (_currentPage:number)=>void;
+  setCurrentPage: (_currentPage: number) => void;
   data: Response | null;
 };
 type Response = {
@@ -10,7 +10,6 @@ type Response = {
 };
 
 const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
-  console.log(currentPage);
 
   const page = data?.total_pages;
   const pages = [];
@@ -20,7 +19,7 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
     }
     const pages1 = pages.slice(
       currentPage >= 2 ? currentPage - 2 : currentPage - 1,
-      currentPage >= 498 ? currentPage : currentPage + 2
+      currentPage >= 498 ? currentPage : currentPage + 1
     );
     const changePage = (page: number) => {
       setCurrentPage(page);
@@ -34,7 +33,7 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
       pages.length = 500;
     }
     return (
-      <div className="flex gap-4  pt-4 items-center">
+      <div className="flex md:gap-4 sm:gap-2 gap-1 text-sm  pt-4 items-center">
         {currentPage > 1 && (
           <button onClick={() => setCurrentPage(currentPage - 1)}>
             Previous
@@ -49,7 +48,7 @@ const Pagination = ({ currentPage, setCurrentPage, data }: Props) => {
         {pages1.map((page) => (
           <button
             key={page}
-            className="dark:text-white px-4 rounded-md py-2 py"
+            className="dark:text-white sm:px-4 px-3 rounded-md sm:py-2 py-[4px] py"
             style={{
               borderWidth: currentPage == page ? "2px" : "none",
               borderColor: currentPage == page ? "gray" : "none",

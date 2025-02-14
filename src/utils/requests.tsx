@@ -17,7 +17,7 @@ export const getGenre = async () => {
   }
 };
 export const getMovieNowPlaying = async () => {
-  console.log(key);
+  
   
   try {
     const response = await fetch(

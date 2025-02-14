@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import SeeMore from "./icon/SeeMore";
 import Homeloading from "./loading/Loading";
 import { getCategoryMovie } from "@/utils/requests";
+import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 type data = {
   poster_path: string;
@@ -51,11 +53,11 @@ const Lists = ({ title }: { title: string }) => {
               {title}
             </p>
             <button
-              className="font-semibold flex items-center gap-2 hover:gap-3"
+              className="font-semibold flex items-center hover:gap-2"
               onClick={handleCategoryClick}
             >
               <p>see more</p>
-              <SeeMore />
+              <ChevronRight size={20} />
             </button>
           </div>
           <div className="w-full grid grid-flow-row md:grid-cols-4 sm:grid-cols-3 sm:px-8 md:px-8 gap-8 2xl:grid-cols-5 lg:grid-cols-5  xl:grid-cols-5 grid-cols-2 px-8">
@@ -67,9 +69,14 @@ const Lists = ({ title }: { title: string }) => {
               >
                 {" "}
                 <div className="w-full h-[75%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
-                <img
+                <Image
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
+                  alt="movie"
                   className="w-full h-[75%] hover:bg-primary/30"
+                  width={100}
+                  height={200}
+                  quality={100}
+                  priority
                 />
                 <div className="w-full h-[25%] p-2 sm:pt-4  dark:bg-[#27272A] bg-gray-500/30">
                   <div>

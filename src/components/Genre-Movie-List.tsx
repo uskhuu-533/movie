@@ -7,6 +7,8 @@ import { getMovieGenres } from "@/utils/requests";
 import Star from "./icon/Star";
 import Pagination from "./Pagination";
 import GenreLoading from "./loading/Genre-Movie-Loading";
+import Image from "next/image";
+
 
 type Props = {
   genreID: number[];
@@ -62,24 +64,29 @@ const GenreMovieList = ({ genreID }: Props) => {
   return (
     <>
       <div className="lg:w-[70%] w-full px-5 relative h-fit">
-        {isLoading == false ? (
-          <>
+      {isLoading == false?(
+         <>
             <div className="text-xl font-semibold py-5">
               {" "}
               titles : {data.total_results}{" "}
             </div>
-            <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-10">
-              {movie?.map((el: Movie, index) => (
+            <div className="w-full flex flex-wrap  sm:gap-8 gap-4 ">
+              {movie?.filter((el)=>{
+               if (el.poster_path !== null){
+                return el.poster_path !== null
+               }
+              }).map((el: Movie, index) => (
                 <div
                   key={index}
-                  className="overflow-hidden relative bg-secondary rounded-lg group/item group"
+                  className="overflow-hidden relative rounded-lg sm:w-[165px] w-[140px] group/item group"
                   onClick={() => handleMovieDetail(el.id)}
                 >
                   <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
-                  <img
-                    className="h-[70%] w-full  "
-                    src={`https://image.tmdb.org/t/p/original/${el.poster_path}`}
-                  />
+                  <Image src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`} alt="genre" width={1000}
+                  height={2000}
+                  quality={100}
+                  className="h-[70%] w-full"
+                  priority />
 
                   <div className="h-[30%] bg-gray-500/30 w-full p-4">
                     <div>
@@ -105,10 +112,8 @@ const GenreMovieList = ({ genreID }: Props) => {
               setCurrentPage={setCurrentPage}
               data={data}
             />
-          </>
-        ) : (
-          <GenreLoading />
-        )}
+        </>):<GenreLoading/>}
+      
       </div>
     </>
   );

@@ -1,12 +1,14 @@
-import { Mail, Phone } from "lucide-react";
-import Logo from "./icon/Logo";
+import { Film, Mail, Phone } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 const Footer = () => {
+  const router = useRouter()
   return (
     <div className="w-full h-[280px] text-white  bottom-0 bg-[#4338CA] flex justify-center">
       <div className="max-w-[1280px] w-full h-[136px] lg:flex-row flex flex-col mt-10 px-8 lg:px-0 lg:justify-between gap-4">
         <div className="h-full flex flex-col gap-2">
-          <Logo fill="#FAFAFA" />
+        <div onClick={()=> router.push("/")} className="flex gap-2 font-bold italic items-center text-white"><Film stroke="white" strokeWidth={1.2}/> Movie Z</div>
           <p className="text-[14px]">© 2024 Movie Z. All Rights Reserved.</p>
         </div>
         <div className="w-2/5 h-full flex justify-between gap-8 text-[14px]">

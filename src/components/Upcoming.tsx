@@ -22,6 +22,7 @@ type data = {
 import Autoplay from 'embla-carousel-autoplay'
 
 
+
 const Upcoming = () => {
   const [display, setDisplay] = useState(false);
   const [movies, setMovies] = useState<data[]>([]);
@@ -42,7 +43,7 @@ const Upcoming = () => {
   );
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const media = window.matchMedia(`(max-width: 1024px)`);
+      const media = window.matchMedia(`(max-width: 1324px)`);
       media.addEventListener("change", updateTarget);
     }
   }, []);
@@ -143,7 +144,9 @@ const Upcoming = () => {
                         ? { marginTop: isLargeScreen == false ? "10%" : "0" }
                         : {}
                     }
+                 
                   />
+                  
                 </div>
                 <div className="lg:absolute  z-10 dark:text-white p-10  space-y-4 lg:px-36">
                   <div

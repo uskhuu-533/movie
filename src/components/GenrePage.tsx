@@ -25,7 +25,6 @@ const GenrePage = () => {
 
   useEffect(() => {
     const path = window.location.pathname;
-    console.log(path);
     if (path === "/search") {
       setPage("search");
     } else if (path === "/genres") {

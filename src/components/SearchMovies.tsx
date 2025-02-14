@@ -7,6 +7,7 @@ import Pagination from "./Pagination";
 import Star from "./icon/Star";
 import GenreLoading from "./loading/Genre-Movie-Loading";
 import { getsearchMovie } from "@/utils/requests";
+import Image from "next/image";
 
 type Props = {
   searchValue: string;
@@ -76,7 +77,7 @@ const SearchMovies = ({ searchValue }: Props) => {
                       if (genreID.length > 0) {
                         return genreID
                           ?.map((id) => el.genre_ids.includes(id))
-                          .includes(true);
+                          .includes(true) && el.poster_path !== null
                       } else {
                         return movie;
                       }
@@ -88,10 +89,8 @@ const SearchMovies = ({ searchValue }: Props) => {
                         onClick={() => handleMovieDetail(el.id)}
                       >
                         <div className="w-full h-full absolute z-10 hover:bg-white/30"></div>
-                        <img
-                          className="h-[70%] w-full"
-                          src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-                        />
+                      
+                        <Image className="h-[70%] w-full" height={200} width={100} src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`} quality={100} priority alt="search"/>
                         <div className="h-[30%] bg-gray-500/30 w-full p-4">
                           <div>
                             <div className="flex gap-2">

@@ -4,6 +4,7 @@ import Star from "./icon/Star";
 import SeeMore from "./icon/SeeMore";
 import SearchLoading from "./loading/Search-Loading";
 import { getsearchMovie } from "@/utils/requests";
+import Image from "next/image";
 type props = {
   searchValue: string;
 };
@@ -44,16 +45,25 @@ const SearchResult = ({ searchValue }: props) => {
     <div className="w-full  border border-[#27272A] dark:bg-[#09090B] bg-white top-14 lg:top-10 p-2 rounded-lg flex-col">
       {isLoading == false ? (
         <div className="w-full h-[90%] flex flex-col gap-2 lg:p-4">
-          {searchResult.map((movie: data, index) => (
+          {searchResult.filter((result) => {
+                  if (result.poster_path !== null) {
+                    return result.poster_path !== null;
+                  }
+                }).map((movie: data, index) => (
             <div
               onClick={() => handleMovieClick(movie.id)}
               className="w-full h-[116px] border-b border-b-gray-500/30  item-center pb-2 flex lg:justify-between hover:bg-white/20  "
               key={index}
             >
               <div className="w-[70%] flex gap-x-2">
-                <img
+                <Image
                   className="h-[100%] lg:w-[20%] w-[35%] rounded-md"
-                  src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                  width={100}
+                  height={200}
+                  alt="searchres"
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  quality={100}
+                  priority
                 />
                 <div>
                   <p className="line-clamp-2">{movie.title}</p>

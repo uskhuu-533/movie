@@ -9,6 +9,7 @@ import Star from "./icon/Star";
 import { X } from "lucide-react";
 import { getMovieDetail, getTailer } from "@/utils/requests";
 import MovieDetailLoading from "./loading/Movie-Detail-Loading";
+import Image from "next/image";
 
 type Genre = {
   id: number;
@@ -218,7 +219,7 @@ const MovieDetails = ({ movieID }: Props) => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-4 xl:px-0 px-8">
+          <div className="w-full flex flex-col gap-4 xl:px-0 px-6">
             <div className="flex w-full justify-between">
               <div className="text-2xl font-bold ">More like this</div>
               <div className="flex items-center gap-1 font-semibold">
@@ -226,18 +227,28 @@ const MovieDetails = ({ movieID }: Props) => {
                 <SeeMore />
               </div>
             </div>
-            <div className="w-full flex flex-wrap gap-8">
-              {similaMovies?.slice(0, 5).map((results, index: number) => (
+            <div className="w-full flex flex-wrap sm:gap-8 gap-4">
+              {similaMovies?.filter((result)=>{
+                if (result.poster_path !== null){
+                  return result.poster_path !== null
+                }
+              }).slice(0, 5).map((results, index: number) => (
                 <div
                   key={index}
-                  className="rounded-lg h-[381px] max-w-[190px] w-full relative overflow-hidden group"
+                  className="rounded-lg sm:h-[381px] sm:w-[190px] w-[140px] w-full relative overflow-hidden group"
                   onClick={() => handleMovieClick(results.id)}
                 >
                   <div className="w-full h-[70%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
-                  <img
+                  <Image
                     src={`https://image.tmdb.org/t/p/w500/${results.poster_path}`}
                     className="w-full h-[70%] hover:bg-primary/30"
+                    width={100}
+                    height={200}
+                    alt="detail"
+                    quality={100}
+                    priority
                   />
+              
                   <div className="h-[30%] bg-gray-500/30 w-full p-4">
                     <div>
                       <div className="flex gap-2">

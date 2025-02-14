@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import Bottom from "./icon/Bottom";
-import Logo from "./icon/Logo";
+
 import SearchResult from "./SearchResult";
 
 import { useQueryState } from "nuqs";
@@ -11,10 +10,11 @@ import { useQueryState } from "nuqs";
 
 import { useTheme } from "next-themes";
 import Genre from "./Genre";
-import { MoonIcon, Search, Sun, X } from "lucide-react";
+import { ChevronDown, Film, MoonIcon, Search, Sun, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
-  
+  const router = useRouter()
   const [display, setDisplay] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [value, setValue] = useQueryState("value");
@@ -67,14 +67,14 @@ const Header = () => {
     <>
       <div className="w-full z-30 h-[60px]  px-5 justify-center items-center fixed  dark:bg-[#09090B] flex bg-white">
         <div className="w-[1280px] h-[60px]  flex justify-between items-center">
-          <Logo fill={"#4338CA"} />
+          <div onClick={()=>router.push("/")} className="flex gap-2 font-bold italic items-center text-[#4338CA]"><Film stroke="#4338CA" strokeWidth={1.2}/> Movie Z</div>
           <div className="lg:relative">
             <div className="w-[488px] gap-3 lg:flex hidden">
               <button
                 onClick={() => setDisplay((prev) => !prev)}
-                className="w-[96px] h-[36px] light:text-black  border rounded-md border-[#27272A] flex items-center justify-center font-bold dark:text-white text-[14px] gap-2 cursor-pointer "
+                className="w-[96px] h-[36px] light:text-black  border rounded-md border-[#27272A] flex items-center  font-bold dark:text-white text-[14px] "
               >
-                <Bottom />
+                <ChevronDown strokeWidth={1} width={32} height={16}/>
                 <p>Genre</p>
               </button>
               <div className="flex flex-col lg:items-center relative">
@@ -149,7 +149,7 @@ const Header = () => {
               onClick={() => setDisplay((prev) => !prev)}
               className="w-9 h-9 flex items-center relative lg:hidden justify-center border rounded-md  border-[#27272A] "
             >
-              <Bottom />
+              <ChevronDown strokeWidth={1} width={32} height={16}/>
             </div>
             <div className="flex flex-col items-center">
               <div className="flex items-center relative">

@@ -1,6 +1,6 @@
 import { getGenre } from "@/utils/requests";
 import { useRouter } from "next/navigation";
-import { useQueryState } from "nuqs";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import Close from "./icon/Close";
 import Right from "./icon/Right";
@@ -25,7 +25,7 @@ const Genre = ({ loc }: props) => {
     serialize: (array) => array.join(","),
   });
   const [genre, setGenre] = useState<Data[]>([]);
-
+const [,setCurrentPage] = useQueryState("page", parseAsInteger.withDefault(1))
   useEffect(() => {
     const fetchgetGenre = async () => {
       try {
@@ -43,7 +43,8 @@ const Genre = ({ loc }: props) => {
       ? genreID.filter((genre) => genre !== id)
       : [...genreID, id];
     if (loc !== "header") {
-      setGenreID(updatedGenres);
+      setGenreID(updatedGenres)
+      setCurrentPage(1);
     }
     const queryParam = updatedGenres.join(",");
     router.push(`/genres?genresid=${queryParam}`);

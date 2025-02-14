@@ -7,6 +7,7 @@ import SimilarCategoryLoading from "./loading/Similar-Category-Loading";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { getCategoryMovie, getSimilarMovie } from "@/utils/requests";
+import Image from "next/image";
 
 type data = {
   id: number;
@@ -69,16 +70,26 @@ const CategorySimilar = ({ title, category }: Props) => {
             </p>
           </div>
           <div className="w-full grid grid-flow-row md:grid-cols-5 sm:grid-cols-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:px-0 px-8 gap-8">
-            {data?.results.map((el: data, index) => (
+            {data?.results.filter((result) => {
+                  if (result.poster_path !== null) {
+                    return result.poster_path !== null;
+                  }
+                }).map((el: data, index) => (
               <div
                 key={index}
                 className="rounded-lg relative overflow-hidden group"
                 onClick={() => handleMovieClick(el.id)}
               >
                 <div className="w-full h-[75%] absolute z-10 dark:group-hover:bg-white/30 group-hover:bg-black/30"></div>
-                <img
+
+                <Image
+                  className="w-full h-[75%]"
+                  width={100}
+                  height={200}
+                  quality={100}
+                  alt="similar"
                   src={`https://image.tmdb.org/t/p/w500/${el.poster_path}`}
-                  className="w-full h-[75%] hover:bg-primary/30"
+                  priority
                 />
                 <div className="w-full h-[25%] font-semibold md:text-xl sm:text-lg text-sm p-2 bg-gray-500/30 line-clamp-2">
                   <div>
